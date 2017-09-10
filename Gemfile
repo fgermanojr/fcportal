@@ -9,7 +9,7 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.3'
 
-gem 'react_on_rails', '~> 9.0.0.beta.12' # added, fgj
+gem 'react_on_rails', '~> 9.0.0' # added, fgj
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
@@ -20,7 +20,7 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker'
+gem 'webpacker', '~> 3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
