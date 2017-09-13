@@ -2,13 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Sidebar from './sidebar';
 
+// Inline styles
 const tableStyle = {
   border: '1px solid black',
   width: '100%'
 }
 
 const headerStyle = {
-  color: 'blue'
+  color: 'blue',
+  fontSize: '1.2em'
 }
 
 const borderStyle = {
@@ -22,7 +24,11 @@ const sidebarStyle = {
 
 const viewportStyle = {
   border: '1px solid black',
-  width: '100%'
+  textAlign: 'center'
+}
+
+const fontSizeStyle = {
+
 }
 
 export default class Portal extends React.Component {
@@ -58,11 +64,15 @@ export default class Portal extends React.Component {
             <td id="side-bar" style={sidebarStyle}>
               <Sidebar menuitem="B" />
             </td>
-            <td id="view-port" style={viewportStyle}>view-port</td>
+            <td id="view-port" style={viewportStyle}>
+              <div id="view-port-div">
+                view-port
+              </div>
+            </td>
             <td id="sidebar_right" style={borderStyle}></td>
           </tr>
           <tr id="footer">
-            <td>c/r Frank Germano, Jr.</td>
+            <td>&nbsp;&copy;&nbsp;Frank Germano, Jr.</td>
             <td>fgermano@earthlink.net</td>
             <td>v 0.1</td>
           </tr>

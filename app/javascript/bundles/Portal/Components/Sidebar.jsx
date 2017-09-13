@@ -3,8 +3,12 @@ import React from 'react';
 
 // Inline styles
 const listStyle = {
- listStyleType: 'none',
- textAlign: 'center'
+  listStyleType: 'none',
+  textAlign: 'center'
+}
+
+const menuStyle = {
+  textAlign: 'center'
 }
 
 export default class Sidebar extends React.Component {
@@ -29,17 +33,19 @@ export default class Sidebar extends React.Component {
 
   render() {
     return (
-      <ul id="menulist" style={listStyle}>
-        <li>Introduction</li>
-        <li>Login|Logout</li>
-        <li>Your Status</li>
-        <li>User Information</li>
-        <li>User Configuration</li>
-        <li>Model Management</li>
-        <li>Model Submission</li>
-        <li>Submission Results</li>
-        <li>Support</li>
-      </ul>
+      <table id="menulist" style={menuStyle}>
+        <tbody>
+          <tr><td>Introduction</td></tr>
+          <tr><td>Login|Logout</td></tr>
+          <tr><td>Your Status</td></tr>
+          <tr><td>User Information</td></tr>
+          <tr><td>User Configuration</td></tr>
+          <tr><td>Model Management</td></tr>
+          <tr><td>Model Submission</td></tr>
+          <tr><td>Submission Results</td></tr>
+          <tr><td>Support</td></tr>
+         </tbody>
+      </table>
     );
 
   }
