@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import Sidebar from './sidebar';
+import Footer from './footer';
+import Header from './header';
+import Content from './content';
 
 // Inline styles
 const tableStyle = {
@@ -24,7 +28,8 @@ const sidebarStyle = {
 
 const viewportStyle = {
   border: '1px solid black',
-  textAlign: 'center'
+  textAlign: 'center',
+  width: '80%'
 }
 
 const fontSizeStyle = {
@@ -53,29 +58,18 @@ export default class Portal extends React.Component {
 
   render() {
     return (
-      <table style={tableStyle}>
+      <table style={tableStyle}>å
         <tbody>
-          <tr id="header">
-              <td style={headerStyle}>Fortran Calculus Portal</td>
-              <td>{new Date().toLocaleTimeString()}</td>
-              <td><b>HELP</b></td>
-          </tr>
+          <Header version="0.1" />
           <tr id="center">
             <td id="side-bar" style={sidebarStyle}>
-              <Sidebar menuitem="B" />
+              <Sidebar menuitem="Introduction" />
             </td>
             <td id="view-port" style={viewportStyle}>
-              <div id="view-port-div">
-                view-port
-              </div>
+              <Content content="tag" />
             </td>
-            <td id="sidebar_right" style={borderStyle}></td>
           </tr>
-          <tr id="footer">
-            <td>&nbsp;&copy;&nbsp;Frank Germano, Jr.</td>
-            <td>fgermano@earthlink.net</td>
-            <td>v 0.1</td>
-          </tr>
+          <Footer name="Frank Germano, Jr." />
         </tbody>
       </table>
     );
