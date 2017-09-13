@@ -1,6 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+// Inline styles
+const listStyle = {
+ listStyleType: 'none',
+ textAlign: 'center'
+}
+
 export default class Sidebar extends React.Component {
   static propTypes = {
     menuitem: PropTypes.string.isRequired, // this is passed from the Rails view
@@ -23,7 +29,7 @@ export default class Sidebar extends React.Component {
 
   render() {
     return (
-      <ul id="menulist">
+      <ul id="menulist" style={listStyle}>
         <li>Introduction</li>
         <li>Login|Logout</li>
         <li>Your Status</li>

@@ -2,6 +2,29 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Sidebar from './sidebar';
 
+const tableStyle = {
+  border: '1px solid black',
+  width: '100%'
+}
+
+const headerStyle = {
+  color: 'blue'
+}
+
+const borderStyle = {
+  border: '1px solid black'
+}
+
+const sidebarStyle = {
+  border: '1px solid black',
+  width: '20%'
+}
+
+const viewportStyle = {
+  border: '1px solid black',
+  width: '100%'
+}
+
 export default class Portal extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired, // this is passed from the Rails view
@@ -24,18 +47,19 @@ export default class Portal extends React.Component {
 
   render() {
     return (
-      <table>
+      <table style={tableStyle}>
         <tbody>
           <tr id="header">
-            <td><h1>Fortran Calculus Portal</h1></td>
-            <td>{new Date().toLocaleTimeString()}</td>
-            <td><b>HELP</b></td>
+              <td style={headerStyle}>Fortran Calculus Portal</td>
+              <td>{new Date().toLocaleTimeString()}</td>
+              <td><b>HELP</b></td>
           </tr>
           <tr id="center">
-            <td id="side-bar">
+            <td id="side-bar" style={sidebarStyle}>
               <Sidebar menuitem="B" />
             </td>
-            <td id="view-port">view-port</td>
+            <td id="view-port" style={viewportStyle}>view-port</td>
+            <td id="sidebar_right" style={borderStyle}></td>
           </tr>
           <tr id="footer">
             <td>c/r Frank Germano, Jr.</td>
