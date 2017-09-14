@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Submission from './submission';
 
 // Inline styles
 const tableStyle = {
@@ -52,7 +53,7 @@ export default class Content extends React.Component {
 
   render() {
     return (
-      <div id="view-port-div">view-port</div>
+      <Submission model="amodel"/>
     );
 
 

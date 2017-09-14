@@ -30,6 +30,10 @@ const fontSizeStyle = {
 
 }
 
+const domainspanStyle = {
+  float: 'right'
+}
+
 export default class Footer extends React.Component {
   static propTypes = { // *** finish
     name: PropTypes.string.isRequired, // this is passed from the Rails view
@@ -54,11 +58,11 @@ export default class Footer extends React.Component {
     return (
       <tr id="footer">
         <td>
-          <span>&nbsp;&copy;&nbsp;Frank Germano, Jr.</span>
+          <span>&emsp;Frank Germano, Jr.</span>
         </td>
         <td>
-          <span id="domain-span">www.fortrancalculus.com </span>
           <span id="email-span">fgermano@earthlink.net</span>
+          <span id="domain-span" style={domainspanStyle}>www.fortrancalculus.com </span>
         </td>
       </tr>
     );

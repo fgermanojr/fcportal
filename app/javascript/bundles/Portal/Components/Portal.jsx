@@ -28,7 +28,7 @@ const sidebarStyle = {
 
 const viewportStyle = {
   border: '1px solid black',
-  textAlign: 'center',
+  textAlign: 'left',
   width: '80%'
 }
 
@@ -58,7 +58,7 @@ export default class Portal extends React.Component {
 
   render() {
     return (
-      <table style={tableStyle}>å
+      <table style={tableStyle}>
         <tbody>
           <Header version="0.1" />
           <tr id="center">

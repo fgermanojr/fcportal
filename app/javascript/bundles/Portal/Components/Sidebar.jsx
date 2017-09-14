@@ -8,7 +8,7 @@ const listStyle = {
 }
 
 const menuStyle = {
-  textAlign: 'center'
+  textAlign: 'left'
 }
 
 export default class Sidebar extends React.Component {

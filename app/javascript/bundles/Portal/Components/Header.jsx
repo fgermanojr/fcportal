@@ -8,7 +8,6 @@ const tableStyle = {
 }
 
 const headerStyle = {
-  color: 'blue',
   fontSize: '1.2em'
 }
 
@@ -27,7 +26,11 @@ const viewportStyle = {
 }
 
 const fontSizeStyle = {
+  color: 'blue',
+}
 
+const helpbtnStyle = {
+  float: 'right'
 }
 
 export default class Header extends React.Component {
@@ -53,12 +56,9 @@ export default class Header extends React.Component {
   render() {
     return (
       <tr id="header" style={headerStyle}>
-        <td>
-        Fortran Calculus Portal
-        </td>
-        <td>
-        
-        </td>
+        <td style={fontSizeStyle}>&emsp;Fortran Calculus Portal</td>
+        <td><span id="date-span">{new Date().toLocaleTimeString()} </span>
+        <span id="help-btn" style={helpbtnStyle}><b>HELP</b></span></td>
       </tr>
     );
 
