@@ -44,7 +44,7 @@ export default class Content extends React.Component {
 
     // How to set initial state in ES6 class syntax
     // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-    this.state = { content: this.props.content };  // fgj change this later
+    this.state = { content: this.props.content };  // fgj change this later 
   }
 
   updateContent = (content) => {
