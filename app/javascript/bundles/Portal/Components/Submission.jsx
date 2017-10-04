@@ -106,7 +106,7 @@ export default class Submission extends React.Component {
             <td style={submissionCenterStyle}>
               <span>
                 <label htmlFor="modelName">
-                  Problem
+                  Model
                 </label>
                 <input id="modelName" type="text" value={this.state.model}
                        onChange={(e) => this.updateProblem(e.target.value)} />

@@ -26,28 +26,27 @@ export default class Sidebar extends React.Component {
 
     // How to set initial state in ES6 class syntax
     // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-    this.state = { current_menu_item: '' }; // The current menu item name
-
+    this.state = { current_menu_item: 'Introduction' }; // The current menu item name
   }
 
   updateCurrentMenu = (menuitem) => {
-    alert(menuitem);
-    this.setState({ current_menu_item: menuitem });
+    this.setState({ current_menu_item: menuitem }); //sidebar: redundant state, portal knows
+    this.props.handler(menuitem); //portal, set here so it can tell component too
   };
 
   render() {
     return (
       <table id="menulist" style={menuStyle}>
         <tbody>
-          <tr><td><MenuItem name="Introduction" onClick={() => this.updateCurrentMenu('Introduction')} /></td></tr>
-          <tr><td><MenuItem name="Login|Logout" onClick={() => this.updateCurrentMenu('Login|Logout')}/></td></tr>
-          <tr><td><MenuItem name="Your Status" onClick={() => this.updateCurrentMenu('Your Status')}/></td></tr>
-          <tr><td><MenuItem name="User Information" onClick={() => this.updateCurrentMenu('User Information')} /></td></tr>
-          <tr><td><MenuItem name="User Configuration" onClick={() => this.updateCurrentMenu('User Configuration')} /></td></tr>
-          <tr><td><MenuItem name="Model Management" onClick={() => this.updateCurrentMenu('Model Management')} /></td></tr>
-          <tr><td><MenuItem name="Model Submission" onClick={() => this.updateCurrentMenu('Model Submission')} /></td></tr>
-          <tr><td><MenuItem name="Submission Results" onClick={() => this.updateCurrentMenu('Submission Results')} /></td></tr>
-          <tr><td><MenuItem name="Support" onClick={() => this.updateCurrentMenu('Support')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Introduction" onClick={() => this.updateCurrentMenu('Introduction')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Login|Logout" onClick={() => this.updateCurrentMenu('Login|Logout')}/></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Your Status" onClick={() => this.updateCurrentMenu('Your Status')}/></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="User Information" onClick={() => this.updateCurrentMenu('User Information')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="User Configuration" onClick={() => this.updateCurrentMenu('User Configuration')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Model Management" onClick={() => this.updateCurrentMenu('Model Management')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Model Submission" onClick={() => this.updateCurrentMenu('Model Submission')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Submission Results" onClick={() => this.updateCurrentMenu('Submission Results')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Support" onClick={() => this.updateCurrentMenu('Support')} /></td></tr>
          </tbody>
       </table>
     );

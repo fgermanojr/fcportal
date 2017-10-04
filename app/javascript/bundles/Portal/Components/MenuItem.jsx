@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Styles from './Styles';
 
 // // Inline styles
 // const tableStyle = {
@@ -34,6 +35,14 @@ import React from 'react';
 //   float: 'right'
 // }
 
+const btnStyleNormal = {
+  backgroundColor: 'white'
+}
+
+const btnStyleActive = {
+  backgroundColor: 'red'   //light-blue'
+}
+
 export default class MenuItem extends React.Component {
   static propTypes = { // *** finish
     name: PropTypes.string.isRequired, // this is passed from the Rails view
@@ -55,12 +64,14 @@ export default class MenuItem extends React.Component {
   };
 
   clickMenu = (name) => {
-    alert(name);// firing on load of sidebar ???
+    alert(name);
   };
 
   render() {
+    var btnStyle = this.state.name == this.props.active ? btnStyleActive : btnStyleNormal;
     return (
-      <button className="side-bar-menu-item"
+      <button className="menu_button"
+              style={btnStyle}
               onClick={() => {
                 this.props.onClick(this.state.name);
               }}>

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Submission from './submission';
+import MenuIntroduction from './MenuIntroduction';
+import Submission from './Submission';
 
 // Inline styles
 const tableStyle = {
@@ -44,18 +45,29 @@ export default class Content extends React.Component {
 
     // How to set initial state in ES6 class syntax
     // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-    this.state = { content: this.props.content };  // fgj change this later 
+    this.state = { current_menu_item: this.props.current_menu_item };  // fgj change this later
   }
 
-  updateContent = (content) => {
-    this.setState({ content });
+  updateContent = (current_menu_item) => {
+    this.setState({ current_menu_item });
   };
 
   render() {
-    return (
-      <Submission model="amodel"/>
-    );
+    // We render results in the content object depending on the value of the current_menu_item.
+    let view_object = null;
+    // let current_menu_item = null;
+    // current_menu_item = this.props.current_menu_item;
 
+    switch(this.props.current_menu_item) {
+      case 'Introduction':
+        view_object = <MenuIntroduction name="unused"/>;
+        break;
+      case 'Model Submission':
+        view_object = <Submission model="amodel"/>;
+        break;
+    }
+
+    return (<div> {view_object} </div>);
 
   }
 }

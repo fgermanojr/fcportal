@@ -37,9 +37,9 @@ const fontSizeStyle = {
 }
 
 export default class Portal extends React.Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired, // this is passed from the Rails view
-  };
+  // static propTypes = {
+  //   current_menu_item: PropTypes.string.isRequired, // this is passed from the Rails view
+  // }; PULL
 
   /**
    * @param props - Comes from your rails view.
@@ -47,13 +47,11 @@ export default class Portal extends React.Component {
   constructor(props) {
     super(props);
 
-    // How to set initial state in ES6 class syntax
-    // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-    this.state = { name: this.props.name };  // fgj change this later
+    this.state = { current_menu_item: 'Introduction' };
   }
 
-  updateName = (name) => {
-    this.setState({ name });
+  updateCurrentMenuItem = (current_menu_item) => {
+    this.setState({ current_menu_item: current_menu_item });
   };
 
   render() {
@@ -63,10 +61,13 @@ export default class Portal extends React.Component {
           <Header version="0.1" />
           <tr id="center">
             <td id="side-bar" style={sidebarStyle}>
-              <Sidebar menuitem="Introduction" />
+              <Sidebar menuitem="Model Submission" //pull
+                       current_menu_item={this.state.current_menu_item}
+                       handler={this.updateCurrentMenuItem} //The handler lets sidebar update the current menu item
+              />
             </td>
             <td id="view-port" style={viewportStyle}>
-              <Content content="tag" />
+              <Content content="tag" current_menu_item={this.state.current_menu_item} />
             </td>
           </tr>
           <Footer name="Frank Germano, Jr." />
