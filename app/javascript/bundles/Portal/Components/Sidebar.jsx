@@ -38,6 +38,7 @@ export default class Sidebar extends React.Component {
           <tr><td><MenuItem active={this.state.current_menu_item} name="Model Management" onClick={() => this.updateCurrentMenu('Model Management')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Model Submission" onClick={() => this.updateCurrentMenu('Model Submission')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Submission Results" onClick={() => this.updateCurrentMenu('Submission Results')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Documentation" onClick={() => this.updateCurrentMenu('Documentation')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Support" onClick={() => this.updateCurrentMenu('Support')} /></td></tr>
          </tbody>
       </table>

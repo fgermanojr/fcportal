@@ -51,6 +51,9 @@ export default class Content extends React.Component {
       case 'Submission Results':
         view_object = <NotYetImplemented />
         break;
+      case 'Documentation':
+        view_object = <NotYetImplemented />
+        break;
       case 'Support':
         view_object = <NotYetImplemented />
         break;
