@@ -5,45 +5,10 @@ import Sidebar from './sidebar';
 import Footer from './footer';
 import Header from './header';
 import Content from './content';
-
-// Inline styles
-const tableStyle = {
-  border: '1px solid black',
-  width: '100%'
-}
-
-const headerStyle = {
-  color: 'blue',
-  fontSize: '1.2em'
-}
-
-const borderStyle = {
-  border: '1px solid black'
-}
-
-const sidebarStyle = {
-  border: '1px solid black',
-  width: '20%'
-}
-
-const viewportStyle = {
-  border: '1px solid black',
-  textAlign: 'left',
-  width: '80%'
-}
-
-const fontSizeStyle = {
-
-}
+import * as myStyles from './Styles.js';
 
 export default class Portal extends React.Component {
-  // static propTypes = {
-  //   current_menu_item: PropTypes.string.isRequired, // this is passed from the Rails view
-  // }; PULL
 
-  /**
-   * @param props - Comes from your rails view.
-   */
   constructor(props) {
     super(props);
 
@@ -55,18 +20,19 @@ export default class Portal extends React.Component {
   };
 
   render() {
+    var s = myStyles.Styles;
     return (
-      <table style={tableStyle}>
+      <table style={s.tableStyle}>
         <tbody>
           <Header version="0.1" />
           <tr id="center">
-            <td id="side-bar" style={sidebarStyle}>
+            <td id="side-bar" style={s.sidebarStyle}>
               <Sidebar menuitem="Model Submission" //pull
                        current_menu_item={this.state.current_menu_item}
                        handler={this.updateCurrentMenuItem} //The handler lets sidebar update the current menu item
               />
             </td>
-            <td id="view-port" style={viewportStyle}>
+            <td id="view-port" style={s.viewportStyle}>
               <Content content="tag" current_menu_item={this.state.current_menu_item} />
             </td>
           </tr>

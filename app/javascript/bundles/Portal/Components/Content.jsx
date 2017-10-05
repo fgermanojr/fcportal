@@ -1,51 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import MenuIntroduction from './MenuIntroduction';
+import NotYetImplemented from './NotYetImplemented';
 import Submission from './Submission';
-
-// Inline styles
-const tableStyle = {
-  border: '1px solid black',
-  width: '100%'
-}
-
-const headerStyle = {
-  color: 'blue',
-  fontSize: '1.2em'
-}
-
-const borderStyle = {
-  border: '1px solid black'
-}
-
-const sidebarStyle = {
-  border: '1px solid black',
-  width: '20%'
-}
-
-const viewportStyle = {
-  border: '1px solid black',
-  textAlign: 'left'
-}
-
-const fontSizeStyle = {
-
-}
+import * as myStyles from './Styles.js'; //not used
 
 export default class Content extends React.Component {
-  static propTypes = { // *** finish
-    content: PropTypes.string.isRequired, // this is passed from the Rails view
+  static propTypes = {
+    content: PropTypes.string.isRequired,
   };
 
-  /**
-   * @param props - Comes from your rails view.
-   */
   constructor(props) {
     super(props);
 
-    // How to set initial state in ES6 class syntax
-    // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-    this.state = { current_menu_item: this.props.current_menu_item };  // fgj change this later
+    this.state = { current_menu_item: this.props.current_menu_item };
   }
 
   updateContent = (current_menu_item) => {
@@ -53,17 +22,37 @@ export default class Content extends React.Component {
   };
 
   render() {
-    // We render results in the content object depending on the value of the current_menu_item.
+    // We render results in the content object
+    //  depending on the value of the current_menu_item.
     let view_object = null;
-    // let current_menu_item = null;
-    // current_menu_item = this.props.current_menu_item;
 
     switch(this.props.current_menu_item) {
       case 'Introduction':
         view_object = <MenuIntroduction name="unused"/>;
         break;
+      case 'Login|Logout':
+        view_object = <NotYetImplemented />
+        break;
+      case 'Your Status':
+        view_object = <NotYetImplemented />
+        break;
+      case 'User Information':
+        view_object = <NotYetImplemented />
+        break;
+      case 'User Configuration':
+        view_object = <NotYetImplemented />
+        break;
+      case 'Model Management':
+        view_object = <NotYetImplemented />
+        break;
       case 'Model Submission':
         view_object = <Submission model="amodel"/>;
+        break;
+      case 'Submission Results':
+        view_object = <NotYetImplemented />
+        break;
+      case 'Support':
+        view_object = <NotYetImplemented />
         break;
     }
 

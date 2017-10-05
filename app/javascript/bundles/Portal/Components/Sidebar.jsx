@@ -1,17 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import MenuItem from './MenuItem';
-
-
-// Inline styles
-const listStyle = {
-  listStyleType: 'none',
-  textAlign: 'center'
-}
-
-const menuStyle = {
-  textAlign: 'left'
-}
+import * as myStyles from './Styles.js';
 
 export default class Sidebar extends React.Component {
   static propTypes = {
@@ -35,8 +26,9 @@ export default class Sidebar extends React.Component {
   };
 
   render() {
+    var s = myStyles.Styles;
     return (
-      <table id="menulist" style={menuStyle}>
+      <table id="menulist" style={s.menuStyle}>
         <tbody>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Introduction" onClick={() => this.updateCurrentMenu('Introduction')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Login|Logout" onClick={() => this.updateCurrentMenu('Login|Logout')}/></td></tr>

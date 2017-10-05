@@ -1,51 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Styles from './Styles';
 
-// // Inline styles
-// const tableStyle = {
-//   border: '1px solid black',
-//   width: '100%'
-// }
-
-// const headerStyle = {
-//   color: 'blue',
-//   fontSize: '1.2em'
-// }
-
-// const borderStyle = {
-//   border: '1px solid black'
-// }
-
-// const sidebarStyle = {
-//   border: '1px solid black',
-//   width: '20%'
-// }
-
-// const viewportStyle = {
-//   border: '1px solid black',
-//   textAlign: 'center'
-// }
-
-// const fontSizeStyle = {
-
-// }
-
-// const domainspanStyle = {
-//   float: 'right'
-// }
-
-const btnStyleNormal = {
-  backgroundColor: 'white'
-}
-
-const btnStyleActive = {
-  backgroundColor: 'red'   //light-blue'
-}
+import * as myStyles from './Styles.js';
 
 export default class MenuItem extends React.Component {
-  static propTypes = { // *** finish
-    name: PropTypes.string.isRequired, // this is passed from the Rails view
+  static propTypes = {
+    name: PropTypes.string.isRequired,
   };
 
   /**
@@ -54,8 +14,6 @@ export default class MenuItem extends React.Component {
   constructor(props) {
     super(props);
 
-    // How to set initial state in ES6 class syntax
-    // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
     this.state = { name: this.props.name };
   }
 
@@ -63,12 +21,17 @@ export default class MenuItem extends React.Component {
     this.setState({ name });
   };
 
-  clickMenu = (name) => {
+  clickMenu = (name) => {//***not used
     alert(name);
   };
 
   render() {
-    var btnStyle = this.state.name == this.props.active ? btnStyleActive : btnStyleNormal;
+    var s = myStyles.Styles;
+    // var btnStyle = this.state.name == this.props.active ? myStyles.Styles.btnStyleActive : myStyles.Styles.btnStyleNormal;
+    // If this menu item's names matchs the current active menu, then show it as active.
+    // Q. should I do this in parent and pass in isActive true.
+    var btnStyle = this.state.name == this.props.active ? s.btnStyleActive : s.btnStyleNormal;
+
     return (
       <button className="menu_button"
               style={btnStyle}
