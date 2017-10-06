@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import MenuIntroduction from './MenuIntroduction';
-import NotYetImplemented from './NotYetImplemented';
 import Submission from './Submission';
+import NotYetImplemented from './NotYetImplemented';
 import * as myStyles from './Styles.js'; //not used
 
 export default class Content extends React.Component {

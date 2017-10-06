@@ -4,6 +4,6 @@ class PortalController < ApplicationController
   layout "portal"
 
   def index
-    @portal_props = { name: "Stranger" }
+    @portal_props = { name: "FC Portal" }
   end
 end
