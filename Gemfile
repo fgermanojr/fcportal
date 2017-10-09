@@ -8,7 +8,6 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.3'
-
 gem 'react_on_rails', '~> 9.0.0' # added, fgj
 
 # Use postgresql as the database for Active Record
@@ -37,6 +36,7 @@ gem 'redis' # , '~> 3.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'bcrypt', '~> 3.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
