@@ -13,15 +13,27 @@ export default class Portal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { current_menu_item: 'Introduction', status: ''};
+    this.state = { current_menu_item: 'Introduction', status: '', is_logged_in: false};
   }
 
-  updateCurrentMenuItem = (current_menu_item) => {
-    this.setState({ current_menu_item: current_menu_item });
+  updateCurrentMenuItem = (menu_item) => {
+    // The active menu item in the sidebar.
+    this.setState({ current_menu_item: menu_item });
   };
 
-  updateState = (notification) => {
+  updateIsLoggedIn = () => {
+    // set to true once a user is authenticated;
+    // this opens up the normal user functions.
+    this.setState({ is_logged_in: true})
+  };
+
+  updateStatus = (notification) => {
+    // An area to display notifications; exists below sidebar.
     this.setState({ status: notification });
+  };
+
+  updateUserState = (user_state) => { // save username and email, later more stuff.
+    this.setState({ user_state: user_state })
   };
 
   render() {
@@ -29,42 +41,22 @@ export default class Portal extends React.Component {
     return (
       <table style={s.tableStyle}>
         <tbody>
-          <Header version="0.1" />
+          <Header version="0.1" username="frankgermano"/>
           <tr id="center">
             <td id="side-bar" style={s.sidebarStyle}>
               <Sidebar menuitem="Model Submission" //pull
                        current_menu_item={this.state.current_menu_item}
-                       handler={this.updateCurrentMenuItem} //The handler lets sidebar update the current menu item
+                       handler={this.updateCurrentMenuItem} //The handler lets sidebar update the current menu item in Sidebar component
               />
             <Status notification={this.state.status}/>
             </td>
             <td id="view-port" style={s.viewportStyle}>
-              <Content content="tag" current_menu_item={this.state.current_menu_item} />
+              <Content current_menu_item={this.state.current_menu_item} />
             </td>
           </tr>
           <Footer name="Frank Germano, Jr." />
         </tbody>
       </table>
     );
-
-    // return (
-    //   <div>
-    //     <h3>
-    //       Hello FC, {this.state.name}!
-    //     </h3>
-    //     <hr />
-    //     <form >
-    //       <label htmlFor="name">
-    //         Say hello to:
-    //       </label>
-    //       <input
-    //         id="name"
-    //         type="text"
-    //         value={this.state.name}
-    //         onChange={(e) => this.updateName(e.target.value)}
-    //       />
-    //     </form>
-    //   </div>
-    // );
   }
 }

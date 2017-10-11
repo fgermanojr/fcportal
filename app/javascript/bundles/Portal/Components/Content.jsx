@@ -3,18 +3,21 @@ import React from 'react';
 
 import MenuIntroduction from './MenuIntroduction';
 import Submission from './Submission';
+import LoginLogout from './LoginLogout'; // cant use session as component name.
 import NotYetImplemented from './NotYetImplemented';
+
 import * as myStyles from './Styles.js'; //not used
 
 export default class Content extends React.Component {
   static propTypes = {
-    content: PropTypes.string.isRequired,
+    current_menu_item: PropTypes.string.isRequired,
+    // portal_handler: PropTypes.string.isRequired
   };
 
   constructor(props) {
     super(props);
 
-    this.state = { current_menu_item: this.props.current_menu_item };
+    this.state = {current_menu_item: this.props.current_menu_item};
   }
 
   updateContent = (current_menu_item) => {
@@ -28,34 +31,34 @@ export default class Content extends React.Component {
 
     switch(this.props.current_menu_item) {
       case 'Introduction':
-        view_object = <MenuIntroduction name="unused"/>;
+        view_object = <MenuIntroduction name="unused" />;
         break;
       case 'Login|Logout':
-        view_object = <NotYetImplemented />
+        view_object = <LoginLogout isLoggedIn='false' />;  //portal_handler={this.props.portal_handler}
         break;
       case 'Your Status':
-        view_object = <NotYetImplemented />
+        view_object = <NotYetImplemented />;
         break;
       case 'User Information':
-        view_object = <NotYetImplemented />
+        view_object = <NotYetImplemented />;
         break;
       case 'User Configuration':
-        view_object = <NotYetImplemented />
+        view_object = <NotYetImplemented />;
         break;
       case 'Model Management':
-        view_object = <NotYetImplemented />
+        view_object = <NotYetImplemented />;
         break;
       case 'Model Submission':
         view_object = <Submission model="amodel"/>;
         break;
       case 'Submission Results':
-        view_object = <NotYetImplemented />
+        view_object = <NotYetImplemented />;
         break;
       case 'Documentation':
-        view_object = <NotYetImplemented />
+        view_object = <NotYetImplemented />;
         break;
       case 'Support':
-        view_object = <NotYetImplemented />
+        view_object = <NotYetImplemented />;
         break;
     }
 

@@ -27,9 +27,6 @@ export default class MenuItem extends React.Component {
 
   render() {
     var s = myStyles.Styles;
-    // var btnStyle = this.state.name == this.props.active ? myStyles.Styles.btnStyleActive : myStyles.Styles.btnStyleNormal;
-    // If this menu item's names matchs the current active menu, then show it as active.
-    // Q. should I do this in parent and pass in isActive true.
     var btnStyle = this.state.name == this.props.active ? s.btnStyleActive : s.btnStyleNormal;
 
     return (

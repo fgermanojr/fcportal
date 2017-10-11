@@ -2,13 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class MenuIntroduction extends React.Component {
-  static propTypes = { // *** finish
-    name: PropTypes.string.isRequired, // this is passed from the Rails view
+  static propTypes = {
+    name: PropTypes.string.isRequired
   };
 
-  /**
-   * @param props - Comes from your rails view.
-   */
   constructor(props) {
     super(props);
 

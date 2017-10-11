@@ -49,6 +49,10 @@ export const Styles = {
     backgroundColor: 'red'
   },
 
+  btnStyleLoggedIn: {
+    backgroundColor: 'green'
+  },
+
   listStyle: {
     listStyleType: 'none',
     textAlign: 'center'

@@ -9,23 +9,12 @@ export default class Submission extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = { model: this.props.model};
   }
 
   updateModel = (model) => {
     this.setState({ model });
   };
-
-    //       <label htmlFor="name">
-    //         Say hello to:
-    //       </label>
-    //       <input
-    //         id="name"
-    //         type="text"
-    //         value={this.state.name}
-    //         onChange={(e) => this.updateName(e.target.value)}
-    //       />
 
   render() {
     var s = myStyles.Styles;

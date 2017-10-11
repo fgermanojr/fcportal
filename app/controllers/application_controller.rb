@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
       byebug
       unless logged_in?
         byebug
-        flash[:danger] = "Please log in."
+        # flash[:danger] = "Please log in."
         redirect_to login_url
       end
     end

@@ -8,8 +8,10 @@ Rails.application.routes.draw do
   get 'message', to: 'messages#index'
   resources :users
   resources :messages
-  get    '/login',   to: 'sessions#new'
-  post   '/login',   to: 'sessions#create'
-  delete '/logout',  to: 'sessions#destroy'
+
+  get    '/login',   to: 'sessions#new',     :defaults => { :format => 'json' } # brings up login form
+  post   '/login',   to: 'sessions#create',  :defaults => { :format => 'json' } # submits login form
+  delete '/logout',  to: 'sessions#destroy', :defaults => { :format => 'json' } # logs out
+
   mount ActionCable.server => '/cable'
 end
