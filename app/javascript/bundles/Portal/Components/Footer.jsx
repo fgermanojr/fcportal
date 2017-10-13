@@ -25,7 +25,7 @@ export default class Footer extends React.Component {
           <span>&emsp;Frank Germano, Jr.</span>
         </td>
         <td>
-          <span id="email-span">fgermano@earthlink.net</span>
+          <span id="email-span">support@fortrancalculus.com</span>
           <span id="domain-span" style={s.domainspanStyle}>www.fortrancalculus.com </span>
         </td>
       </tr>

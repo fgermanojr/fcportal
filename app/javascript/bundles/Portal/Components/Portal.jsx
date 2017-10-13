@@ -41,7 +41,8 @@ export default class Portal extends React.Component {
     return (
       <table style={s.tableStyle}>
         <tbody>
-          <Header version="0.1" username="frankgermano"/>
+          <Header version="0.1" username="frankgermano"
+                  is_logged_in={this.state.is_logged_in}/>
           <tr id="center">
             <td id="side-bar" style={s.sidebarStyle}>
               <Sidebar menuitem="Model Submission" //pull
@@ -51,7 +52,7 @@ export default class Portal extends React.Component {
             <Status notification={this.state.status}/>
             </td>
             <td id="view-port" style={s.viewportStyle}>
-              <Content current_menu_item={this.state.current_menu_item} />
+              <Content current_menu_item={this.state.current_menu_item} portal_updateIsLoggedIn={this.updateIsLoggedIn}/>
             </td>
           </tr>
           <Footer name="Frank Germano, Jr." />

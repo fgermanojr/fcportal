@@ -27,7 +27,7 @@ export default class Sidebar extends React.Component {
         <tbody>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Introduction" onClick={() => this.updateCurrentMenu('Introduction')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Login|Logout" onClick={() => this.updateCurrentMenu('Login|Logout')}/></td></tr>
-          <tr><td><MenuItem active={this.state.current_menu_item} name="Your Status" onClick={() => this.updateCurrentMenu('Your Status')}/></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Job Status" onClick={() => this.updateCurrentMenu('Your Status')}/></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="User Information" onClick={() => this.updateCurrentMenu('User Information')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="User Configuration" onClick={() => this.updateCurrentMenu('User Configuration')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Model Management" onClick={() => this.updateCurrentMenu('Model Management')} /></td></tr>
@@ -35,6 +35,7 @@ export default class Sidebar extends React.Component {
           <tr><td><MenuItem active={this.state.current_menu_item} name="Submission Results" onClick={() => this.updateCurrentMenu('Submission Results')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Documentation" onClick={() => this.updateCurrentMenu('Documentation')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Support" onClick={() => this.updateCurrentMenu('Support')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Support" onClick={() => this.updateCurrentMenu('Chat')} /></td></tr>
          </tbody>
       </table>
     );

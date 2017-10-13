@@ -11,7 +11,7 @@ import * as myStyles from './Styles.js'; //not used
 export default class Content extends React.Component {
   static propTypes = {
     current_menu_item: PropTypes.string.isRequired,
-    // portal_handler: PropTypes.string.isRequired
+    portal_updateIsLoggedIn: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -34,7 +34,8 @@ export default class Content extends React.Component {
         view_object = <MenuIntroduction name="unused" />;
         break;
       case 'Login|Logout':
-        view_object = <LoginLogout isLoggedIn='false' />;  //portal_handler={this.props.portal_handler}
+        view_object = <LoginLogout isLoggedIn='false'
+                                   portal_updateIsLoggedIn={this.props.portal_updateIsLoggedIn} />;
         break;
       case 'Your Status':
         view_object = <NotYetImplemented />;

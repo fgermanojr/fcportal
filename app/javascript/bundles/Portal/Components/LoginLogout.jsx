@@ -7,7 +7,7 @@ import * as myStyles from './Styles.js';
 export default class LoginLogout extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.string.isRequired,
-    // portal_handler: PropTypes.string.isRequired
+    portal_updateIsLoggedIn: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -19,7 +19,7 @@ export default class LoginLogout extends React.Component {
   updateLoggedIn = (results) => {
     if(results.result == 'authenticated') {
       this.setState({ is_logged_in: true });
-      // call this.props.portal_handler(); //this will set the login state in portal.
+      this.props.portal_updateIsLoggedIn(); //this will set the login state in portal to true
       alert('ll state isLoggedIn set to true');
     }
   };
