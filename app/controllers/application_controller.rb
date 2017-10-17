@@ -2,12 +2,17 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
 
+  def show # why
+byebug
+  end
+
     # Confirms a logged-in user.
     def logged_in_user
-      byebug
+puts logged_in?
+byebug
       unless logged_in?
-        byebug
         # flash[:danger] = "Please log in."
+puts 'go to login'
         redirect_to login_url
       end
     end

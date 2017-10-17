@@ -128,9 +128,9 @@ alert('signup_ajax');
   render() {
 
     var s = myStyles.Styles;
-// alert('isLoggedIn' + this.state.is_logged_in)
-
     let dialog = null;
+
+    // if we are logged in, we should hit the logout action?
 
     if(this.state.create_user) {
       dialog = <div class="dialog signup">

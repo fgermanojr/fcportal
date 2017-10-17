@@ -4,6 +4,7 @@ import React from 'react';
 import MenuIntroduction from './MenuIntroduction';
 import Submission from './Submission';
 import LoginLogout from './LoginLogout'; // cant use session as component name.
+import Chat from './Chat';
 import NotYetImplemented from './NotYetImplemented';
 
 import * as myStyles from './Styles.js'; //not used
@@ -12,7 +13,8 @@ export default class Content extends React.Component {
   static propTypes = {
     current_menu_item: PropTypes.string.isRequired,
     portal_updateIsLoggedIn: PropTypes.string.isRequired,
-  };
+    is_logged_in: PropTypes.string.isRequired,
+  }
 
   constructor(props) {
     super(props);
@@ -34,7 +36,7 @@ export default class Content extends React.Component {
         view_object = <MenuIntroduction name="unused" />;
         break;
       case 'Login|Logout':
-        view_object = <LoginLogout isLoggedIn='false'
+        view_object = <LoginLogout isLoggedIn={this.props.is_logged_in}
                                    portal_updateIsLoggedIn={this.props.portal_updateIsLoggedIn} />;
         break;
       case 'Your Status':
@@ -60,6 +62,9 @@ export default class Content extends React.Component {
         break;
       case 'Support':
         view_object = <NotYetImplemented />;
+        break;
+      case 'Chat':
+        view_object = <Chat />;
         break;
     }
 

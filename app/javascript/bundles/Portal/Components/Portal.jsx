@@ -45,7 +45,7 @@ export default class Portal extends React.Component {
                   is_logged_in={this.state.is_logged_in}/>
           <tr id="center">
             <td id="side-bar" style={s.sidebarStyle}>
-              <Sidebar menuitem="Model Submission" //pull
+              <Sidebar is_logged_in="this.props.is_logged_in"
                        current_menu_item={this.state.current_menu_item}
                        handler={this.updateCurrentMenuItem} //The handler lets sidebar update the current menu item in Sidebar component
               />

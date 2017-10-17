@@ -6,6 +6,7 @@ class MessagesController < ApplicationController
   end
 
   def create
+byebug
     message = current_user.messages.build(message_params)
     if message.save
       redirect_to messages_url
@@ -17,6 +18,7 @@ class MessagesController < ApplicationController
   private
 
     def get_messages
+byebug
       @messages = Message.for_display
       @message  = current_user.messages.build
     end

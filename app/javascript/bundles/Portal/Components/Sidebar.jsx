@@ -6,18 +6,18 @@ import * as myStyles from './Styles.js';
 
 export default class Sidebar extends React.Component {
   static propTypes = {
-    menuitem: PropTypes.string.isRequired
+    menuitem: PropTypes.string.isRequired,
   };
 
   constructor(props) {
     super(props);
 
-    this.state = { current_menu_item: 'Introduction' }; // The current menu item name
+    this.state = { current_menu_item: 'Introduction'}; // The current menu item name
   }
 
   updateCurrentMenu = (menuitem) => {
     this.setState({ current_menu_item: menuitem }); //sidebar: redundant state, portal knows
-    this.props.handler(menuitem); //portal, set here so it can tell component too
+    this.props.handler(menuitem); //portal, set here so portal can tell component too
   };
 
   render() {
@@ -35,7 +35,7 @@ export default class Sidebar extends React.Component {
           <tr><td><MenuItem active={this.state.current_menu_item} name="Submission Results" onClick={() => this.updateCurrentMenu('Submission Results')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Documentation" onClick={() => this.updateCurrentMenu('Documentation')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Support" onClick={() => this.updateCurrentMenu('Support')} /></td></tr>
-          <tr><td><MenuItem active={this.state.current_menu_item} name="Support" onClick={() => this.updateCurrentMenu('Chat')} /></td></tr>
+          <tr><td><MenuItem active={this.state.current_menu_item} name="Chat" onClick={() => this.updateCurrentMenu('Chat')} /></td></tr>
          </tbody>
       </table>
     );
