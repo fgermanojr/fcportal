@@ -4,6 +4,7 @@ import React from 'react';
 import MenuIntroduction from './MenuIntroduction';
 import Submission from './Submission';
 import LoginLogout from './LoginLogout'; // cant use session as component name.
+import Result from './Result';
 import Chat from './Chat';
 import NotYetImplemented from './NotYetImplemented';
 
@@ -52,10 +53,10 @@ export default class Content extends React.Component {
         view_object = <NotYetImplemented />;
         break;
       case 'Model Submission':
-        view_object = <Submission model="amodel"/>;
+        view_object = <Submission model="acmotor"/>;
         break;
       case 'Submission Results':
-        view_object = <NotYetImplemented />;
+        view_object = <Result model="acmotor" />;
         break;
       case 'Documentation':
         view_object = <NotYetImplemented />;
