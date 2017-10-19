@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'docs/show'
+
   # get 'hello_world', to: 'hello_world#index'
   get 'portal', to: 'portal#index'
   get 'broadcast', to: 'broadcast#broadcast'

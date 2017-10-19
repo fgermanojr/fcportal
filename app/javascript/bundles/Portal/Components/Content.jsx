@@ -6,6 +6,7 @@ import Submission from './Submission';
 import LoginLogout from './LoginLogout'; // cant use session as component name.
 import Result from './Result';
 import Chat from './Chat';
+import Doc from './Doc';
 import NotYetImplemented from './NotYetImplemented';
 
 import * as myStyles from './Styles.js'; //not used
@@ -59,7 +60,7 @@ export default class Content extends React.Component {
         view_object = <Result model="acmotor" />;
         break;
       case 'Documentation':
-        view_object = <NotYetImplemented />;
+        view_object = <Doc section="introduction" />;
         break;
       case 'Support':
         view_object = <NotYetImplemented />;
