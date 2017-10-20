@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W4C//DTD HTML 4.2//EN">
+<html>
+<head>
+   <title>MARS Controls</title>
+   <style>
+       tr { vertical-align: top; }
+   </style>
+</head>
+<body text="#000066">
+
+<h1 align=center>MARS Controls</h1>
+
+<table align=center border=2>
+<caption>The control variables for MARS are as follows.</caption>
+
+<TR bgcolor=#00FFFF>
+<TH>Variable</TH>
+<TH>Preset<br>Value</TH>
+<TH>Value</TH>
+<TH align=left>Option</TH>
+</TR>
+
+<TR>
+<TD rowspan=3><B>DETAIL</B></TD>
+<TD rowspan=3>0</TD>
+<TD>0</TD>
+<TD>No detailed report</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Detailed report for every iteration</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Detailed report for iterations initial,n,2n,...,last</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SUMMARY</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>No summary report</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Generate solution summary</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>CONVERGE</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Satisfy constraints convergence or unknowns convergence</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Satisfy constraints convergence and unknowns convergence</TD>
+</TR>
+
+<TR>
+<TD><B>REMAX</B></TD>
+<TD>20</TD>
+<TD></TD>
+<TD>Maximum number of allowed iterations</TD>
+</TR> 
+
+<TR>
+<TD><B>ZERO</B></TD>
+<TD>10<SUP>-6</SUP></TD>
+<TD></TD>
+<TD>Zero tolerance for constraints convergence</TD>
+</TR>
+
+<TR>
+<TD><B>DELTA</B></TD>
+<TD>10<SUP>-7</SUP></TD>
+<TD></TD>
+<TD>Tolerance on change in unknowns for unknowns convergence</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>BREAKIN</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>No interactive breakpoints</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Breakpoint after every nth iteration</TD>
+</TR>
+
+<TR>
+<TD><B>VLIMIT</B></TD>
+<TD>10<SUP>50</SUP></TD>
+<TD></TD>
+<TD>Limit on the maximum change of the independent variables during a single iteration</TD>
+</TR>
+
+<TR>
+<TD><B>DAMP</B></TD>
+<TD>0.2</TD>
+<TD></TD>
+<TD>Criteria for imposing damping</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>DETOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Detailed report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Detailed report to SCROLL</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Detailed report to Console</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>SUMOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Summary report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Summary report to SCROLL</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Summary report to Console</TD>
+</TR>
+
+<TR>
+<TD><B>TAU</B></TD>
+<TD>0.001</TD>
+<TD></TD>
+<TD>Maximum relative error in the constraints being matched, i.e. max (error-G)/G. 
+TAU must be positive. TAU permits the specification of the approximate error in the 
+values computed in the calculus model, for example errors due to measurement uncertainty 
+in a data fitting problem. This value is used to hold computational error to a point where 
+it is negligible in comparison to the a priori Error. The value is also used to determine 
+the rank of the problem, i.e. the larger the value of TAU the more likely that the problem 
+is rank deficient (ill-conditioned or singular). Obviously, an unreasonably small value for 
+TAU may obscure the true nature of the problem and at the same time provoke unnecessarily 
+extended computation.</TD>
+</TR>
+
+<TR>
+<TD><B>PREDAMP</B></TD>
+<TD>1</TD>
+<TD></TD>
+<TD>Arbitrary damping factor to be applied to the first iteration. 
+(0 &le; <B>PREDAMP</B> &le; 1) PREDAMP is used only when damping is applied (control 
+variable DAMP nonzero). The damping scheme involves a comparison of successive estimates 
+of the norm of the constraints and hence cannot be applied to the initial estimate. Thus, 
+there is some possibility of an inordinately large Newton step on the first iteration. 
+When this is anticipated, perhaps from a previous attempt at a solution, PREDAMP may be 
+used to limit the first step.</TD>
+</TR>
+
+</TABLE>
+
+</body>
+</html>
+

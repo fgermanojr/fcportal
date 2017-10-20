@@ -1,0 +1,666 @@
+<!DOCTYPE HTML PUBLIC "-//W4C//DTD HTML 4.2//EN">
+<html>
+<head>
+   <title>Solver HERCULES</title>
+   <style>
+       tr { vertical-align: top; }
+   </style>
+</head>
+<body text="#000066">
+
+<h1 align=center>Solver HERCULES</H1>
+
+<P>HERCULES is a special constrained optimization solver for linear, 
+integer, and mixed-integer problems. Unlike the general solvers it 
+can only be applied to models, which contain linear relationships.</P>
+
+<P>The restrictions upon HERCULES can best be described by contrasting 
+it with the typical general solver, such as THOR or JOVE.  The key 
+differences are:</p>
+
+<ol type="1">
+
+<li>The function to be optimized must be a linear function 
+of the independent variables. Thus, if x is a vector of independent  variables, 
+then the objective function must take the following form:<BR> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>	f = c<SUB>0</SUB> + c<SUB>1</SUB> + c<SUB>2</SUB>x<SUB>2</SUB> 
++ ... + c<SUB>n</SUB>x<SUB>n</SUB></i><BR>
+
+where <i>c<SUB>0</SUB></i> and <i>c<SUB>1</SUB></i> are constants, 
+not all of which are zero.<BR></li>
+
+<li>There must be at least one constraint and all constraints 
+must be linear functions of the independent variables.  In vector  notation, 
+the constraints must take the form:<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i> <B>a x</B></i> &ge; <B><i>b</i></B><BR>
+where some or all may be equalities or inequalities.</li>
+
+<li>The independent variables must be non-negative and, in fact, no lower clause 
+is permitted in the FIND statement. Thus, the additional limits may be expressed as:<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<i> &le; <B>x</i></B>  &le; <B>u</B><BR>
+where the constants <MIO>u<D> are optional upper limits on the independents.</li>
+</ol>
+
+<P> Special capabilities of HERCULES include:</P>
+
+<UL>
+
+<LI><i>Integer and Mixed Integer Programming</i> - any or all 
+of the  independent variables may be restricted to integer values, 
+and in fact, even to a limited subset of the integers.</LI>
+
+<LI><i>Discrete Objectives</i> - The objective function may 
+be limited to  integral values.</LI>
+
+<LI><i>Zero-one Programming</i> - The special case of integer 
+programming  in which all variables take on only the values zero and 
+one can  be handled.  The classical assignment problem is a case in  point.</LI>
+
+<LI><i>Restart Feature</i> - A checkpoint may be requested on 
+any  premature termination.  The problem may then be completed from  this 
+point without repeating previous calculations.</LI>
+
+<LI><i>Problem Size Control</i> - Several techniques are used 
+to permit  very large problems to be solved.  There is no predefined 
+limit  on the number of variables or equations.</LI>
+</UL>
+
+<P>The general FIND statement for HERCULES is:</P>
+<blockquote>
+<B>FIND</B> <i>unknowns</i><B> IN</B> <i>model</i><B>  BY 
+HERCULES</B>{<B>(</b><i>controller</i><B>)</B>}<B></B><BR>
+&nbsp;&nbsp;{<B>HOLDING</b><i> inequalities</i><B></B>}
+  {<B>MATCHING</B> <i>equalities</i><B></B>}<BR>
+&nbsp;&nbsp;{{<B>WITH</B>} <B>UPPERS</B> <i>ceiling</i>} {{<B>WITH</B>|<B>AND</B>} 
+<B>DISCRETES</b> <i>steps</i><B></B>} <BR>
+&nbsp;&nbsp;{{<B>WITH</B>|<B>AND</B>} <B>FLAG</B>  <i>signal</i><B></B>}<BR>
+&nbsp;&nbsp;<B>TO MINIMIZE</B>|<B>MAXIMIZE</B>  <i>objective</i><BR>
+</blockquote>
+
+<P>The meaning and usage of all elements of this statement are identical 
+to those described for JOVE in section 7.1, with the exception of 
+the new DISCRETES clause.</P>
+
+<P>The DISCRETES clause identifies unknowns which are to be restricted 
+to integral values and further specifies their step sizes.  If this 
+clause is present, the list <i>steps</i> must contain an entry for 
+every element of the<i> unknown</i>s.  Any entry with a value of zero 
+is ignored and the corresponding unknown is free to take on any feasible 
+continuous value.  A discrete variable with step size <i>n</i> can 
+only take values which are integral multiples of <i>n</i> and HERCULES 
+will restrict its search accordingly.  Thus, if there are 3 independent 
+variables and the steps are specified by a vector called STP, then 
+the following initialization will have the given consequences :<BR>
+
+<ol type="a">
+
+<li>DATA STP /0,0,1/<BR>
+only X(3) will be discrete and its step size will be 1;</li>
+
+<li>DATA  STP/10,10,10/<BR>
+all unknowns are discrete and all have step sizes of 10.</li>
+
+</ol>
+
+<P>Obviously, it is not essential to limit a discrete variable to non-unit 
+steps, but it is highly desired to do so if possible.  For one thing, 
+scaling problems in defining the constraints will be reduced, thereby 
+eliminating a potential for numerical difficulty.</P>
+
+<P>The flag variable <i>signal</i>, if present, will be used to signal 
+whether the solution was successful or not.  It will be zero unless 
+the solution process terminated prematurely because an iteration, 
+recheck, or storage limit was exceeded.</P>
+
+<P>The way in which the model is used in the solution process differs 
+from the other optimization solvers. Even though HERCULES employs 
+an iterative solution technique, it does not call the model at all 
+during optimization.  Instead, it calls it only during initialization 
+and after the solution is achieved.  The preliminary calls are used 
+solely to extract information which defines the problem, i.e. the 
+various linear coefficients of the constraints and the objective function.  During 
+these calls, gradients may be computed on some or all of the unknowns.  The 
+number of calls depends upon the available data storage space.  For 
+small problems, this number will be in the range 2-10, for very large 
+problems and medium-sized memory allocations, the number may go as 
+high as 100. The number of calls may be minimized by providing a sufficiently 
+large memory allocation for execution.  As guided by experience, the 
+terminating call is used simply to recalculate the constraints using 
+the converged values of the unknowns.</P>
+
+<P>HERCULES cannot be employed while partial derivative evaluation is 
+in progress and thus cannot be nested within another calculus process.</P>
+
+<HR>
+<TABLE border=2>
+<caption>The control variables for <b>HERCULES</b> are:</caption>
+
+<TR align=left bgcolor=#00FFFF>
+<TH>Variable</TH>
+<TH>Preset<br>Value</TH>
+<TH>Value</TH>
+<TH>Option</TH>
+</TR>
+
+<TR>
+<TD rowspan=2><B>TYPE</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>Objective may be any real value</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Objective is restricted to integer values If the computation of the objective will 
+necessarily give an integral value except for possible round-off errors, do not use 
+control variable TYPE. This control is necessary only for an integral solution to a 
+continuous or mixed integer problem.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>DISCRETE</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>All unknowns are continuous variables</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>All unknowns are integer variables with unit step size
+This control provides a simple alternative to using the DISCRETES clause whenever 
+all unknowns are discrete and their step size is one. It is ignored if a DISCRETE 
+clause is present in the FIND statement.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>ONEZERO</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>All unknowns have no upper bound</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>All unknowns have an upper bound of 1 This control provides a simple alternative
+to using the uppers clause whenever all unknowns have an upper bound of one.  
+It is ignored if an uppers clause is present in the FIND statement.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>REPORT</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>Suppress solver solution report.</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Generate solution report.</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>REPOUT</B></TD>
+<TD rowspan=3>-1</TD>
+<TD>-1</TD>
+<TD>Route solution report to Console.</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+<TD>Route solution report to PRINTER file.</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Route solution report to SCROLL file.</TD>
+</TR>        
+
+<TR>
+<TD rowspan=2><B>SIZE</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>Set problem size to maximum.</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Use this value as the problem size.  Specifies an estimate of the problem size
+in terms of the maximum number of <i>effective</i> constraints. (see discussion
+of problem sizing below.)</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>STEPSLIM</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>Use (N<SUB>c</SUB>+N<SUB>u</SUB>+N<SUB>b</SUB>)*3  where
+N<SUB>c</SUB> = total number of constraints <BR>
+N<SUB>u</SUB> = number of unknowns<BR>
+N<SUB>b</SUB> = number of upper bounds<BR>
+as the Linear program iteration limit</TD>
+</TD>
+<TD></TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Use this value as the Linear program iteration limit</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>REMAX</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>Use N<SUB>u</SUB>*STEPSLIM per above symbols<BR>
+as the Integer / mixed integer program iteration limit</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Use this value as the Integer / mixed integer program iteration limit integer problems.
+The linear continuous problem is executed in a nested fashion. REMAX imposes an upper limit
+on the cumulative linear program iterations.  Thus, there is no point in setting REMAX less
+than STEPSLIM.</TD>
+</TR>
+
+<TR>
+<TD><B>RECHECK</B></TD>
+<TD>5</TD>
+<TD></TD>
+<TD>Re-inversion limit If the solver is unable to achieve the 
+prescribed objective accuracy and constraint tolerance, a new inverse 
+is computed. Periodic re-inversions help to quench accumulated numerical 
+errors but excess re-inversions probably indicate unreasonable small tolerances.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SAVE</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>Do not generate a restart file</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Write a restart file to ligical unit n, i.e. per FORTRAN ... WRITE(n) LIST 
+n must be an integer in the range 1-50.  See discussion of the restart feature below.</TD>
+</TR>
+
+<TR>
+<TD><B>ACCURACY</B></TD>
+<TD>10<SUP>-5</SUP></TD>
+<TD></TD>
+<TD>Absolute objective tolerance Sets the level of discrimination between computed values of 
+the objective function. If too low, the solver may iterate unnecessarily.</TD>
+</TR>
+
+<TR>
+<TD><B>EPSILON</B></TD>
+<TD>10<SUP>-5</SUP></TD>
+<TD></TD>
+<TD>Absolute constraint tolerance, measures the degree to which constraints 
+may be violated. If too low, the solver may iterate to the limit.</TD>
+</TR>
+
+<TR>
+<TD><B>DELTA</B></TD>
+<TD>10<SUP>-6</SUP></TD>
+<TD></TD>
+<TD>Absolute unknowns tolerance, measures the degree to which the unknowns 	
+may violate the upper and lower (0) limits.</TD>
+</TR>
+
+<TR>
+<TD><B>DELINT</B></TD>
+<TD>10<SUP>-6</SUP></TD>
+<TD></TD>
+<TD>Integer test tolerance Values are considered to be integers if they 
+differ by less than DELINT from a true integer.</TD>
+</TR>
+
+<TR>
+<TD><B>ROUNDOFF</B></TD>
+<TD>10<SUP>-5</SUP></TD>
+<TD></TD>
+<TD>Round-off error tolerance Computed values less than roundoff are 
+assumed to be zero. A value too small will generate large error, resulting in numerous 
+re-inversions. Too large a value may result in failure to converge because valid values 
+are ignored.</TD>
+</TR>
+</TABLE>
+<HR>			
+
+
+
+
+<P><i>Zero-One Programming</i> - The standard zero-one integer programming 
+problem is specified  by setting both DISCRETE and ONEZERO to one 
+and omitting both  UPPERS and DISCRETES clauses from the FIND statement.  Be  careful 
+to give meaningful combinations of these controls and  clauses.</P>
+
+<P><i>Solution Report</i> -  The solution report generated by HERCULES 
+essentially summarizes  the initial conditions and controls and shows 
+the final values of the objective, unknowns, and constraints.  HERCULES  automatically 
+scales the constraints for the purpose of  minimizing computational 
+error and those displayed incorporate  the scale factors.  Values 
+of the program variables may be  printed separately to obtain the 
+true constraint values.  The  report also shows the actual number 
+of iterations and accuracy  rechecks required as well as the maximum 
+problem size (see  below).  These are guides for subsequent settings 
+of the control variables REMAX, RECHECK, and SIZE.</P>
+
+<P><i>Problem size</i> - The maximum problem size is given by  SIZE = 
+min(<i>m</i>,<i>n</i>)  where<i> m</i> = total number of equality 
+and inequality constraints and <i>n</i> = number of unknowns.  Most 
+problems will not require the maximum size, although only  experience 
+can show what is needed.  This value is used to dimension some internal 
+arrays used by HERCULES and an unnecessarily large value will require 
+more memory allocation than will be used, and perhaps even more than 
+is available for very large problems. The solution report shows the 
+actual size employed, and this may be used as a guide in later runs 
+of the same  or similar problems.  A reasonable estimate for medium 
+sized  problems is about 75 percent of the maximum value.</P>
+
+<P><i>Tolerance Controls</i> - Settings of the tolerance controls require 
+some judgment and expertise.  However, experience has shown the default 
+values to be acceptable for a wide range of problems.  If any of the 
+related variables have  conspicuously large or small values (say outside 
+of the rough range 10<SUP>-3</SUP> to 10<SUP>+3</SUP>), the defaults may not 
+be valid.  It is desirable, if not to inconvenient, to scale the model 
+variables to about order unity.  The number of accuracy rechecks in 
+the solution report is an  indicator of the validity of the chosen 
+tolerance controls.  If  this number is more than 2 or 3, some tolerances 
+are probably too tight.</P>
+
+<P><i>Checkpointing a Problem Run</i> - If SAVE is nonzero, a solution 
+checkpoint is written to this file number in any circumstance in which 
+a converged solution is not achieved.  This can be due to reaching 
+an iteration or recheck limit or alternatively to an apparently infeasible 
+or unbounded problem.  The latter cases usually arise from improperly 
+set tolerance  controls.  A final case can arise from exceeding the 
+specified problem size.  To use this facility, the SAVE file must 
+be opened and subsequently saved.</P>
+
+<P><i>Restarting a Checkpointed  Run</i>  - To restart from a saved checkpoint, 
+a special statement is used as follows:</P>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;<B>RESUME(</B><i>file</i><B>)</B> <i> unknowns</i> <B> BY HERCULES</B>{<B>(</B><i>controller</i><B>)</B>}<B></B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{<B>WITH </B>}<B> FLAG</B> <i>signal</i><B> </B>}<B> TO OPTIMIZE </B><i>objective</i><BR>
+
+<P>where <i>file</i> is the logical unit number of the file containing 
+the checkpoint,<i> unknowns </i>is an array dimensioned at least as 
+large as the originally defined independent variables of  the checkpointed 
+problem, <i>controller</i> is a new controller procedure, <i>signal</i> 
+and <i>objective</i> are output variables corresponding to the flag 
+and objective variables of the checkpoint.</P>   
+
+<P>This statement resumes the checkpointed FIND statement and does not 
+require respecification of the model.  The output <i>unknowns</i>, 
+<i>signal</i>, and <i>objective </i>may be used in subsequent computation 
+or output statements as desired.</P>
+
+<P>New control values may be specified in the controller procedure, including 
+all but DISCRETE, INTEGER,  and ONEZERO.  These three cannot be changed 
+without redefining the problem being solved.  <i>If any controls 
+are not set in this manner, they take their default values, not the 
+values in effect when the  checkpoint was taken.</i>   It is also  valid 
+to create another checkpoint by setting an appropriate file number 
+to SAVE.  If this number is the same as the original checkpoint, the 
+original one will be overwritten.</P>
+
+<H4>Examples</H4>
+
+<P><i>Continuous Linear Programming</i> - The first example is a feed-blending 
+optimization.  It is desired to blend ingredients in the least expensive 
+way such than the stated restrictions are satisfied:</P>
+
+<TABLE>
+<TR><TH>Ingredient</TH> 	<TH>Protein</TH> 	<TH>Fat</TH> 		<TH>Fiber</TH> 		<TH>Cost/lb</TH></TR>
+
+<TR><TD>Screenings</TD>	<TD>0.130</TD>		<TD>0.030</TD>		<TD>0.070</TD>		<TD>$0.022</TD></TR>            
+
+<TR><TD>Barley</TD>		<TD>0.115</TD>		<TD>0.020</TD>		<TD>0.060</TD>		  <TD>0.025</TD></TR>              
+
+<TR><TD>Corn</TD>		<TD>0.086</TD>		<TD>0.038</TD>		<TD>0.025</TD>		  <TD>0.028</TD></TR>               
+
+<TR><TD>Salt</TD>		   <TD>-</TD>		   <TD>-</TD>		   <TD>-</TD>  			 <TD>0.011</TD></TR>            
+</TABLE>
+  
+
+<H5>Restrictions:</H5>
+<OL Type="a">
+<LI>Total weight of blend = 2000 lb.</LI>
+<LI>Total protein &ge; 200 lb.</LI>
+<LI>Total fat &ge 54 lb.</LI>
+<LI>Total fiber &le; 90 lb.</LI>
+<LI>Amount of corn between 400 and 1000 lb.</LI>
+<LI>Weight of salt used = 5 lb.</LI>
+</OL>
+
+The program is as follows:<BR>
+
+<PRE>
+      GLOBAL ALL
+      PROGLEM BLEND
+        SALT=5 : BARLEY=500 : CORN= 900 : SCREENS=595
+        FIND BARLEY,CORN,SCREENS IN MIX BY HERCULES
+     ~     HOLDING PROTEIN, FAT, FIBER, CORNLOW, CORNHIGH
+     ~      AND MATCHING WEIGHT TO MINIMIZE COST
+      END
+
+      MODEL MIX
+        WEIGHT=BARLEY+CORN+SCREENS+SALT-2000
+        PROTEIN=0.115*BARLEY+0.086*CORN+0.13*SCREENS-200
+        FAT=0.02*BARLEY+0.038*CORN+0.03*SCREENS-54
+        FIBER=90-0.06*BARLEY-0.025*CORN-0.07*SCREENS
+        CORNLOW=CORN-400
+        CORNHIGH=1000-CORN
+        COST=0.025*BARLEY+0.028*CORN+0.022*SCREENS+0.011*SALT
+      END
+</PRE> 
+
+The solution is:<BR>
+
+ 
+<PRE>
+      COST      $51.34
+      BARLEY    465.00 LB
+      CORN      1000.00 LB	
+      SCREENS   530.00 LB
+      SALT      5.00 LB
+</PRE> 
+
+<P><i>Mixed Integer Programming</i> - A slight variation fo the preceding 
+example shows the consequence of imposing the reasonable restriction 
+that the barley and corn ingredients can only be purchased in 50 lb. 
+lots.  The problem then becomes a mixed integer problem as follows:</P>
+
+<PRE>
+      GLOBAL ALL
+      PROBLEM BLEND2
+        DIMENSION VLIMITS(3)
+        DATA VLIMITS/50,50,0/
+        SALT=5 : BARLEY=500 : CORN=900 : SCREENS=595
+        FIND BARLEY,CORN,SCREENS IN MIX BY HERCULES 
+     ~     WITH DISCRETE VLIMITS MATCHING WEIGHT
+     ~     HOLDING PROTEIN,FAT,FIBER,CORNLOW,CORNHIGH
+     ~     TO MINIMIZE COST
+      END
+</PRE>
+ 
+
+The Solution is now:<BR>
+
+<PRE>
+     COST       $54.45
+     BARLEY     500 LB
+     CORN       1000 LB
+     SCREENS    495.00 LB
+     SALT       5.00 LB
+</PRE> 
+
+<P><i>Integer Programming</i> - A third example is a classical transportation 
+problem, in which it is desired to minimize the delivery cost in stocking 
+three warehouses from seven distributed manufacturing plants.  The 
+deliveries to the warehouses must be 700, 900, and 400  items per 
+month respectively, while the plants have production capacities of 
+100, 300, 400, 200,300, 300, and 400 items per month respectively.  This 
+information is conveniently shown in a transportion cost matrix in 
+the following manner, where the table entries show the cost of shipping 
+one item from a given plant to a given warehouse:</P>
+
+<H4> --- WAREHOUSE---</h4>	  		   
+<TABLE WIDTH="50%">
+<TR><TH ALIGN=LEFT>PLANT</TH> <TH ALIGN=LEFT>D1</TH> <TH ALIGN=LEFT>D2</TH>	 <TH ALIGN=LEFT>D3</TH>	<TH ALIGN=LEFT>CAPACITY</TH></TR>
+<TR><TD>01</TD>		 <TD>3</TD>	 <TD>2</TD>	 <TD>4</TD>				<TD>100</TD></TR>
+<TR><TD>02</TD>		 <TD>0</TD>	 <TD>4</TD>	 <TD>2</TD>				<TD>300</TD></TR>
+<TR><TD>03</TD>		 <TD>2</TD>	 <TD>1</TD>	 <TD>3</TD>				<TD>400</TD></TR>
+<TR><TD>04</TD>		 <TD>5</TD>	 <TD>2</TD>	 <TD>3</TD>				<TD>200</TD></TR>
+<TR><TD>05</TD>		 <TD>1</TD>	 <TD>4</TD>	 <TD>0</TD>				<TD>300</TD></TR>
+<TR><TD>06</TD>		 <TD>4</TD>	 <TD>1</TD>	 <TD>2</TD>				<TD>300</TD></TR>
+<TR><TD>07</TD>		 <TD>1</TD>	 <TD>6</TD>	 <TD>4</TD>				<TD>400</TD></TR>
+<TR><TD>Req/Month</TD>		 <TD>700</TD>	 <TD>900</TD>	 <TD>400</TD>				<TD></TD></TR>
+</TABLE>
+
+<P>This is coded as an integer programming problem using the following 
+symbols:</P>
+
+<TABLE>
+<TR><TD>OD</TD>  	<TD>=</TD>	<TD>Origin-Destination delivery rates, to be determined</TD></TR>
+<TR><TD>COD</TD>  	<TD>=</TD>	<TD>Transportation Cost Matrix</TD></TR>
+<TR><TD>SC</TD>  	<TD>=</TD>	<TD>Source Capacities</TD></TR>
+<TR><TD>DR</TD>  	<TD>=</TD>	<TD>Delivery Requirements</TD></TR>
+<TR><TD>SCC</TD>  	<TD>=</TD>	<TD>Shipping Constraints, Deliveries cannot exceed capacities</TD></TR>
+<TR><TD>DRC</TD>  	<TD>=</TD>	<TD>Delivery Constraints, Requirements must be matched</TD></TR>
+</TABLE>
+
+<H4>Program:</H4>
+
+<PRE>
+      GLOBAL ALL
+      PROBLEM TRANSPRT
+        DYNAMIC OD,COD,SCC,DRC
+        ALLOT OD(7,3),COD(7,3),SCC(7),DRC(3)
+        &lt;SC&gt;=DATA(100,300,400,200,300,300,400)
+        &lt;DR&gt;=DATA(700,900,400)
+        &lt;COD&gt;=DATA(3,0,2,5,1,4,1,2,4,1,2,4,1,6,4,2,3,3,0,2,4)
+        FIND OD IN SHIPPER BY HERCULES(SETUP)
+     ~     HOLDING SCC AND MATCHING DRC TO MINIMIZE COST
+      END
+
+      MODEL SHIPPER
+        DYNAMIC ROL,COL,TEMP,SCC,DRC
+        DO 10 I=1,7
+          &lt;ROW&gt;=&lt;[OD],I,*&gt;
+          SCC(I)=SC(I)-ARRAYSUM(ROW)
+   10   CONTINUE
+        DO 20 I=1,3
+          &lt;OL&gt;=&lt;[OD],*,I&ge
+          DRC(I)=DR(I)-ARRAYSUM(COL)
+   20   CONTINUE
+          &lt;TEMP&gt;=&lt;OD&gt;*&lt;COD&gt;
+          COST=ARRAYSUM(TEMP)
+      END
+
+      CONTROLLER SETUP(HERCULES)
+        DISCRETE=1
+      END
+</PRE>
+
+<P>Note that OD is initialized (by default) to zero, which is clearly 
+not feasible.  HERCULES can solve problems from infeasible initial 
+conditions but they present a greater danger of convergence to a suboptimal 
+value.</P>
+
+
+<P>The solution is  COST = 18000, with a delivery rate matrix OD:</P>
+
+<TABLE width="50%">
+<TR><TH align=left></TH> 	<TH align=left>(1)</TH>	<TH align=left>(2)</TH>	<TH align=left>(3)</TH></TR>
+
+<TR><TD>(1)</TD>	 <TD>0</TD>	<TD>100</TD>	 <TD>0</TD></TR>
+<TR><TD>(2)</TD>	 <TD>300</TD>	<TD>0</TD>	 <TD>0</TD></TR>
+<TR><TD>(3)</TD>	 <TD>0</TD>	<TD>400</TD>	 <TD>0</TD></TR>
+<TR><TD>(4)</TD>	 <TD>0</TD>	<TD>200</TD>	 <TD>0</TD></TR>
+<TR><TD>(5)</TD>	 <TD>0</TD>	<TD>0</TD>	 <TD>300</TD></TR>
+<TR><TD>(6)</TD>	 <TD>0</TD>	<TD>200</TD>	 <TD>100</TD></TR>
+<TR><TD>(7)</TD>	 <TD>400</TD>	<TD>0</TD>	 <TD>0</TD></TR>
+</TABLE>
+
+<P><i>Zero-One Programming</i> - The last example is a classical assignment 
+problem, i.e. a zero-one integer programming problem.  The Lehigh 
+Co. is assigning 5 production orders to its 5 departments so as to 
+minimize the cost of production.  Each department must get exactly 
+one job and all production orders must be filled.  The cost of production 
+per department for each type of job is as follows:</P>
+
+<H4> DEPARTMENT</H4>
+<TABLE width="50%">
+<TR><TH align=left>ORDER</TH>		   <TH align=left>A</TH>	   <TH align=left>B</TH>	   <TH align=left>C</TH>	   <TH align=left>D</TH>		   <TH align=left>E</TH></TR>        
+<HR>
+<TR><TD>1</TD>		<TD>$120</TD>	<TD>$150</TD>	<TD>$75</TD>	<TD>$90</TD>		<TD>$100</TD></TR>
+<TR><TD>2</TD>		  <TD>140</TD>	    <TD>80</TD>	    <TD>90</TD>	  <TD>85</TD>	 	  <TD>170</TD></TR>
+<TR><TD>3</TD>		    <TD>50</TD>	    <TD>40</TD>	    <TD>40</TD>	  <TD>70</TD>		  <TD>110</TD></TR>
+<TR><TD>4</TD>		    <TD>75</TD>	    <TD>65</TD>	    <TD>45</TD>	  <TD>70</TD>	 	    <TD>90</TD></TR>
+<TR><TD>5</TD>		  <TD>110</TD>	  <TD>909</TD>	  <TD>140</TD>	 <TD>115</TD>	  <TD>100</TD></TR>
+</TABLE>
+
+<P>The terminology of the program is:</P>
+<TABLE>
+<TR><TD>POD</TD>	<TD>=</TD>	<TD>Production Distribution Matrix, to be determined</TD></TR>
+
+<TR><TD>CPOD</TD>	<TD>=</TD>	<TD>Production Cost Matrix, as shown above</TD></TR>
+
+<TR><TD>PODLIM <TD>=</TD>	<TD>Distribution constraints, specifying that thesums of the rows
+		and columns of POD  must all be 1</TD></TR>
+</TABLE>
+
+
+<H4>Program:</H4>
+<PRE>
+      GLOBAL ALL
+      PROBLEM ASSIGN
+        DYNAMIC POD,CPOD,PODLIM
+        ALLOT POD(5,5),CPOD(5,5),PODLIM(10)
+        &lt;CPOD&gt;=DATA(120, 140,  50,  75, 110,
+     ~              150,  80,  40,  65,  90,
+     ~                75,  90,  40,  45, 140,
+     ~                90,  85,  70,  70, 115
+     ~                100, 170, 110,  90, 100)
+        FIND POD IN LEHIGH BY HERCULES(SETUP)
+     ~     MATCHING PODLIM TO MINIMIZE COST
+      END
+
+      MODEL LEHIGH
+        DYNAMIC ROW,COL,TEMP
+        DO 10 I=1,5
+          [ROW]=&lt;[POD],I,*&gt;
+          [COL]=&lt;[POD],*,I&gt;
+          PODLIM(I)=1-ARRAYSUM(ROW)
+          PODLIM(I+5)=1-ARRAYSUM(COL)
+   10   CONTINUE
+        &lelTEMP&gt;=&lt;POD&gt;*&lt;CPOD&gt;
+        COST=ARRAYSUM(TEMP)
+      END
+
+      CONTROLLER SETUP(HERCULES)
+        DISCRETE=1
+        ONEZERO=1
+      END
+</PRE>
+ 
+
+<P>The solution is:  COST = $365 via the distribution matrix POD:</P>
+
+<TABLE width="50%">
+<TR><TD> </TD> <TD>(1)</TD> <TD>(2)</TD>	<TD>(3)</TD>	<TD>(4)</TD>	<TD>(5)</TD></TR>
+<TR><TD>(1)</TD> <TD>0</TD> <TD>0</TD>	<TD>0</TD>	<TD>1</TD>	<TD>0</TD></TR>
+<TR><TD>(2)</TD> <TD>0</TD> <TD>1</TD>	<TD>0</TD>	<TD>0</TD>	<TD>0)</TD></TR>
+
+<TR><TD>(3)</TD> <TD>1</TD> <TD>0</TD>	<TD>0</TD>	<TD>0</TD>	<TD>0</TD></TR>
+<TR><TD>(4)</TD> <TD>0</TD> <TD>0</TD>	<TD>1</TD>	<TD>0</TD>	<TD>0</TD></TR>
+<TR><TD>(5)</TD> <TD>0</TD> <TD>0</TD>	<TD>0</TD>	<TD>0</TD>	<TD>1</TD></TR>
+</TABLE>

@@ -1,0 +1,61 @@
+AJAX solves the general algebraic equations 
+by successive approximation of the unknowns.  The model procedure 
+is executed iteratively until the constraints are matched to zero 
+within a specified tolerance.  During each iteration of this process, 
+the approximation of the unknown vector is computed according to the
+"damped" Newton formula employing the inverse of the Jacobian matrix
+(whose columns are the gradient vectors of the constraints) evaluated
+during the previous Newton iteration, to forecast a step change in the
+unknowns vector. This step change is then reduced by a dampling factor,
+and subiterations are taken in the Newton direction using the damped step,
+finding the nearest approach to the zeros of the constraints in that
+direction. Thus if the function is locally non-quadratic, causing the
+undamped Newton method to oscillate, damping will compensate for it.
+
+AJAX will solve systems of equations which fall within any of the 
+three classes of simultaneous equations
+(1) Determined systems - equal number of equations and unknowns,
+(2) Overdetermined systems - more equations than unknowns, and
+(3) Underdetermined systems - fewer equations than unknowns.
+
+For determined systems, the Newton formula employs the true inverse of
+the square Jacobian matrix. In the actual computation of AJAX, the inverse
+is not determined, per se, rather its equivalent combined form is computed 
+by a process known as sequential orthogonalization. The net effect 
+is the same as if the inverse were determined, but is more efficient.
+
+If the equations have more than one solution, as is usually true of 
+nonlinear equations, the particular solution obtained will be the 
+one nearest to the initial approximation of the unknowns 
+(the values of these variables upon initial execution of the model 
+procedure).
+
+For overdetermined systems, no true solution exists. However, AJAX assumes
+that the greater number of equations represent redundant approximations to
+the equations and solves the system by the method of least squares. Again,
+the particular solution obtained will be the one nearest to the initial
+approximation. In this case, the matrix employed is the pseudo-inverse 
+of the Jacobian matrix. This matrix which has all of the relevant properties
+of a true inverse when used in place of a true inverse, even though the
+Jacobian matrix is singular or nonsquare, and its true inverse does not exist. 
+
+For underdetermined systems, the number of equations is fewer than the number
+of independent variables. The equivalent situation can also occur in
+determined (square) systems if the equations are unstable (ill-conditioned). 
+Loosely stated, a system of equations is numerically unstable if small changes
+in the coefficients of the equations produce large changes in the solution. 
+Apparent changes in coefficient values could arise due to the precision of
+matrix inversion. In either case, underdetermined or ill-conditioned, an
+infinite number of solutions exist. However, by minimizing the Euclidean
+norm (sum of squares of the risidual deviations from zero) of the unknowns,
+AJAX will find one of a finite number of smallest least squares solutions to
+the nonlinear equations.  The particular solution obtained will be the one
+nearest to the initial approximation of the unknowns. In this case this case,
+the matrix used in the Newton formula is the pseudo-inverse of the Jacobian
+matrix. In essence the underdetermined case is a minimization problem in
+which the Eucledian norm is the objective function to be minimized.
+
+In the case where the equations to be solved are linear, there is only one
+solution for each of the determined, overdetermined, or underdetermined/ill-
+onditioned cases.  The linear solution is achieved in a single execution of
+the model by AJAX.

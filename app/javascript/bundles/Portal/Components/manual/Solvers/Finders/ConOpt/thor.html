@@ -1,0 +1,365 @@
+<!DOCTYPE HTML PUBLIC "-//W4C//DTD HTML 4.2//EN">
+<html>
+<head>
+   <title>Solver THOR</title>
+   <style>
+       tr { vertical-align: top; }
+   </style>
+</head>
+<body text="#000066">
+<h1 align=center>Solver THOR</h1>
+
+<P>THOR applies a "sectionally linearized"  linear programming technique 
+to the solution of constrained optimization problems.  Where the constraints 
+and objective are linear, a modified simplex algorithm is applied.  Where 
+they are nonlinear, a sequence of linear programming problems is generated 
+in which the model is locally linearized.  This is accomplished in 
+such a way that the solutions of the linearized subprograms converge 
+to the true solution of the nonlinear problem.  There is no requirement 
+to identify which circumstance holds, as THOR automatically detects 
+which technique is appropriate.</P>
+
+<P>For true linear programming problems, THOR is the preferred solver. 
+As they become progressively more nonlinear, either of JOVE, ZEUS, 
+or JUPITER may be expected to give better performance.</P>  
+
+<p>The FIND statement for THOR takes the following form:</p>
+<blockquote>
+<B>FIND</B> <i>unknowns</i><B> IN</B> <i>model</i>
+   <B>BY THOR</B> {<B>(</b><i>controller</i><B>)</B>}<BR>
+&nbsp;&nbsp;{<B>WITH</B>|<B>AND</B>} <B>LOWER</B> <i>floor</i><B></B>} 
+    {<B>WITH</B>|<B>AND</B>} <B>UPPER</B> <i>ceiling</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>REPORTING</B> <i>auxiliaries</i>} {<B>WITH FLAG</B> <i>signal</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>HOLDING</B> <i>inequalities</i>} {<B>MATCHING</B> <i>equalities</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>WITH BOUNDS</B> <i>limits</i>} <B>TO MINIMIZE</B>|<B>MAXIMIZE</B> <i>objective</i>
+</blockquote>
+
+<p>Except for the BY <i>solver</i> clause, which invokes THOR, and the 
+use of BOUNDS, the form, meaning, and usage of this statement are 
+identical to that of JOVE.  (The BOUNDS parameters are described below.)</p>
+
+<P>When THOR is invoked by executing a FIND statement, it activates derivative 
+evaluation to compute gradients with respect to the <i>unknowns</i>.</P>
+
+<P>Unlike JOVE and ZEUS, THOR cannot be used to solve unconstrained optimization 
+problems.  This limitation is not particularly serious, however, since 
+it is almost always possible, and usually necessary, to establish 
+some inequality constraints to assure a physically reasonable solution.</P>
+
+<P><B><i>The Solution Process </i></B> -  THOR's fundamental optimization 
+technique is the revised simplex method.  Constraints are incorporated 
+by means of slack variables and the problem is linearized in the vicinity 
+of the current approximation point.  As each subproblem is solved, 
+the problem is re-linearized and the allowable changes in the unknowns 
+are bounded to minimize nonlinearity error.  For highly nonlinear 
+problems, this may limit these changes in a way which impedes progress 
+to a solution.  Although this may result in many more iterations, 
+the overall efficiency of the technique provides a compensating factor.</P>
+
+<P>Equality constraints are accommodated in a special manner by THOR. 
+Rather than incorporating them directly, each is decomposed into two 
+inequality constraints, i.e.,<BR><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<i>h(x<SUB>1</SUB>, ...,x<SUB>n</SUB>) = 0</i><BR><br>
+
+becomes<BR><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;h<SUB>1</SUB>(x<SUB>1</SUB>, ...,x<SUB>n</SUB> ) + &delta;  &ge; 0 
+    and   &delta; - h<SUB>2</SUB>(x<SUB>1</SUB>, ..., x<SUB>n</SUB>) &ge;  0 
+<P>This approach, which is required by the general solution process, 
+is less effective than the penalty function methods of JOVE and ZEUS, 
+and far less effective than using AJAX to satisfy equality constraints (When 
+equality constraints are required, it is essential (for THOR) to provide 
+an initial starting point which satisfies these constraints.  If it 
+is difficult to arrive at approximate values for the independent variables, 
+because of complex relationships, then the technique described in 
+Section 6.2.1 may be used.)</P>
+
+<P>Many problems permit an error bound or range over which a constraint 
+may be satisfied.  For example, a temperature may be constrained to 
+70&plusmn;5<SUP>o</SUP>F.  For such cases, it is better to impose 
+two inequality constraints than to force the solution to satisfy the 
+equality constraint 70 &plusmn; &delta;<SUP>o</SUP> F, since &delta, as chosen 
+by THOR, may be a physically unreasonable limitation.</P>
+
+<P><B><i>Bounding</i></B>  -  Since the problem is only locally linearized, 
+it is necessary to limit the calculated changes in the unknowns as 
+the successive approximations are performed.  An upper limit is provided 
+by the BOUNDS parameters.  This is a list of variables whose values, 
+at the time at which the FIND statement is executed, prescribe the 
+maximum allowable changes in each unknown during any iteration.  The 
+specification of BOUNDS may take the same forms as described for the 
+analogous parameters of HERA (see Section 6.1).  In the case of THOR, 
+however, the use of the FRACT control is discouraged because the bounding 
+is far more critical for this technique.  Reasonable values for bounds 
+are approximately 10 percent of the total expected change in the associated 
+unknowns.</P>
+
+<P>THOR also applies "adaptive move limits" which actually compute the 
+nonlinearity error and restrict the changes in the unknowns to values 
+which guarantee no error greater than a prescribed value (given by 
+the control ERRMAX).  This operation may be disabled by resetting 
+the control variable ADAPT, but this usually is poor practice.  If 
+nonlinearity error is so large that the adaptive limits are unacceptably 
+small, an alternate solver should be used or a different initial estimate 
+should be given.  When adaptive limits are being used, the upper limits 
+on the changes, as specified by the BOUNDS, are automatically doubled 
+in order to permit the maximum change consistent with the objective 
+function.</P>
+
+<P><B><i>Convergence </i></B> -  Detection of an optimum may occur in either 
+of two ways, depending upon whether or not a true local extremum exists 
+within the feasible region.  If the real optimum lies outside of this 
+region, the solution to the problem lies on the constraint boundary 
+at a point closest to the infeasible exterior optimum.  In this sense, 
+"closest" means "as measured along the gradient."  This condition 
+is detected by the fact that the computed change (step size) for one 
+or more unknowns was less than its current limit.  On the other hand, 
+if the optimum is accessible, the solution process uses the measured 
+changes in the objective to progressively reduce the step size limits 
+until they fall below a prescribed criterion (UNKNOWN) or until the 
+objective improvement is acceptably small (PROGRESS).</P>
+
+<P>The method is as follows.  Changes in the objective function are classified 
+as "small" or "large" according to whether they are less than or greater 
+than a discriminator PROGTEST.  When the number of consecutive small 
+moves equals a control called STEPLIM, the step size limits are halved; 
+if the number of consecutive large moves equals STEPLIM, the limits 
+are doubled (up to a maximum initially set by BOUNDS).  There are 
+two alternate convergence criteria which may be applied.  The objective 
+convergence criterion measures the relative change in the objective 
+against the measure PROGRESS.  If the change is smaller than PROGRESS, 
+then the criterion in satisfied.  The <i>unknowns convergence</i> 
+criterion measures the current step size limits against the originally 
+specified bounds for each unknowns.  If all are less than UNKNOWN, 
+then the criterion is satisfied.  Either or both criteria may be activated 
+by the control variable CONVERGE.</P> 
+
+<HR>
+<TABLE border=2>
+<caption>
+The control variables for <b>THOR</b> are as follows<br>
+(An iteration is defined to be a complete linear programming subproblem.)
+</caption>
+
+<TR align=left bgcolor=#00FFFF>
+<TH>Variable</TH>
+<TH>Preset Value</TH>
+<TH>Value</TH>
+<TH>Option</TH>
+</TR>
+
+<TR>
+<TD><B>ERRMAX</B></TD>
+<TD>0.05</TD>
+<TD></TD>
+<TD>Maximum permitted nonlinearity error, measured by the current  values of 
+|&part;<SUP>2</SUP><i>f</i>/&part;x<SUB>i</SUB><SUP>2</SUP>| 
+for all <i>x<SUB>i</SUB></i></TD>
+</TR>
+
+
+<TR>
+<TD rowspan=2><B>ADAPT</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Apply adaptive control to hold nonlinearity error below ERRMAX.</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+<TD>Disable adaptive control.</TD>
+</TR>            
+
+<TR>
+<TD><B>UNKNOWN</B></TD>
+<TD>0.05</TD>
+<TD></TD>
+<TD>Unknowns convergence criterion; an interior optimum has been reached  when
+|&Delta;x<SUB>I</SUB>/<i>b<SUB>I</SUB>| &le; UNKNOWN. for all 
+<i>x<SUB>i</SUB>, where <i>b<SUB>i</SUB></i>
+are the initial step size bounds.</TD>
+</TR>
+
+<TR>
+<TD><B>PROGRESS</B></TD>
+<TD>0.01</TD>
+<TD></TD>
+<TD>Objective convergence criterion; an interior optimum has been reached 
+when |&Delta;f/f| &le; PROGRESS.</TD>
+</TR>
+			
+<TR>
+<TD><B>PROGTEST</B></TD>
+<TD>0.01</TD>
+<TD></TD>
+<TD>Relative discriminator for determining if a change in the objective is large or small; 
+measured against |&Delta;f/f|</TD>
+</TR>
+
+
+<TR>
+<TD><B>STEPLIM</B></TD>
+<TD>3</TD>
+<TD></TD>
+<TD>Number of consecutive large or small moves required before changing the step size limits</TD>
+</TR>
+
+<TR>
+<TD><B>FRACT</B></TD>
+<TD>0.5</TD>
+<TD></TD>
+<TD>Fractional bound to be applied to all independent variables</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>CONVERGE</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Satisfy objective or unknowns convergence.</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Satisfy objective and unknowns convergence.</TD>
+</TR>
+			
+<TR>
+<TD><B>REMAX</B></TD>
+<TD>40</TD>
+<TD></TD>
+<TD>Maximum number of allowed iterations</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>DETAIL</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>No detailed iteration print.</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Detailed print every nth iteration plus first and last</TD>
+</TR>
+		 	
+<TR>
+<TD rowspan=3><B>DETOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Detailed report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Detailed report to SCROLL</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Detailed report to Console</TD>
+</TR>			
+
+<TR>
+<TD rowspan=3><B>SUMOUT</B></TD>
+<TD rowspan=3>-1</TD>
+<TD>0</TD>
+<TD>Summary report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Summary report to SCROLL</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Summary report to Console</TD>
+</TR>			
+			
+<TR>
+<TD rowspan=2><B>BREAKIN</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>No interactive breakpoints</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Breakpoints after every nth iteration</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SUMMARY</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Print iteration summary</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+<TD>No iteration summary</TD>
+</TR>
+			
+<TR>
+<TD rowspan=2><B>RESET</B></TD>
+<TD rowspan=2>0</TD>
+<TD>1</TD>
+<TD>Decrease the step size and restore the previous iteration values whenever
+&Delta;f reverses sign.</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+<TD>Decrease the step size but continue from the current values whenever
+&Delta;f reverses sign.X</TD>
+</TR>			
+
+</TABLE>
+<HR>			
+<P>For the majority of fairly linear problems, the preset controls should 
+prove acceptable.  For cases in which this is not true, an examination 
+of the iteration and summary prints usually suggests how controls 
+may be reset for greater effectiveness.  In general, better convergence 
+properties are achieved with adaptive error control and with STEPLIM 
+=3 or 4.  For PROGTEST much greater than 0.05, spurious convergence 
+at a suboptimal point may occur.  As a guideline for these controls:</P>
+
+<TABLE>
+<TR><TD>Large PROGTEST and Small STEPLIM</TD><TD>Fast convergence but some danger of selecting a suboptimal solution.</TD></TR>
+
+<TR><TD>Small PROGTEST and Small STEPLIM</TD><TD>Quick approach to the vicinity of the optimum but slow convergence thereafter.</TD></TR>
+
+<TR><TD>Small PROGTEST and Large STEPLIM</TD><TD>Stable but relatively slow convergence</TD></TR>
+</TABLE>
+
+
+<P>The accuracy of the solution is directly related to the control UNKNOWN.  The 
+smaller its value, the more accurate the converged objective.  There 
+is a price paid for increased accuracy, however, by an increase in 
+the number of iterations required.  As a rough guide, a second order 
+of magnitude improvement in accuracy will increase the number of iterations 
+by 30 percent.</P>
+
+<P>The control switch RESET is mainly useful when the initial estimate 
+is known to be close to the desired optimum, for example when the 
+last of a sequence of progressive optimizations is being performed. 
+Turning this switch on will prevent any serious overshoot.</P>
+
+<P><B><i>Optimization Summary Report</i></B>  -  A standard optimization report 
+is nominally generated by THOR.  In format and content, it is identical 
+to that produced by JOVE (see Figure 7-1).  It should be recalled 
+that each iteration is a complete linear programming problem.  Thus, 
+when the objective and the constraints are linear, it will converge 
+in a single iteration.</P>
+
+<P><B><i>Detailed Iteration Report</i></B>  -  A detailed iteration report is 
+issued by THOR whenever DETAIL is nonzero.  It displays the values 
+of the objective, the unknowns, and the constraints and gives information 
+which indicates how step size limits are currently progressing.  When 
+adaptive limits are introduced or backtracking occurs under the RESET 
+option, a suitable notation is printed.</P>
+
+</body>
+</html>
+

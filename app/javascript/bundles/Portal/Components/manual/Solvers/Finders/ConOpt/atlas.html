@@ -1,0 +1,420 @@
+<!DOCTYPE HTML PUBLIC "-//W4C//DTD HTML 4.2//EN">
+<html>
+<head>
+   <title>Solver ATLAS</title>
+   <style>
+       tr { vertical-align: top; }
+   </style>
+</head>
+<body text="#000066">
+
+<h1 align=center>Solver ATLAS</h1>
+
+<P>ATLAS applies the Augmented Lagrange Multiplier strategy:</P> 
+<UL>
+<li>Rockafellar, R. T.:  "The Multiplier Method of Hestenes 
+and Powell Applied to Convex Programming."  Journal of Optimization 
+Theory and Application, Vo. 12, No. 6, 1973, pp. 555-562;</li> 
+
+<li>Pierre, D. A., and Lowe, M. J.:  "Mathematical Programming 
+Via Augmented Lagrangians."  Applied Mathematics and Computation Series, 
+Addison-Wesley, 1975;</li>  
+
+<li>Powell, M. J. D.:  "Algorithms for Nonlinear Constraints 
+that Use Lagrangian Functions.": Mathematical Programming, Vol. 14, 
+No. 2, 1978, pp. 224-248;</li>
+
+<li>Imai, K.:  "Configuration Optimization of Trusses by the 
+Multiplier Method."  Ph.D. Thesis, University of California, Los Angeles, 
+1978;</li> 
+
+<li>Imai, K.; and Schmit, L. A.:  "Configuration Optimization 
+of Trusses."  Journal of the Structural Division, ASCE, Vol. 107, 
+No. ST5, May 1981, pp.745-756.</li> 
+</ul>
+
+<P>It has the same optimizer and vector search variations of \
+<a href=apollo.html>APOLLO.</a></P> 
+
+<P>The general form of the FIND statement for ATLAS is</P>
+<blockquote>
+<B>FIND</B> <i>unknowns</i><B> IN</B> <i>modelcall</i><B></B> 
+<B>BY ATLAS</B> {<B>(</b><i>controller</i><B>)</B>}<B></B><BR>
+&nbsp;&nbsp;{{<B>WITH</B>|<B>AND</B>} <B>LOWER</B> <i>floor</i><B></B>}
+  {{<B>WITH</B>|<B>AND</B>} <B>UPPER</B> <i>ceiling</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>REPORTING</B> <i>auxiliaries</i><B></B>} {{<B>WITH</B>} 
+  <B>FLAG</B> <i>signal</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>HOLDING</b><i> inequalities</i><B></B>} 
+  {<B>MATCHING</B> <i>equalities</i><B></B>}<BR> 
+&nbsp;&nbsp;<B>TO MINIMIZE</B>|<B>MAXIMIZE</B> <i>objective</i>
+</blockquote>
+
+<P>The <i>modelcall</i> symbol is the model name optionally followed 
+by an argument list as in the right-hand-side of a CALL statement.</P>
+
+<HR>
+<TABLE border=2>
+<caption> The control variables for <b>ATLAS</b> are:</caption>
+
+<TR align=left bgcolor=#00FFFF>
+<TH>Variable</TH>
+<TH>Preset Value</TH>
+<TH>Value</TH>
+<TH>Option</TH>
+</TR>
+
+<TR>
+<TD rowspan=3><B>OPTIMIZR</B></TD>
+<TD rowspan=3>1</TD>
+<TD>1</TD>
+<TD>Fletcher-Reeves conjugate gradient method</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Davidon-Fletcher-Powell (DFP) variable-metric method</TD>
+</TR>
+        
+<TR>
+<TD>3</TD>
+<TD>Broydon-Fletcher-Goldfarb-Shanno variable-metric method</TD>
+</TR>
+
+<TR>
+<TD rowspan=4><B>VSEARCH</B></TD>
+<TD rowspan=4>1</TD>
+<TD>1</TD>
+<TD>Golden-section search method</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Golden-section search+polynomial interpolation</TD>
+</TR>
+        
+<TR>
+<TD>3</TD>
+<TD>Bounded polynomial interpolation</TD>
+</TR>
+        
+<TR>
+<TD>4</TD>
+<TD>Unbounded polynomial interpolation</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>ABORT</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>Delay a model abort until the current iteration is complete</TD>
+</TR>
+ 
+<TR>
+<TD>1</TD>
+<TD>Execute a model abort after the current step in 
+which an ABORT statement was executed.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>DETAIL</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>No detailed iteration point</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Detailed print every nth iteration plus first and last</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SUMMARY</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Print iteration summary</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+<TD>No iteration summary</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>BREAKIN</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>No interactive breakpoints</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Breakpoint after each nth iteration</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>DETOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Detailed report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Detailed report to SCROLL</TD>
+</TR>
+        
+<TR>
+<TD>-1</TD>
+<TD>Detailed report to Console</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>SUMOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Summary report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Summary report to SCROLL</TD>
+</TR>
+        
+<TR>
+<TD>-1</TD>
+<TD>Summary report to Console</TD>
+</TR>
+
+<TR>
+<TD><B>REDO</B></TD>
+<TD>n<SUB>iv</SUB>+1</TD>
+<TD></TD>
+<TD>Restart parameter for conjugate direction and minimization 
+is restarted with a steepest descent direction every REDO iterations.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SCALE</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>No scaling is done.</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Design variables, objective and constraints are scaled automatically.</TD>
+</TR>
+
+<TR>
+<TD><B>REMAXO</B></TD>
+<TD>40</TD>
+<TD></TD>
+<TD>Maximum number of iterations allowed</TD>
+</TR>
+
+<TR>
+<TD><B>CONSECO</B></TD>
+<TD>3</TD>
+<TD></TD>
+<TD>The number of consecutive iterations for which the absolute and/or relative 
+convergence criteria must be met to indicate convergence at the optimizer level.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>CONVERGO</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Satisfy relative <B>or </B>absolute convergence</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Satisfy relative <B>and </B>absolute convergence</TD>
+</TR>
+
+<TR>
+<TD><B>CONSECS</B></TD>
+<TD>2</TD>
+<TD></TD>
+<TD>The number of consecutive iterations for which the absolute and/or relative 
+convergence criteria must be met to indicate convergence at the strategy level.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>CONVERGS</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Satisfy relative <B>or </B>absolute convergence</TD>
+<TD></TD>
+</TR>
+        
+<TR>
+<TD>2</TD>
+<TD>Satisfy relative <B>and </B>absolute convergence</TD>
+</TR>
+
+<TR>
+<TD><B>REMAXS</B></TD>
+<TD>20</TD>
+<TD></TD>
+<TD>Maximum number of iterations allowed at the strategy level.</TD>
+</TR>
+
+<TR>
+<TD><B>ALAM</B></TD>
+<TD>0.0</TD>
+<TD></TD>
+<TD>Initial estimate of the Lagrange Multipliers 
+in the Augmented Lagrange Multiplier Method.</TD>
+</TR>
+			
+<TR>
+<TD><B>ABCONV</B></TD>
+<TD>0.0001</TD>
+<TD></TD>
+<TD>Absolute convergence criteria for the one-dimensional 
+search when using the Golden Section method.</TD>
+</TR>
+
+<TR>
+<TD><B>ABGRESO</B></TD>
+<TD>0.0001</TD>
+<TD></TD>
+<TD>Maximum absolute fractional change in the objective between two consecutive 
+iterations to indicate convergence in optimization.</TD>
+</TR>
+
+<TR>
+<TD><B>ABCONO</B></TD>
+<TD>0.0001</TD>
+<TD></TD>
+<TD>Absolute fractional convergence criterion for the optimization sub-problem 
+when using sequential minimization techniques.</TD>
+</TR>
+
+<TR>
+<TD><B>ABGRESS</B></TD>
+<TD>0.0001</TD>
+<TD></TD>
+<TD>Same as ABGRESO but used at the strategy level.</TD>
+</TR>
+
+<TR>
+<TD><B>RECONV</B></TD>
+<TD>0.005</TD>
+<TD></TD>
+<TD>Relative convergence criteria for the one-dimensional search 
+when using the Golden Section method.</TD>
+</TR>
+            
+<TR>
+<TD><B>PROGRESO</B></TD>
+<TD>0.001</TD>
+<TD></TD>
+<TD>Maximum relative change in the objective between two 
+consecutive iterations to indicate convergence in optimization.</TD>
+</TR>
+
+<TR>
+<TD><B>RECONO</B></TD>
+<TD>0.01</TD>
+<TD></TD>
+<TD>Relative convergence criterion for the optimization sub-problem when using 
+sequential minimization techniques.</TD>
+</TR>
+
+<TR>
+<TD><B>PROGRESS</B></TD>
+<TD>0.001</TD>
+<TD></TD>
+<TD>Same as PROGRESO, but used at the strategy level.</TD>
+</TR>
+
+<TR>
+<TD><B>REDELOI</B></TD>
+<TD>0.1</TD>
+<TD></TD>
+<TD>Relative change in the objective function attempted on the first optimization 
+iteration. Used to estimate initial move in the one-dimensional search.  
+Updated as the optimization progresses.</TD>
+</TR>
+
+<TR>
+<TD><B>ABDELOI</B></TD>
+<TD>1000</TD>
+<TD></TD>
+<TD>Absolute change in the objective function attempted on the first optimization 
+iteration. Used to estimate initial move in the one-dimensional search. 
+Updated as the optimization progresses.</TD>
+</TR>
+
+<TR>
+<TD><B>REDELXI</B></TD>
+<TD>0.01</TD>
+<TD></TD>
+<TD>Maximum relative change in a design variable attempted on the first 
+optimization iteration.  Used to estimate the initial move in the one-dimensional 
+search. Updated as the optimization progresses.</TD>
+</TR>
+
+<TR>
+<TD><B>ABDELXI </B></TD>
+<TD>0.2</TD>
+<TD></TD>
+<TD>Maximum absolute change in a design variable attempted on the first 
+optimization iteration. Used to estimate the initial move in the one-dimensional 
+search. Updated as the optimization progresses.</TD>
+</TR>
+
+<TR>
+<TD><B>PEPMULT</B></TD>
+<TD>5</TD>
+<TD></TD>
+<TD>Penalty function multiplier for the exterior penalty function method. 
+Must be greater than 1.0.</TD>
+</TR>
+
+<TR>
+<TD><B>PEP</B></TD>
+<TD>0</TD>
+<TD></TD>
+<TD>Initial penalty parameter for the exterior penalty function method or the 
+Augmented Lagrange Multiplier method.</TD>
+</TR>
+
+<TR>
+<TD><B>PEPMAX</B></TD>
+<TD>7E+10</TD>
+<TD></TD>
+<TD>Maximum value of PEP for the exterior penalty 
+function method or the Augmented Lagrange Multiplier method.</TD>
+</TR>
+
+<TR>
+<TD><B>SCALMIN</B></TD>
+<TD>0.001</TD>
+<TD></TD>
+<TD>Minimum numerical value of any scale factor allowed.</TD>
+</TR>
+
+<TR>
+<TD><B>VMULT</B></TD>
+<TD>2.618034</TD>
+<TD></TD>
+<TD>Multiplier on the move parameter, ALPHA, in the one-dimensional search to 
+find bounds on the solution.</TD>
+</TR>
+
+<TR>
+<TD><B>ZRO</B></TD>
+<TD>0.00001</TD>
+<TD></TD>
+<TD>Numerical estimate of zero on the computer Usually the default value is 
+adequate. If a computer with a short word length is used, 
+ZRO=10E-4 may be preferred.</TD>
+</TR>
+
+</TABLE>
+
+</body>
+</html>

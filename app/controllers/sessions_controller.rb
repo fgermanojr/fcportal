@@ -10,13 +10,13 @@ class SessionsController < ApplicationController
 
   def create
     @user = User.find_by(username: params[:session][:username].downcase)
-puts params.inspect
-puts session_params.inspect
+# puts params.inspect
+# puts session_params.inspect
 
-puts params[:session].inspect
-puts  params[:session][:username]
-puts params[:session][:password]
-puts @user.authenticate(params[:session][:password])
+# puts params[:session].inspect
+# puts  params[:session][:username]
+# puts params[:session][:password]
+# puts @user.authenticate(params[:session][:password])
 
     if @user && @user.authenticate(params[:session][:password])
       log_in @user

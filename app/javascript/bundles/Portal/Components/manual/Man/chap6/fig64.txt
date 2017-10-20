@@ -1,0 +1,77 @@
+@LISTING =                                                                                                                                                                    
+
+
+@LISTING =   ---- HERA ITERATION 1 INVOKED AT DIFCRVG[11] FOR MODEL 
+CURFIT ----
+
+@LISTING = 
+
+@LISTING =      OBJECTIVE [F] 0.775805E+00 WITH ITERATIVE IMPROVEMENT 
+-0.829234E+00
+
+@LISTING = 
+
+@LISTING =      INDEPENDENT VARIABLES [X]
+
+@LISTING =        0.274270E-01   0.379046E-01
+
+@LISTING = 
+
+@LISTING =      HESSIAN MATRIX [D2F/DXDX]
+
+@LISTING =                   (   1)         (   2)
+
+@LISTING =      (   1)    0.119909E+04   0.451528E+02
+
+@LISTING =      (   2)    0.451528E+02  -0.257099E+02
+
+@LISTING =  
+
+@LISTING =      GRADIENT VECTOR [DF/DX]
+
+@LISTING =       -0.274791E+02   0.123231E+02
+
+@LISTING = 
+
+@LISTING =      EIGENVALUES OF HESSIAN MATRIX
+
+@LISTING =        0.270170E+00  -0.615874E-02
+
+@LISTING = 
+
+@LISTING =      MATRIX OF EIGENVECTORS
+
+@LISTING =                   (   1)         (   2)
+
+@LISTING =      (   1)    0.999323E+00  -0.367904E-01
+
+@LISTING =      (   2)    0.367904E-01   0.999323E+00
+
+@LISTING = 
+
+@LISTING =      DELTA-X [|=BOUNDED,!=ANTI-NEWTON]
+
+@LISTING =        0.155417E-01| -0.144380E-01!
+
+@LISTING = 
+
+@LISTING =      DELTA-X / X
+
+@LISTING =        0.566657E+00  -0.380904E+00
+
+@LISTING = 
+
+@LISTING =      CONVERGENCE CONDITION AFTER  1 ITERATIONS
+
+@LISTING =         UNKNOWNS NOT CONVERGED
+
+@LISTING =         OBJECTIVE CRITERION UNSATISFIED
+
+@LISTING =         SPECIFIED CRITERIA UNSATISFIED
+
+@LISTING = 
+
+@LISTING =   ---- END HERA ITERATION 1                                                                                                                                       
+
+
+

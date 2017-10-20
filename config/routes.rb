@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'docs/show'
+  post 'submissions/submit'
 
   # get 'hello_world', to: 'hello_world#index'
   get 'portal', to: 'portal#index'

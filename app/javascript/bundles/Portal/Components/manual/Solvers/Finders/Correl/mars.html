@@ -1,0 +1,243 @@
+<html><head>
+<STYLE TYPE="text/css">
+<TITLE>Solver MARS</TITLE>
+<!--
+.indented
+   {
+   padding-left: 25pt;
+   padding-right: 25pt;
+   }
+-->
+</STYLE>
+</head>
+<body text="#000066">
+<A NAME="MARS" ID="MARS"><H1 ALIGN=CENTER> Solver MARS</H1></A>
+
+<P>MARS solves the implicit algebraic equations<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<i>g<SUB>1</SUB>(x<SUB>1</SUB>,...,x<SUB>n</SUB>) = 0</i><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>g<SUB>m</SUB>(x<SUB>1</SUB>,...,x<SUB>n</SUB>) = 0</i><BR><br>
+
+MARS provides an alternative to AJAX for problems involving the solution 
+of systems of algebraic equations. Both AJAX and MARS employ a damped 
+Newton iterative scheme and hence both automatically invoke the evaluation 
+of first partial derivatives in the calculus model.</P>
+
+<P>The range of application of the two solvers is roughly identical. 
+Both are suitable for under-, over-, and exactly-determined problems 
+and both may be used when ill-conditioning of singularities reduce 
+the rank of the problem.  The principal distinction arises in the 
+very common area of overdetermined systems, examples of which include 
+regression analysis, parameter estimation, and process identification, 
+or more generally, least-squares optimization.  AJAX addresses such 
+problems by forming the normal equations and then solving the resulting 
+square system by taking the pseudo-inverse through an orthogonalization 
+method.  Conversely, MARS directly solves the rectangular system by 
+a <A HREF="http://en.wikipedia.org/wiki/QR_decomposition">QR-decomposition</A> technique employing householder elementary transformations. 
+This method involves rather more computation than AJAX, although there is a
+compensating increase in precision.</P>
+
+<A NAME="FIND" ID="FIND"><H2>MARS FIND Statement</H2></A>
+<p>The FIND statement for MARS takes the following form:</p>
+<blockquote>
+<B>FIND</B> <i>unknowns</i><B> IN</B> <i>model</i>
+   <B>BY MARS</B> {<B>(</b><i>controller</i><B>)</B>}<BR>
+&nbsp;&nbsp;{<B>WITH</B>|<B>AND</B>} <B>LOWER</B> <i>floor</i><B></B>} 
+    {<B>WITH</B>|<B>AND</B>} <B>UPPER</B> <i>ceiling</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>REPORTING</B> <i>auxiliaries</i>} {<B>WITH FLAG</B> <i>signal</i><B></B>}<BR>
+&nbsp;&nbsp;<B>TO MATCH</B> <i>constraints</i>
+</blockquote>
+
+<P>The major benefits of MARS are twofold.  First, it is a more stable 
+computational scheme and is less impacted by the errors arising in 
+large and/or poorly scaled problems. More importantly, it is far 
+less subject to difficulty when the problem is ill-conditioned. Since 
+the condition number of the normal system is the square of that of 
+the basic problem, overdetermined systems are often ill-conditioned 
+when the method of AJAX is used. Another area of advantage to MARS 
+involves boundary value problems (simulation nested withing AJAX/MARS
+correlation) in which the equations are very sensitive to the boundary
+conditions.</p>
+
+<p>The FIND statements for MARS and AJAX are identical and both employ 
+the same control variables.</p>  
+
+<p>A point to note in using MARS is that the influence of control variable 
+TAU is somewhat different from the case of AJAX due to their different 
+algorithms. Effectively, MARS takes a less conservative view of computational
+error, as is consistent with its relative stability. Thus, for the same value 
+of TAU, MARS may converge more rapidly than AJAX but with 
+a larger solution norm.  When necessary, tighter solutions may be 
+obtained by reducing DELTA and/or TAU. For overdetermined systems, 
+control variable ZERO has little influence since constraint convergence 
+is rarely possible.</p>
+
+<h1 align=center>MARS Controls</h1>
+
+<table align=center border=2>
+<caption>The control variables for MARS are as follows.</caption>
+
+<TR bgcolor=#00FFFF>
+<TH>Variable</TH>
+<TH>Preset<br>Value</TH>
+<TH>Value</TH>
+<TH align=left>Option</TH>
+</TR>
+
+<TR>
+<TD rowspan=3><B>DETAIL</B></TD>
+<TD rowspan=3>0</TD>
+<TD>0</TD>
+<TD>No detailed report</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Detailed report for every iteration</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Detailed report for iterations initial,n,2n,...,last</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SUMMARY</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>No summary report</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Generate solution summary</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>CONVERGE</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Satisfy constraints convergence or unknowns convergence</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Satisfy constraints convergence and unknowns convergence</TD>
+</TR>
+
+<TR>
+<TD><B>REMAX</B></TD>
+<TD>20</TD>
+<TD></TD>
+<TD>Maximum number of allowed iterations</TD>
+</TR> 
+
+<TR>
+<TD><B>ZERO</B></TD>
+<TD>10<SUP>-6</SUP></TD>
+<TD></TD>
+<TD>Zero tolerance for constraints convergence</TD>
+</TR>
+
+<TR>
+<TD><B>DELTA</B></TD>
+<TD>10<SUP>-7</SUP></TD>
+<TD></TD>
+<TD>Tolerance on change in unknowns for unknowns convergence</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>BREAKIN</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>No interactive breakpoints</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Breakpoint after every nth iteration</TD>
+</TR>
+
+<TR>
+<TD><B>VLIMIT</B></TD>
+<TD>10<SUP>50</SUP></TD>
+<TD></TD>
+<TD>Limit on the maximum change of the independent variables during a single iteration</TD>
+</TR>
+
+<TR>
+<TD><B>DAMP</B></TD>
+<TD>0.2</TD>
+<TD></TD>
+<TD>Criteria for imposing damping</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>DETOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Detailed report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Detailed report to SCROLL</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Detailed report to Console</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>SUMOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Summary report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Summary report to SCROLL</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Summary report to Console</TD>
+</TR>
+
+<TR>
+<TD><B>TAU</B></TD>
+<TD>0.001</TD>
+<TD></TD>
+<TD>Maximum relative error in the constraints being matched, i.e. max (error-G)/G. 
+TAU must be positive. TAU permits the specification of the approximate error in the 
+values computed in the calculus model, for example errors due to measurement uncertainty 
+in a data fitting problem. This value is used to hold computational error to a point where 
+it is negligible in comparison to the a priori Error. The value is also used to determine 
+the rank of the problem, i.e. the larger the value of TAU the more likely that the problem 
+is rank deficient (ill-conditioned or singular). Obviously, an unreasonably small value for 
+TAU may obscure the true nature of the problem and at the same time provoke unnecessarily 
+extended computation.</TD>
+</TR>
+
+<TR>
+<TD><B>PREDAMP</B></TD>
+<TD>1</TD>
+<TD></TD>
+<TD>Arbitrary damping factor to be applied to the first iteration. 
+(0 &le; <B>PREDAMP</B> &le; 1) PREDAMP is used only when damping is applied (control 
+variable DAMP nonzero). The damping scheme involves a comparison of successive estimates 
+of the norm of the constraints and hence cannot be applied to the initial estimate. Thus, 
+there is some possibility of an inordinately large Newton step on the first iteration. 
+When this is anticipated, perhaps from a previous attempt at a solution, PREDAMP may be 
+used to limit the first step.</TD>
+</TR>
+
+</TABLE>
+
+</body>
+</html>
+
+

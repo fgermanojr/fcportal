@@ -18,8 +18,10 @@ export default class Submission extends React.Component {
 
   render() {
     var s = myStyles.Styles;
+    var csrfToken = document.querySelector("meta[name=csrf-token]").content;
     return (
-       <form id="formSubmission">
+       <form id="formSubmission" accept-charset="UTF-8" action='/submissions/submit' encType="multipart/form-data" method='post'>
+       <input type='hidden' name='authenticity_token' value={csrfToken} />
       <table id="submission-table" style={s.submissionStyle}>
         <tbody>
           <tr>

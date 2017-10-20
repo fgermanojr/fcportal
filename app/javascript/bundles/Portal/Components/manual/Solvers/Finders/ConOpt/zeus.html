@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W4C//DTD HTML 4.2//EN">
+<html>
+<head>
+   <title>Solver ZEUS</title>
+   <style>
+       tr { vertical-align: top; }
+   </style>
+</head>
+<body text="#000066">
+
+<h1 align=center>Solver ZEUS</h1> 
+
+<P>ZEUS applies the same general approach as JOVE for the solution of 
+constrained optimization problems. However, its method for performing 
+the unconstrained suboptimizations is a variation of the Davidon-Fletcher-Powell 
+(DFP) technique. This is a first-order technique, employing only 
+gradients, in contrast with the second-order technique of JOVE. By 
+way of comparison, ZEUS will often prove more reliable for problems 
+in which the Hessian matrix of the augmented objective is ill-conditioned. </P>
+
+<P>The general form of the FIND statement for ZEUS is:
+<blockquote>
+<B>FIND</B> <i>unknowns</i><B> IN</B> <i>model</i><B> BY 
+ZEUS </B>{<B>(</B> <i>controller</i><B>)</B>}<B></B><BR>
+&nbsp;&nbsp;{<B>WITH</B>|<B>AND</B>} <B>LOWER</B> <i>floor</i><B></B>}
+   {<B>WITH</B>|<B>AND</B>} <B>UPPER</B> <i>ceiling</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>REPORTING</B> <i>auxiliaries</i><B></B>}
+   {<B>WITH  FLAG</B> <i>signal</i><B></B>}<BR>
+&nbsp;&nbsp;{<B>HOLDING</B> <i>inequalities</i><B></B>}
+   {<B>MATCHING</B> <i>equalities</i><B></B>}<BR>
+&nbsp;&nbsp;<B>TO MINIMIZE</B>|<B>MAXIMIZE</B> <i>objective</i><BR><BR>
+</blockquote>
+
+<p>Except for the BY solver clause, which invokes ZEUS, the form, meaning, 
+and usage of this statement is identical to that described for JOVE.</P>
+
+<P>When ZEUS is invoked by execution of the FIND statement, it activates 
+derivative evaluation to compute gradients with respect to the unknowns.</P>
+
+<P><i>The Solution Process</i> -  As noted above, the 
+solution process is identical to that of JOVE, except that a Davidon-Fletcher-Powell 
+(DFP) technique is used to select a direction for performing each 
+of the sequence of unconstrained suboptimization. The ZEUS controls 
+are also the same as those for JOVE, except that the SEARCH switch 
+has no significance.</P>
+
+<HR>
+<TABLE border=2>
+<caption>
+The control variables for <b>ZEUS</b> are as follows. Note: In these descriptions,<br>
+the term "iteration" refers to a complete unconstrained optimization.
+</caption>
+
+<TR bgcolor=#00FFFF>
+<TH align=left>Variable</TH>
+<TH align=left>Preset<br>Value</TH>
+<TH align=left>Value</TH>
+<TH align=center>Option</TH>
+</TR>
+
+<TR>
+<TD rowspan=2><B>DETAIL</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>No detail iteration point</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Detailed print every nth iteration plus first and last</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SUMMARY</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Print iteration summary</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+<TD>No iteration summary</TD>
+</TR>
+
+<TR>
+<TD><B>REMAX</B></TD>
+<TD>5</TD>
+<TD></TD>
+<TD>Maximum number of iterations</TD>
+</TR>
+
+<TR>
+<TD><B>STEPSLIM</B></TD>
+<TD></TD>
+<TD></TD>
+<TD>Limit on the number of steps per 100 iteration.  Since an iteration amounts to an entire 
+unconstrained optimization, this control is analogous to REMAX for solver HERA. 
+However, if solving a constrained problem, exceeding LIMSTEPS does not terminate 
+the process, it merely halts the current iteration.</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>STEPOUT</B></TD>
+<TD rowspan=3>5</TD>
+<TD>n</TD>
+<TD>Provides snapshot prints of the step-by-step solution progress at every nth step of
+all iterations (about 4-9 lines of critical problem data).</TD>
+</TR>
+
+<TR>
+<TD>-n</TD>
+<TD>Constraint values are added to the snapshot prints.</TD>
+</TR>			
+
+<TR>
+<TD>0</TD>
+<TD>No snapshot prints are generated.</TD>
+</TR>
+
+<TR>
+<TD><B>EVALMAX</B></TD>
+<TD>1000</TD>
+<TD></TD>
+<TD>Limit on total number of model evaluations The optimization process is halted when this limit
+is exceeded and the result is flagged in the same manner as  if maximum iterations were reached.
+The actual number of evaluations may exceed EVALMAX slightly because of the need to terminate
+the solution process correctly.</TD>
+</TR>
+			
+<TR>
+<TD rowspan=2><B>ABORT</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>Delay a model abort until the current iteration is complete. (This control is only
+effective when a model abort is requested by an abort statement.</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Execute a model abort after the current step in which an ABORT statement was executed.</TD>
+</TR>
+
+<TR>
+<TD rowspan=4><B>SETRHO</B></TD>
+<TD rowspan=4>1</TD>
+<TD>1</TD>
+<TD>Set the initial value of &rho; to 1</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Compute an initial value of <i> &rho;</i> which minimizes
+the magnitude of the gradient at the initial point.</TD>
+</TR>
+
+<TR>
+<TD>3</TD>
+<TD>Compute an initial value of <i> &rho;</i> which minimizes 
+(<i>&part;P/&part;x)(&Delta;x)</i> at the initial point.</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>(0&lt;&lt;n&lt;&lt;1) set value of <i> &rho;</i> to n (necessary for 
+restarting a problem from a previously computed point - the appropriate value for <i> &rho;</i>
+is printed in the detailed report.)</TD>
+</TR>                           	
+
+<TR>
+<TD><B>RATIO</B></TD>
+<TD>16</TD>
+<TD></TD>
+<TD>Factor used to reduce &rho; between successive unconstrained optimizations: must be &gt; 2</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>SPEEDUP</B></TD>
+<TD rowspan=3>1</TD>
+<TD>1</TD>
+<TD>Do not accelerate by performing extrapolation.</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Perform first order extrapolation.</TD>
+</TR>
+
+<TR>
+<TD>3</TD>
+<TD>Perform second order extrapolation.</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>ESTIMATE</B></TD>
+<TD rowspan=3>1</TD>
+<TD>1</TD>
+<TD>Determine final problem convergence on the basis of 
+the current (zero order) solution.</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Base convergence upon either the zero order
+solution or on a first order extrapolation.</TD>
+</TR>
+
+<TR>
+<TD>3</TD>
+<TD>Base convergence upon either the zero order
+solution or on a second order extrapolation.</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>CONVERGE</B></TD>
+<TD rowspan=3>1</TD>
+<TD>1</TD>
+<TD>Assume that the problem finally converged when 
+the scaled objective functions of the primal and 
+dual solutions differ by less than ACCURACY.</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Converge when the penalty contribution of the
+inequality constraints is less  than ACCURACY.</TD>
+</TR>			
+
+<TR>
+<TD>3</TD>
+<TD>Converge when the scaled first order estimate of the optimum objective differs from the dual
+objective by less than ACCURACY.</TD>
+</TR>
+
+<TR>
+<TD><B>ACCURACY</B></TD>
+<TD>10<SUP>-4</SUP></TD>
+<TD></TD>
+<TD>Final convergence tolerance</TD>
+</TR>
+
+<TR>
+<TD><B>PROGRESS</B></TD>
+<TD>0</TD>
+<TD></TD>
+<TD>Iteration improvement limit; an unconstrained optimization is
+terminated if the objective fails to improve by at least this amount.</TD>
+</TR>
+			
+<TR>
+<TD rowspan=3><B>SUBTEST</B></TD>
+<TD rowspan=3>1</TD>
+<TD>1</TD>
+<TD>Terminate an iteration (an unconstrained optimization) when 
+<i>(&part;P/&part;x<SUB>i</SUB>)</i> &lt; ZERO for all <i>x<SUB>i</SUB></i>.</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Terminate an iteration when (<i>&part;P/&part;x<SUB>i</SUB></i>)
+(&Delta;x<SUB>i</SUB>) is less than 20% of the improvement in the 
+augmented objective for all <i>x<SUB>i</SUB></TD>
+</TR>
+
+<TR>
+<TD>3</TD>
+<TD>Terminate an iteration when |&part;P<D>/&part;x<SUB>i</SUB>| &lt; ZERO
+for all <i>x<SUB>i</SUB>.</TD>
+</TR>
+
+<TR>
+<TD><B>ZERO</B></TD>
+<TD>10<SUP>-6</SUP></TD>
+<TD></TD>
+<TD>Iteration convergence tolerance </TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>BREAKIN</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>No interactive breakpoints </TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Breakpoint after each nth iteration</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>DETOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Detailed report to PRINTER </TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Detailed report to SCROLL </TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Detailed report to Console</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>SUMOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Summary report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Summary report to SCROLL</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Summary report to Console</TD>
+</TR>
+
+</TABLE>			
+
+</body>
+</html>

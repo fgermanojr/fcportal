@@ -1,0 +1,94 @@
+      PROBLEM HB1TG(10000,2000,2000)
+        COMMON/PRIN/X,Y,G(5),F
+        @CONGRAF    ! Generate Contour & Constraint Graph
+        X=90 : Y=20 : BX=5 : BY=10
+        FIND X,Y; IN HB; BY THOR(SET); WITH BOUNDS BX,BY;
+     *     HOLDING G; TO MAXIMIZE F
+        @SHOW('HBF',0)    ! Display Graph
+      END
+
+      CONTROLLER SET(THOR)
+        CONVERGE=2
+        DETAIL=1
+      END
+
+      MODEL HB
+        COMMON/PRIN/X,Y,G(5),F
+        G(1)=X*Y-700 : G(2)=75-X : G(3)=65-Y : 
+        G(4)=Y-X*X/125 : G(5)=(Y-50)**2-5*X+275
+        F1 = 75.1963666677 - 3.8112755343*X + 0.1269366345*X*X
+     *      - 0.0020567665*X**3
+        F2 = 1.0345E-5*X**4 - 6.8306567613*Y + 0.0302344793*X*Y
+     *      - 0.0012813448*X*X*Y
+        F3 = 3.52559E-5*X**3*Y - 2.266E-7*X**4*Y + 0.2564581253*Y*Y
+     *      - 3.460403E-3*Y**3
+        F4 = 1.35139E-5*Y**4 - 28.1064434908/(Y+1) 
+     *      - 5.2375E-6*X*X*Y*Y
+        F5 = -6.3E-9*X**3*Y*Y + 7E-10*X**3*Y**3 + 3.405462E-4*X*Y*Y
+        F6 = -1.6638E-6*X*Y**3 - 2.8673112392*EXP(5E-4*X*Y)
+        F=F1+F2+F3+F4+F5+F6
+        @CURVE('HBF','SR',X,Y)   ! Plot point on search trace
+      END
+
+      SUBROUTINE CONGRAF
+        IMPLICIT REAL*8 (A-H,O-Z)
+        DIMENSION CONS(9),LABL(9),LTYP(9),KLR(9)
+        DATA X1,X2,Y1,Y2/-10,110,-10,110/
+        DATA XA,XB,YA,YB/0,100,0,100/
+        DATA CONS/-80,-40,0,10,20,30,40,50,55/
+        DATA LABL/1,0,1,0,1,0,1,0,1/
+        DATA LTYP/0,2,0,2,0,2,0,2,0/
+        DATA KLR /3,3,3,3,3,3,3,3,3/
+        EXTERNAL HBCON
+        N=101 : XO=X1 : YO=Y1
+        @GRAFIL('HBF','PNG','IMAGE',0,0) ! Generate PNG image file of default size
+        @FONT('HBF','COMPLEX','STANDARD',0,0)  ! Use default character size and color 
+        @AXSET('HBF','NONE','NONE','NONE','NONE') ! Suppress axis plotting
+        @XYPLOT('HBF','RECT',X1,X2,X1,X2-X1,Y1,Y2,Y1,Y2-Y1,1.0,0,0,0,0)
+        @MESH('HBF','CS',XA,XB,YA,YB,N,N,HBCON)
+        @CONTOUR('HBF','CS',CONS,LABL,KLR,LTYP,9)
+        @HEAD('HBF','HILLSIDE CORRAL',50,40,10)
+        @HEAD('HBF','SOLVER THOR',50,100,10)
+        @SETUP('HBF','G1',2,7,0,1) ! (orange dashed)
+        DO 10 I=10,50
+            X=I : Y=700/X
+            @CURVE('HBF','G1',X,Y)
+ 10     CONTINUE
+        @SETUP('HBF','G2',2,7,0,1) ! (orange dashed)
+        @CURVE('HBF','G2',75,70)
+        @CURVE('HBF','G2',75,55)
+        @SETUP('HBF','G3',2,7,0,1) ! (orange dashed)
+        @CURVE('HBF','G3',5,65)
+        @CURVE('HBF','G3',80,65)
+        @SETUP('HBF','G4',2,7,0,1) ! (orange dashed)
+        DO 20 I=40,75
+            X=I : Y=X*X/125
+            @CURVE('HBF','G4',X,Y)
+ 20     CONTINUE
+        @SETUP('HBF','G5',2,7,0,1) ! (orange dashed)
+        DO 30 I=80,55,-1
+            X=I : Y=SQRT(5*X-275)+50
+            @CURVE('HBF','G5',X,Y)
+ 30     CONTINUE
+        DO 40 I=55,80
+            X=I : Y=-SQRT(5*X-275)+50
+            @CURVE('HBF','G5',X,Y)
+ 40     CONTINUE
+        @SETUP('HBF','SR',1,4,-5,1) ! (blue dotted with cross points)
+      END
+
+      FUNCTION HBCON(X,Y)
+        F1 = 75.1963666677 - 3.8112755343*X + 0.1269366345*X*X
+     *      - 0.0020567665*X**3
+        F2 = 1.0345E-5*X**4 - 6.8306567613*Y + 0.0302344793*X*Y
+     *      - 0.0012813448*X*X*Y
+        F3 = 3.52559E-5*X**3*Y - 2.266E-7*X**4*Y + 0.2564581253*Y*Y
+     *      - 3.460403E-3*Y**3
+        F4 = 1.35139E-5*Y**4 - 28.1064434908/(Y+1) 
+     *      - 5.2375E-6*X*X*Y*Y
+        F5 = -6.3E-9*X**3*Y*Y + 7E-10*X**3*Y**3 + 3.405462E-4*X*Y*Y
+        F6 = -1.6638E-6*X*Y**3 - 2.8673112392*EXP(5E-4*X*Y)
+        HBCON=F1+F2+F3+F4+F5+F6
+      END
+
+

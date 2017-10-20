@@ -1,0 +1,1575 @@
+<html><head>
+<STYLE TYPE="text/css">
+<!--
+.indented
+   {
+   padding-left: 25pt;
+   padding-right: 25pt;
+   }
+.style1 {
+	text-align: center;
+}
+.style2 {
+	text-align: right;
+}
+.style3 {
+	text-align: center;
+	font-weight: bold;
+}
+.style4 {
+	border-width: 1px;
+}
+-->
+</STYLE>
+</head>
+<body>
+<A NAME="UNCONOPT" ID="UNCONOPT"><H1>6.0 Unconstrained Optimization </H1></A>
+
+<P>Unconstrained optimization is the process of searching from a point 
+on a nonlinear curve or surface to find the nearest optimum point 
+of a desired type: maximum, minimum, or saddle point.  The function 
+being optimized must be nonlinear or else no optimum point exists. 
+(In linear programming, which involves optimization of linear functions, 
+the optimum is not defined by the functions, which have no optima, 
+but by the application of constraints to restrict them.)  A typical 
+unconstrained optimization problem may be stated mathematically as</P>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<i>find x<SUB>1</SUB>, ..., x<SUB>n</SUB></I>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<i>which minimizes f = f(x<SUB>1</SUB>, ..., x<SUB>n</SUB>)</i><BR>
+
+<P>The objective function <I>f</i> is represented by a set of formulas which 
+are, in principle, reducible to a single equation.</P>
+
+<P>In FC, this unconstrained optimization problem is expressed by a statement 
+of the form:</P>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<B>FIND</B> <i>x<SUB>1</SUB>, ..., x<SUB>n</SUB></i><B> IN</B> <i>model</i><B> BY</B> <i>solver</i><b>(</b><i>controller</i><b>)</b>
+<B>TO MINIMIZE</B> <i>f</i><BR><BR>
+
+where <i>x<SUB>1</SUB>, ..., x<SUB>n</SUB></i> are the names of the unknowns 
+whose values are to be determined and <i>f</i> is an objective variable 
+to be minimized. The <i>model</i> identifies a MODEL procedure whose 
+execution computes <i>f</i> for a given set of values of <i>x<SUB>1</SUB>, ..., x<SUB>n</SUB></i>. The solution process involves successive approximation of the unknowns <i>x<SUB>1</SUB>, ..., x<SUB>n</SUB></i> 
+by iterative execution of the <i>model</i> until a local optimum value 
+of <i>f</i> is found. Because of this, an initial estimate for the values of <i>x<SUB>1</SUB>, ..., x<SUB>n</SUB></i> must be made before the calculus process is invoked.<A NAME="HERA" ID="HERA"><H2>6.1 Solver HERA</H2></A>
+
+<P>The nominal solver for unconstrained optimization is called HERA.  HERA 
+is an advanced version of Newton's second-order gradient method with 
+special logic to recognize and avoid unwanted extrema during its search 
+process.</P>
+
+The general form of the FIND statement for HERA is as follows<HR><p>FUTURE SYNTAX (MetaFor) - NOT CURRENT&nbsp;&nbsp;&nbsp; 
+check</P><HR>
+  
+&nbsp;&nbsp;&nbsp;&nbsp;<B>FIND</B> <i>unknowns</i><B> IN</B> <i>modelcall</i><B> BY HERA</B> 
+{<B>(</B><i>controller</i><B>)</B>}<B></B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<B>REPORTING</B> <i>auxiliaries</i><B></B>} {<B>WITH</B>|<B>AND</B>} <B>LOWER</B> <i>floor</i><B></b>}
+<B>BOUND{S}</B> <I>limits</I><B>}</B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>{{WITH|AND} SCALE{S}</B> <I>factors</I>} 
+ <B>{{WITH|AND} FLAG</B> <I>signal</I><B>}</B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>TO MAXIMIZE|MINIMIZE|EXTREMIZE</B> <I>objective</I><BR><BR>        
+
+where the optional clauses may appear in any order.  The common symbols, 
+<I>unknowns</I>, <I>controller</I>, and <I>auxiliaries</I>, are exactly 
+as described for the general FIND statement in Section 2.2.2  The 
+<I>modelcall</I> symbol is the model name in one of the forms: <B>my.</B><I>model-name</I>, <I>module.model-name</I>, or simply <I>model-name</i>, indicating that the model is an internal procedure, a module procedure, or an external procedure. Internal procedures and module procedures share the unknowns and objective as the principal variables The three types of parameters, BOUNDS, 
+SCALES, and the FLAG, have special significance to HERA, as described 
+in the solution process below.  The final objective clause identifies 
+the function to be optimized and the desired type of extremum.
+
+<HR>
+
+
+
+<P>When HERA is invoked by execution of the FIND statement, it activates 
+derivative evaluation to compute gradients and Hessians with respect 
+to the unknowns.  The gradient and Hessian of the objective are used 
+by HERA to select new values of the unknowns during each iteration.  The 
+iterative computations of the model continue until the desired optimum 
+is found, until the maximum number of allowed iterations have been 
+performed, or until the model is aborted via an ABORT statement. If 
+the EXTREMIZE option is chosen, the solver searches for the nearest 
+extremum, regardless of whether it is a maximum, minimum, or saddlepoint 
+(maximum in some variables, minimum in others).</P>
+
+<H3>Example</H3>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Find (x,y) which minimizes F = -3803.84 - 138.08x - 232.92y +123.08x<SUP>2</SUP> + 203.64y<SUP>2</SUP>
++182.25xy<BR> 
+
+&nbsp;&nbsp;&nbsp;&nbsp;using the starting point (1,0.5) 
+
+<P>Program:</P>
+<PRE>
+       PROBLEM .MINF
+        X=1 : Y=.5  !INITIAL ESTIMATES 
+        FIND X,Y; IN FUN; BY HERA; TO MINIMIZE F 
+      END
+      
+      MODEL FUN
+        F=-3803,84-138.08*X-232.92*Y+123.08*X*X+203.64*Y*Y+182.25*X*Y 
+      END
+</PRE>      
+
+<P><B><i>The Solution Process </i></B>  -  The Newton procedure for unconstrained 
+optimization employs the following recurrence relation (for the <I>i</I>th 
+iteration)<br> 
+
+<div style="margin-left: 50px">
+<img src="../images/NewtonRecurrence.png" height="85" width="242">
+</div>
+
+
+in which <B>x</B> represents an n-dimensional <I>unknowns</I> vector, 
+while [&part;<SUP>2</SUP>f/&part;x<SUP>2</SUP>] is the Hessian matrix 
+and [&part;f/&part;x] the gradient vector of the <I>objective</I>.  In 
+the usual interpretation of this process, the recurrence relation 
+is used to locate the zeros of the gradient vector, thus satisfying 
+the necessary conditions for a local extremum.<P>Another interpretation, one that is easier to visualize, is that Newton's 
+method approximates the objective function at each step by a quadratic 
+function computed by a second order Taylor series.  The step change 
+in <B>x</B> is exactly the step required to move to the nearest local 
+extremum of the approximating function.</P>
+
+<P>Newton's method has an important disadvantage in that is does not 
+discriminate one type of extremum from another.  HERA was designed 
+to eliminate this disadvantage by computing the step direction and 
+magnitude on the basis of the discrimination procedure described below.</P>
+
+<P>First, the Hessian matrix is diagonalized <br>
+
+<div style="margin-left: 50px">
+<img src="../images/HessianDiagonal.png" height="179" width="445">
+</div>
+
+by rotating the coordinate system 
+from the independent variables of optimization,  x<SUB>1</SUB>,...,x<SUB>n</SUB> to 
+the axes of symmetry y<SUB>1</SUB>,...,y<SUB>n</SUB> 
+of the Taylor approximating function. Graphically this is illustrated 
+in Figure 6-1.
+<br><br><img alt="" height="512" src="FIG61.PNG" width="744"><br>FIG 6-1 
+Newton Method Quadric Approximation<p>The new axes are the eigenvectors of the Hessian matrix.  The approximation 
+of f at the point P<SUB>1</SUB> is elliptical if the second derivatives<br>
+
+<div style="margin-left: 50px">
+<img src="../images/HessianEigenvalues.png" height="86" width="164">
+</div>
+
+(the eigenvalues of the Hessian matrix) all have the same sign.  If 
+the eigenvalues are all positive, then the direction into the ellipse 
+is downhill, and the second-order gradient step proceeds from P<SUB>1</SUB> 
+to P<SUB>2</SUB>, the local minimum of the approximating function.  As 
+illustrated in the figure, this is the result obtained by Newton's 
+method.  HERA achieves the same result in a slightly different way, 
+by vector addition of its component steps in the eigenvector direction. 
+Discrimination would become active if HERA had been asked to seek 
+a maximum rather than a minimum.  Then the step taken from  must P<SUB>1</SUB> 
+must be an <I>anti-Newton</I> step, opposite to the one Newton's method 
+would have selected.  HERA selects the direction for each component 
+step on the basis of the signs of the eigenvalues: a positive eigenvalue 
+denotes a step toward a minimum and a negative eigenvalue denotes 
+a step toward a maximum.  In the given example, all components must 
+be reversed at P<SUB>1</SUB> in order to seek a maximum of f.  If all 
+of the eigenvalues were not of the same sign (in the neighborhood 
+of a saddle point), HERA would only reverse some of the component 
+directions, so that the resultant step vector will avoid the unwanted 
+saddlepoint.<P><B><I>Step Size Control</B></I> - Under nominal control conditions 
+(control variable ADJUST = 0), HERA will compute the step component 
+along each eigenvector according to Newton's criterion, i.e.,
+
+<div style="margin-left: 50px">
+<img src="../images/NewtonCriterion.png" height="107" width="169">
+</div>
+
+The step direction will be <I>Newton</I> or <I>anti-Newton</I> according- 
+to the sign.  The step sizes computed in this manner will be effective 
+if the curvature of the objective function is reasonably approximated 
+by a quadratic Taylor series from the point of approximation (P<SUB>1</SUB>) 
+to the optimum point of the quadratic (P<SUB>2</SUB>). However, when 
+an objective function is locally more nonlinear than quadratic, this 
+step size may be too large.  As a result, HERA might diverge from 
+the desired optimum point.  This may be prevented by the application 
+of bounds from each step component.  With proper application of bounds, 
+most unconstrained problems may be solved by HERA.<P><B><I>Bounding </B></I>-  The control of step bounding is specified by 
+the control variable ADJUST, as follows<BR>
+<TABLE>
+    <TR><TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD><TD>ADJUST=0&nbsp;&nbsp;</TD> <TD><I>No bounding</I>:  Newton step size (Nominal) 
+        taken in either	Newton or anti-Newton direction</TD></TR>
+
+    <TR><TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD><TD>ADJUST=1&nbsp;&nbsp;</TD><TD><I>Variable bounding</I>:  bounds are adjusted 
+from iteration to iteration according to the change in the objective function.</TD></TR>
+    <TR><TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD><TD>ADJUST=2&nbsp;&nbsp;</TD><TD><MI>Fixed bounding<D>:  bounds remain the 
+same throughout HERA execution</TD></TR>
+
+</TABLE>
+
+<P>Bounds are specified for the independent variables of optimization 
+<I>x<SUB>1</SUB>,...,x<SUB>n</SUB></I> but are rotated and applied along the 
+step component directions <I>y<SUB>1</SUB>,...,y<SUB>n</SUB></I>.  In cases 
+where bounding is active (ADJUST = 1,2), whenever the Newton step 
+size for a component step is less than the applied bound, then the 
+step is unbounded, i.e., the Newton step is used for that component.
+
+Bounds may be specified in either of two ways:
+
+<ol type=1>
+<li>The control variable FRACT may be used to compute 
+    bounds for all of the unknowns according to the initial estimates for <I>x<SUB>i</SUB></I><BR><BR>
+    
+    &nbsp;&nbsp;&nbsp;&nbsp;b<SUB>i</SUB> = |FRACT*<I>x<SUB>i</SUB></I>|<BR><BR>
+
+    Whenever <I>x<SUB>i</SUB></I> is initially zero,<I> b<SUB>i</SUB></I>
+    is set to 1.0.
+
+    <P>Warning:  If the initial value of <I>x<SUB>i</SUB></I> is very 
+small and its natural order of magnitude (per solution) is not also 
+very small, then the FRACT option must not be used.  If FRACT were 
+used, the variable would be unreasonably constrained.</P></li>
+
+<LI>The WITH BOUNDS clause in the FIND statement 
+may be used to specify an individual bound for each unknown:<BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<B>WITH BOUNDS</B> <I>b<SUB>1</SUB>,...,b<SUB>n</SUB></I><BR><BR>
+
+where the parameters <I>b<SUB>i</SUB></I> are variables whose 
+values are to be used as bounds for <I>x<SUB>i</SUB></I>.  As usual for lists 
+of variables in a FIND statement, the list may either be a group of 
+scalar variables or a single vector of the appropriate length.  There 
+must be a <I>b<SUB>i</SUB></I> for each <I>x<SUB>i</SUB></I>; but if any <I>b<SUB>i</SUB></I> 
+is zero, then its value is computed by means of FRACT (per above).</LI></OL>
+
+<P>Regardless of which approach is used to specify bounds, the values 
+are computed only once, during the initiation stage of the optimization.  Thus, 
+the values for variables which specify bounds must be assigned before 
+the FIND statement is executed, and changing them thereafter will 
+have no effect.</P>
+
+<P><B><I>Scaling </I></B>-  Scaling may be used to equilibrate the <I>x<SUB>1</SUB> 
+,..., x<SUB>n</SUB></I> (unrotated axes) for better numerical behavior whenever 
+the magnitude of the <I>x's</I> are greatly different. Scale factors 
+may be input as parameters of the FIND statement using the clause <BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;{<B>WITH</B> |<B>AND</B>}<B>  SCALES</B>  <I>s<SUB>i</SUB>,..., 
+s<SUB>n</SUB></I>;</B><BR><BR>
+
+where <I>s<SUB>i</SUB></I> are variables whose values are to be used 
+as scale factors for <I>x<SUB>i</SUB></I>.  When this clause is present, 
+a scale factor must be provided for every unknown.  As with bounds, 
+the scale factors may be a list of scalar variables or a single vector 
+of an appropriate length.  The scale factors are computed only once, 
+during the initiation stage of the optimization.  Thus the variables<I> 
+s<SUB>i</SUB></I> must be assigned values before the FIND statement is executed, 
+and changing them thereafter has no effect on scaling.</P>
+
+<P>If no scales are input, but bounding is applied through the ADJUST 
+= 1 or ADJUST = 2 options, then automatic scaling is applied by setting 
+the scale factors equal to the input or calculated bounds.  This is 
+valid only for the usual case where the bounds are proportional to 
+the independent variables.  If bounds are input and some are set very 
+high (or low) because the associated independent variable is known 
+to be linear (or highly nonlinear) then automatic scaling should not 
+be used.</P>
+
+<P>Whichever approach is adopted (input or automatic), the scale factors 
+are used effectively as multipliers for the independent variables 
+and associated derivatives during HERA execution.  The model computations 
+are unaffected by the scaling.  (It is perfectly valid, of course, 
+to scale the model itself by choosing an appropriate system of physical 
+dimensions.)</P> 
+
+<P><B><I>Small Eigenvalues </I></B>-  Whenever one of the eigenvalues is 
+very small with respect to the largest eigenvalue, either of two interpretations 
+is possible:
+
+<ol type=1>
+    <li>The objective function is linear along the associated 
+        eigenvector, in which case a large step should be taken in this component direction.</LI>
+
+        <LI>The Hessian matrix is singular at the current point, in which case no step should be 
+            taken in this component direction.  Step changes in the other components should remove 
+            the singularity.</LI> </OL>
+            
+<P>A choice between these alternatives is provided by the control variable 
+STEP.</P>
+
+<P>STEP = 1 selects alternative 1, and the step size is 
+specified by the bound on the variable.  In the unbound case (ADJUST 
+= 0) this bound is specified by the value of FRACT times the initial 
+value of the particular independent variable.</P> 
+
+STEP = 0 selects alternative 2.<P><B><I>Solution Signal </I></B>-  The FLAG parameter <I>signal</I> is a 
+scalar variable which the solver will use to signal the condition 
+of problem solution.  After the optimization has terminated, <I>signal</I> 
+will have one of the following values:</P>&nbsp;<TABLE><TR>
+	<TH style="width: 434px">Signal value</TH><TH style="width: 453px">Meaning</TH></TR>                                                            
+    c&nbsp;&nbsp;&nbsp;&nbsp;0</TD><TD style="width: 434px">Convergence was achieved by satisfaction of the 
+        active convergence criteria</TD></TR>.
+
+<TR><TD class="style3" style="width: 434px">-</TD><TD style="width: 453px">The model executed an ABORT statement</TD></TR>.
+
+<TR><TD class="style3" style="width: 434px">+</TD><TD style="width: 453px">The maximum number of iterations was performed without achieving convergence.</TD></TR>
+</TABLE>
+  
+<br><B><i>Hera Controls</i></b> - The control variables for HERA are as 
+follows:</b><br><TABLE>
+<TR><TH align=left>Variable</TH><TH align=left style="width: 48px">Value</TH>
+	<TH align=center style="width: 419px">Option</TH>
+	<TH align=left style="width: 78px">Preset Value</TH></TR>
+<COLGROUP><COL align=left><COL align=center><COL align=left><COL align=right>
+
+<TR><TD><B>ADJUST</B></TD><TD style="width: 48px">0</TD>
+	<TD style="width: 419px">No bounding</TD><TD style="width: 78px">0</TD></TR> 		
+<TR><TD></TD><TD style="width: 48px">1</TD><TD style="width: 419px">Variable bounding</TD>
+	<TD style="width: 78px"></TD></TR> 
+<TR><TD></TD><TD style="width: 48px">2</TD><TD style="width: 419px">Fixed bounding</TD>
+	<TD style="width: 78px"></TD></TR>
+
+<TR><TD><B>SUMMARY</B></TD><TD style="width: 48px">1</TD>
+	<TD style="width: 419px">Print iteration summary</TD>
+	<TD style="width: 78px">1</TD></TR>
+<TR><TD></TD><TD style="width: 48px">0</TD><TD style="width: 419px">No iteration summary</TD>
+	<TD style="width: 78px"></TD></TR>
+
+<TR><TD><B>DETAIL</B></TD><TD style="width: 48px">0</TD>
+	<TD style="width: 419px">No detailed iteration print</TD>
+	<TD style="width: 78px">0</TD></TR> 
+<TR><TD></TD><TD style="width: 48px">n</TD><TD style="width: 419px">Detailed print every nth iteration<br>plus first and last</TD>
+	<TD style="width: 78px"></TD></TR>
+
+<TR><TD><B>STEP</B></TD><TD style="width: 48px">0</TD><TD style="width: 419px">No movement along eigenvector 
+	<br>corresponding to near zero eigenvalue</TD><TD style="width: 78px">1</TD></TR> 
+<TR><TD></TD><TD style="width: 48px">1</TD><TD style="width: 419px">standard movement to + bound limit</TD>
+	<TD style="width: 78px"></TD></TR>
+
+<TR><TD><B>REMAX</B></TD><TD style="width: 48px"></TD><TD style="width: 419px">Maximum number of allowed iterations</TD>
+	<TD style="width: 78px">20</TD></TR>   
+
+
+<TR><TD><B>FRACT/B></TD><TD style="width: 48px"></TD><TD style="width: 419px">Fractional bound to be applied 
+	<br>to all independent variables</TD><TD style="width: 78px">0.5</TD></TR>   
+
+<TR><TD><B>CONVERGE</B></TD><TD style="width: 48px">1</TD>
+	<TD style="width: 419px">Satisfy objective convergence <br>or unknowns convergence</TD>
+	<TD style="width: 78px">1</TD></TR> 
+<TR><TD></TD><TD style="width: 48px">2</TD><TD style="width: 419px">Satisfy objective convergence 
+	<br>and unknowns convergence</TD><TD style="width: 78px"></TD></TR>
+			
+
+<TR><TD><B>DELTA</B></TD>
+	<td></td>
+	<TD style="width: 48px">Tolerance for unknowns</TD>
+	<TD style="width: 78px">10<SUP>-7</SUP></TD></TR>
+
+<TR><TD><B>PROGRESS</B></TD>
+	<td></td>
+	<TD style="width: 48px">Relative improvement for objective convergence</TD>
+	<TD style="width: 78px">10<SUP>-5</SUP></TD></TR>	
+
+<TR><TD><B>DETOUT</B></TD><TD style="width: 48px">0</TD>
+	<TD style="width: 419px">Detail Report to DETAIL stream<TD>+1</TD></TR> 
+<TR><TD></TD><TD style="width: 48px">+1</B></TD><TD style="width: 419px">&nbsp;Detail Report to SUMMARY stream</TD>
+	<TD style="width: 78px"></TD></TR> 
+<TR><TD></TD><TD style="width: 48px">-1</B></TD><TD style="width: 419px">&nbsp;Detail Report to CONSOLE stream</TD>
+	<TD style="width: 78px"></TD></TR> 
+
+<TR><TD><B>SUMOUT</B></TD><TD style="width: 48px">0</TD>
+	<TD style="width: 419px">Summary Report to DETAIL stream</TD>
+	<td>-1</td>
+	</TR>  
+<TR><TD></TD><TD style="width: 48px">+1</B></TD><TD style="width: 419px">Summary Report to SUMMARY stream</TD>
+	<TD style="width: 78px"></TD></TR>
+
+<TR><TD></TD><TD style="width: 48px">-1</B></TD><TD style="width: 419px">Summary Report to CONSOLE stream</TD>
+	<TD style="width: 78px"></TD></TR> 
+
+<TR><TD><B>BREAKIN</B></TD><TD style="width: 48px">0</TD>
+	<TD style="width: 419px">No interactive breakpoints</TD>
+	<td>0</td>
+<TR><TD></TD><TD style="width: 48px">n</TD><TD style="width: 419px">Interactive Breakpoints every nth iteration</TD>
+	<TD style="width: 78px"></TD></TR>
+
+<TR><TD></TD><TD style="width: 48px">n</TD><TD style="width: 419px">Breakpoint after every nth iteration</TD>
+	<TD style="width: 78px"></TD></TR>
+
+</TABLE>
+
+
+
+
+<P><B><I>Convergence Criteria</I></B> - Convergence criteria for HERA include 
+combinations of the convergence tests <I>unknowns convergence</I> 
+and <I>objective convergence</I> as specified by the CONVERGE control 
+variable.</P>
+
+<P>The <I>unknowns convergence</I> test is satisfied if<BR><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;max (|&Delta;<I>x<SUB>1</SUB>/x<SUB>1</SUB></I>|, ..., |&Delta;<I>x<SUB>n</SUB>/x<SUB>n</SUB></I>|) 
+&lt; <B>DELTA</b></P> 
+
+<P>The <I>objective convergence</I> test is satisfied if<BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;|&Delta;<I>f/f</i>| &lt; <B>PROGRESS</B>  and &Delta;(&Delta;<I>f</I>) 
+is negative</p>  
+
+<P><B><I>Optimization Summary Report </I></B>-  The optimization summary 
+report is the nominal print report issued from HERA.  An example of 
+this report as printed from the problem DIFCRV  (in Section 6.2.2) 
+is given in Figure 6-2.</P> 
+
+<pre>
+fig62
+  ---- HERA SUMMARY, INVOKED AT DIFCRVG[11] FOR MODEL CURFIT ----
+          
+     CONVERGENCE CONDITION AFTER  6 ITERATIONS
+        UNKNOWNS CONVERGED
+        OBJECTIVE CRITERION UNSATISFIED
+        ALL SPECIFIED CRITERIA SATISFIED
+  
+   LOOP NUMBER .........   [INITIAL]         1             2
+   UNKNOWNS
+     P1                  0.100000E-01  0.274270E-01  0.429687E-01
+     P2                  0.500000E-01  0.379046E-01  0.234666E-01
+   OBJECTIVE                                 
+     ERROR               0.160504E+01  0.775805E+00  0.294929E+00
+  
+   LOOP NUMBER .........   [INITIAL]         3             4
+   UNKNOWNS
+     P1                  0.100000E-01  0.551459E-01  0.682729E-01
+     P2                  0.500000E-01  0.609659E-02  0.324918E-02
+  OBJECTIVE
+     ERROR               0.160504E+01  0.505781E-01  0.511270E-02
+   LOOP NUMBER .........   [INITIAL]         5             6
+   UNKNOWNS
+     P1                  0.100000E-01  0.747395E-01  0.760619E-01
+     P2                  0.500000E-01  0.370729E-02  0.388164E-02
+  OBJECTIVE
+     ERROR               0.160504E+01  0.274014E-03  0.136268E-03
+  
+  ----END OF LOOP SUMMARY
+</pre>
+FIG 6-2 HERA Summary Report
+<P>The REPORTING phrase is used to include other variables in the summary 
+report.  The statement<BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<B>FIND THRUST(1), THRUST(2), TBURN(2), TBURN(3);<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;IN STAGES; BY HERA; REPORTING DLVTOT,TBTOT;<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;TO MINIMIZE WEIGHT</B><BR><BR>
+
+resulted in the following summary report shown in Figure 6-3</P>
+
+<P><B><I>Detailed Iteration Report</I></B>  -  The detailed iteration report 
+is issued from HERA whenever the control DETAIL is nonzero. An example 
+of a detailed report (also taken from problem DIFCRV ) is shown in 
+Figure 6-4.  This report includes the current values of the independent 
+variables, the Hessian of the objective function, the eigenvalues 
+and eigenvectors of the Hessian, and the change in the independent 
+variables computed by HERA.  The changes in the independent variables 
+are flagged by "|" if the step was bounded and by "!" if the step 
+was anti-Newton.</P>
+
+<PRE>
+fig63
+  ---- HERA SUMMARY, INVOKED AT ROCKET[15] FOR MODEL STAGES ----         
+
+     CONVERGENCE CONDITION AFTER  3 ITERATIONS
+        UNKNOWNS NOT CONVERGED
+        OBJECTIVE CRITERION SATISFIED
+        ALL SPECIFIED CRITERIA SATISFIED
+
+   LOOP NUMBER .........   [INITIAL]         1             2              3
+   UNKNOWNS
+     THRUST   (     1)    0.350000E+03  0.313511E+03  0.327167E+03   0.328280E+03
+     THRUST   (     2)    0.150000E+04  0.127961E+04  0.127827E+04   0.127746E+04
+     TBURN    (     2)    0.100000E+03  0.126287E+03  0.132646E+03   0.133078E+03
+     TBURN    (     3)    0.180000E+03  0.153080E+03  0.151388E+03   0.151068E+03
+   OBJECTIVE
+     WEIGHT               0.381451E+04  0.378066E+04  0.377866E+04   0.377865E+04
+   OTHER VARIABLES
+     DLVTOT               0.280000E+05  0.280000E+05  0.280000E+05   0.280000E+05
+     TBTOT                0.400000E+03  0.400000E+03  0.400000E+03   0.400000E+03
+
+  ---END OF LOOP SUMMARY
+</PRE>
+<br>FIG 6-3 Summary Report with REPORTING variables<A NAME="UnConOpSolv" ID="UnConOpSolv"><H2>6.2 Using Constrained Optimization Solvers</H2></A>
+
+<P>Unconstrained optimization problems may be solved by some of the techniques 
+employed for constrained optimization.  In fact, such problems simply 
+represent the limiting case in which constraints are omitted or have 
+no effect upon the problem.</P> 
+
+<P>The solvers JOVE, ZEUS and JUPITER described in the following chapter 
+may be used to solve unconstrained optimization problems, while THOR 
+cannot.  One disadvantage incurred in using either JOVE, ZEUS or JUPITER 
+is that, in comparison with HERA, far less information is automatically 
+provided concerning the progress to a solution.  In fact, these solvers  will 
+solve an unconstrained optimization in a single iteration.  This is 
+because each of their iterations actually consists of a complete optimization 
+problem. Where such interim information is unnecessary, any of these  solvers 
+is suitable.  Actually, even this limitation is not entirely valid, 
+since the information which a solver outputs in an iteration report 
+may always be obtained by ordinary FC statements within the model 
+itself.</P>
+<pre>fig64                                                                                                                                                                    
+  ---- HERA ITERATION 1 INVOKED AT DIFCRVG[11] FOR MODEL CURFIT ----
+
+     OBJECTIVE [F] 0.775805E+00 WITH ITERATIVE IMPROVEMENT -0.829234E+00
+
+     INDEPENDENT VARIABLES [X]
+       0.274270E-01   0.379046E-01
+
+     HESSIAN MATRIX [D2F/DXDX]
+                  (   1)         (   2)
+     (   1)    0.119909E+04   0.451528E+02
+     (   2)    0.451528E+02  -0.257099E+02
+ 
+     GRADIENT VECTOR [DF/DX]
+      -0.274791E+02   0.123231E+02
+
+     EIGENVALUES OF HESSIAN MATRIX
+       0.270170E+00  -0.615874E-02
+
+     MATRIX OF EIGENVECTORS
+                  (   1)         (   2)
+     (   1)    0.999323E+00  -0.367904E-01
+     (   2)    0.367904E-01   0.999323E+00
+
+     DELTA-X [|=BOUNDED,!=ANTI-NEWTON]
+       0.155417E-01| -0.144380E-01!
+
+     DELTA-X / X
+       0.566657E+00  -0.380904E+00
+
+     CONVERGENCE CONDITION AFTER  1 ITERATIONS
+        UNKNOWNS NOT CONVERGED
+        OBJECTIVE CRITERION UNSATISFIED
+        SPECIFIED CRITERIA UNSATISFIED
+
+  ---- END HERA ITERATION 1                                                                                                                                 
+</pre>FIG 6-4. Detailed Iteration Report for HERA
+<A NAME="OpHier" ID="OpHier"><H2>6.3 Optimization Hierarchies</H2></A>
+
+<P>This section explains the structuring of calculus processes using 
+unconstrained optimization as the outer process for the purpose of 
+addressing higher order applications such as constrained optimization, 
+optimal control, process identification, eigenvalue problems of differential 
+equations, and inverse problems of partial differential equations.</P>   
+
+<A NAME="EqConViaNestEqSlv" ID="EqConViaNestEqSlv"><H3>6.3.1 Equality Constraints via Nested Equation Solving</H3></A>
+
+A common mathematical programming problem is
+
+&nbsp;&nbsp;&nbsp;&nbsp;<br><br>&nbsp;&nbsp;&nbsp; find <I>x<SUB>1</SUB> ,..., x<SUB>n</SUB></i> which minimizes 
+<I>f(x<SUB>1</SUB>,...,x<SUB>n</SUB></i>)<BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;subject to the constraints<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>g<SUB>1</SUB>(x<SUB>1</SUB>,...,x<SUB>n</SUB></i>) = 0<BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;: 
+
+&nbsp;&nbsp;&nbsp;&nbsp;<I><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g<SUB>m</SUB>(x<SUB>1</SUB>,...,x<SUB>n</SUB></i>) = 0 <BR>
+
+<P>In this type of problem, the implicit equations representing the constraints 
+must be solved concurrently with the optimization.  One way of solving 
+this type of problem in FC is to nest the solution of implicit equations 
+inside an unconstrained optimization as illustrated below:</P>
+
+<br>&nbsp;&nbsp; &nbsp;<B>&nbsp;&nbsp;&nbsp; </B> :<B><br>&nbsp;&nbsp;&nbsp; FIND</B> <I>x<SUB>1</SUB>,...,x<SUB>n</SUB></I>; <B>IN MINF; BY 
+HERA; TO MINIMIZE</B> <I>f</I><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<B>MODEL MINF</B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>FIND</B> <I>x<SUB>n-m+1</SUB>,...,x<SUB>n</SUB></i>; <B>IN CONS; BY 
+AJAX; TO MATCH</B> <I>g<SUB>1</SUB>,...,g<SUB>m</SUB></i><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	<I>f=f(x<SUB>1</SUB>,...,x<SUB>n</SUB>)</I><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<B>END</B><BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<B>MODEL CONS</B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;:<BR>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<I>g<SUB>1</SUB> = g<SUB>1</SUB>(x<SUB>n-m+1</SUB>,...,x<SUB>n</SUB>)</I><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;:<BR>
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<I>g<SUB>m</SUB> = g<SUB>m</SUB>(x<SUB>1</SUB>,...,x<SUB>n</SUB>)</I><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;<B>END</B>
+<br><br>This problem has the structure illustrated in Figure 6-5.
+
+<br><br>
+<img alt="FIG. 6-5." height="443" longdesc="FIG. 6-5 Equality COnstrained Optimization via Nesting" src="FIG65.PNG" width="636"><br>
+<strong>FIGURE 6-5 Equality Constrained Optimization via nesting [ck, better 
+fig?)</strong><P>When equality constraints are present in an optimization problem, 
+the number of degrees of freedom for optimization is reduced by the 
+number of equality constraints (In unconstrained optimization, the 
+number of independent variables <I>n</I> is the number of <I>degrees 
+of freedom</I> of optimization, meaning that any variation of the <I>n</I> 
+variables is permitted in the search for an optimum.). In the nested 
+problem formulation this is visible, because some of the independent 
+variables, namely <I> x<SUB>n-m+1</SUB>,...,x<SUB>n</SUB></I> are reduced 
+in status from optimization variables to the unknowns of the implicit 
+equations. Their values are specified when the constraints are matched, 
+thus they are dependent variables of the optimization problem.  It 
+is usually immaterial which of the independent variables are chosen 
+to be reduced from optimization unknowns to constraint unknowns.  The 
+only requirement is that the constraints be dependent on the ones 
+that are chosen.</P>
+
+<P><B><I>Differential Coordinate Transformation</I></B> - The nesting of implicit solution processes is facilitated by a coordinate transformation which 
+first deactivates the differentiation of the outer context, stores 
+its existing derivatives and independent variables (<I>x<SUB>1</SUB>,...,x<SUB>n</SUB></I>) 
+in an inactive partials environment in the Bucket (See Section 1.2), 
+then activates differentiation with respect to <I>x<SUB>n-m+1</SUB>,..., 
+x<SUB>n</SUB></I> of the inner context and executes it.  Upon completion 
+of the inner context execution (including convergence to an inner 
+solution), The inactive derivatives are retrieved and used with the 
+active derivatives of the inner context to transform all of the derivatives 
+of inner context with respect to the inner independents <I>x<SUB>n-m+1</SUB> 
+,...,x<SUB>n</SUB></I> into equivalent derivatives with respect to the outer 
+independents <I>x<SUB>1</SUB>,...,x<SUB>n-m</SUB></I>. This operation 
+converts the inner independent variables into dependent variables 
+of the outer process with correct partial derivatives with respect 
+to the outer independents.  The net effect is as if inner computations 
+were <MI>explicit<D> rather than implicit. This process requires more 
+than one differentiation pass through the inner context following 
+convergence of the inner process, each having different independent 
+variables and/or different order of differentiation.</P>
+
+<A NAME="ThreeStageRocket" ID="ThreeStageRocket"><H3>APPLICATION 6-1: Three-stage Rocket Constrained 
+Design Optimization</H3></A>
+
+<H4 class="style1">(Optimization with Nested Constraint Matching)</H4>
+
+<H5>Problem Statement</H5>
+
+A three-stage liquid rocket vehicle is to be designed to lift a given 
+payload into orbit from the surface of Mars.  The propellants have 
+been specified, thus the rocket performance level (specific impulse) 
+is specified.  The total velocity increment, and the total burn time 
+are also specified.  Each stage is governed by the following equations:<BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp; Specific impulse:&nbsp;&nbsp;&nbsp;&nbsp;<I>I<SUB>sp</SUB> = (I<SUB>sp</SUB>)<SUB>vacuum</SUB> 
+(1-X<SUB>IP</SUB>)</I><BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp; Propellant weight:&nbsp;&nbsp;&nbsp;&nbsp;<I>W<SUB>prop</SUB> = T t<SUB>burn</SUB>/I<SUB>sp</SUB></I><BR><BR>      
+
+&nbsp;&nbsp;&nbsp;&nbsp; Stage weight:&nbsp;&nbsp;&nbsp;&nbsp;<I>W<SUB>stage</SUB> = 0.234T+W<SUB>prop</SUB>+1.255W<SUB>prop</SUB><SUP>0.704</SUP>+4</I><BR><BR> 
+
+&nbsp;&nbsp;&nbsp;&nbsp; Structural factor:&nbsp;&nbsp;&nbsp;&nbsp;<I>S<SUB>FAC</SUB> =W<SUB>prop</SUB>/W<SUB>stage</SUB></I><BR><BR> 
+
+&nbsp;&nbsp;&nbsp;&nbsp; Mass ratio:&nbsp;&nbsp;&nbsp;&nbsp;<I>MR<SUB>i</SUB> = W/(W-W<SUB>prop</SUB>)</I><BR><BR> 
+
+&nbsp;&nbsp;&nbsp;&nbsp; Stage velocity increment:<I>&Delta;V<SUB>i</SUB> = g<SUB>c</SUB>I<SUB>sp</SUB>ln(MR<SUB>i</SUB>)</I><BR><BR> 
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; Total velocity change <div style="margin-left: 250px">
+<img src="../images/DeltaVtotal.png" height="89" width="175">
+</div>
+
+&nbsp;&nbsp;&nbsp;&nbsp; Total burn time <div style="margin-left: 250px">
+<img src="../images/tburntotal.png" height="91" width="187">
+</div>
+
+
+where<BR><BR>  
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>X<SUB>ip</SUB></I> = atmospheric pressure impulse expansion loss<BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>T</I> = thrust (lbf) of stage engine<BR><BR> 
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>t<SUB>B</SUB></I> = burn time of stage engine
+
+<P>It is desired to fix the design conditions for the three-rocket engines 
+in order to minimize total vehicle weight.  This involves the determination 
+of six unknowns, the thrust level and burn time for each of the three-stage 
+engines.</P>
+
+
+<H5>Problem Analysis</H5>  
+
+<P>Since the total velocity increment and total burn time are fixed, 
+we specify the constants DELVIP (&DELTA;V input) and TBIP (t<SUB>B</SUB> 
+input) to define the equality constraints.<BR><BR> 
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>g<SUB>i</SUB> = &Delta;V<SUB>total</SUB> - &Delta;V<SUB>input</SUB></I><BR><BR> 
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>g<SUB>2</SUB> = t<SUB>Btotal</SUB> - t<SUB>Binput</SUB></I><BR><BR> 
+
+These constraints reduce the optimization degrees of freedom from 
+six to four.  Thus, in solving the constraint equations we determine 
+two of the six unknowns.  In this case, the choice of unknowns is 
+arbitrary since the constraints are dependent on total vehicle quantities 
+which are, in turn, dependent on all six unknowns. Choosing <I>T<SUB>3</SUB></I> 
+and <I>t<SUB>B1</SUB></I> as the implicit equation unknowns, the problem may 
+be stated as<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;FIND <I>T<SUB>1</SUB>, T<SUB>2</SUB>, t<SUB>B2</SUB>, t<SUB>B3</SUB></I> TO 
+MINIMIZE <I>W</I><BR><BR>
+
+and<br><br> 
+
+&nbsp;&nbsp;&nbsp;&nbsp;FIND <I>T<SUB>3</SUB>, t<SUB>B1</SUB></I> TO MATCH g<SUB>1</SUB>, g<SUB>2</SUB><BR><BR> 
+
+The program listing is given in Figure 6-6. The output begins in 
+Figure 6-7, consisting of a series of four AJAX summary reports summarizing 
+the inner solution process ( each one corresponding to a single iteration 
+of HERA).  The outer solution process is summarized by the HERA summary 
+report given in Figure 6-3.
+<pre>
+ GLOBAL ALL
+	PROBLEM ROCKET (20000,2000,2000)AC(3),TBURN(3),THRUST(3),XIP(3),WPROP(3)
+			DIMENSION&nbsp; RATIO(3),WSTAGE(3),STRFAC(3),DELV(3), G(2)
+	
+		DATA THRUST /350,1500,4100/,TBURN/110,100,180/
+				DATA&nbsp; XIP/5E-3,0,0/,SPIVAC/3*315
+		/
+		FIND THRUST(1),THRUST(2),TBURN(2),TBURN(3); IN STAGES;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp; BY HERA;&nbsp; REPORTING DLVTOT,TBTOT; TO MINIMIZE WEIGHT
+	END
+		MODEL STAGE		FIND THRUST(3), TBURN(1); IN EQS; BY AJAX; TO MATCH G
+	
+	END
+	MODEL EQNSC	&nbsp;&nbsp; THREE STAGE ROCKET PHENOMENA MODEL	
+		DATA GC,WPAYLD,DELVIP,TBIP/32.174,50,2.8E4,400/
+		DLVTOT=0 : TBTOT=0
+
+		WEIGHT=WPAYLD
+		DO I=1,3
+			SPI(I)=SPIVAC(I)*(1-XIP(I))
+			WPROP(I)=THRUST(I)*TBURN(I)/SPI(I)
+			WSTAGE(I)=0.0234*THRUST(I)+WPROP(I)+1.255*WPROP(I)**0.704+4
+			WEIGHT=WEIGHT+WSTAGE(I)
+			RATIO(I)=WEIGHT/(WEIGHT-WPROP(I))
+			DELV(I)=GC*SPI(I)*LOG(RATIO(I))
+			DLVTOT=DLVTOT+DELV(I)
+			TBTOT=TBTOT+TBURN(I)
+		END DO
+		G(1)=DLVTOT-DELVIP ! Total delta V constraint
+		G(2)=TBTOT-TBIP    ! Total burn time constraint
+	END	
+</pre>
+FIGURE 6-6 Rocket Problem Program Listing
+<pre>
+--- AJAX SUMMARY, INVOKED AT STAGES[23] FOR MODEL EQNS ----
+CONVERGENCE CONDITION AFTER 3 ITERATIONS
+ UNKNOWNS CONVERGED
+ CONSTRAINTS SATISFIED 
+ ALL SPECIFIED CRITERIA SATISFIED
+LOOP NUMBER .........
+			INITIAL		1 		2
+UNKNOWNS THRUST	( 3) 0.410000E+04 0.443571E+04 0.445450E+04 
+TBURN		( 1) 0.110000E+03 0.120000E+03 0.120000E+03
+CONSTRAINTS 
+  G( 1) -0.490723E+03 -0.213077E+02 -0.422461E-01 
+  G( 2) -0.100000E+02 0.000000E+00 0.000000E+00
+LOOP NUMBER ......... [INITIAL] 	3
+UNKNOWNS 
+ THRUST 	( 3) 0.410000E+04 0.445454E+04
+ TBURN 		( 1) 0.110000E+03 0.120000E+03
+CONSTRAINTS 
+  G 		( 1) -0.490723E+03 -0.166612E-06
+  G 		( 2) -0.100000E+02 0.000000E+00
+---END OF LOOP SUMMARY
+--- AJAX SUMMARY, INVOKED AT STAGES[23] FOR MODEL EQNS ----
+CONVERGENCE CONDITION AFTER 3 ITERATIONS 
+  UNKNOWNS CONVERGED 
+  CONSTRAINTS UNSATISFIED 
+  ALL SPECIFIED CRITERIA SATISFIED
+LOOP NUMBER ......... [INITIAL] 		1 		2
+UNKNOWNS
+  THRUST 		( 3) 0.445454E+04 0.506731E+04 0.510717E+04
+  TBURN 		( 1) 0.120000E+03 0.120632E+03 0.120632E+03
+CONSTRAINTS
+  G 			( 1) -0.675363E+03 -0.387587E+02 -0.142002E+00 
+  G 			( 2) -0.632439E+00 0.000000E+00 0.000000E+00
+LOOP NUMBER ......... [INITIAL] 		3
+UNKNOWNS
+ THRUST 		( 3) 0.445454E+04 0.510731E+04
+ TBURN 			( 1) 0.120000E+03 0.120632E+03
+CONSTRAINTS
+ G 			( 1) -0.675363E+03 -0.191770E-05
+ G 			( 2) -0.632439E+00 0.000000E+00
+---END OF LOOP SUMMARY
+--- AJAX SUMMARY, INVOKED AT STAGES[23] FOR MODEL EQNS----<br><br>CONVERGENCE CONDITION AFTER 2 ITERATIONS
+  UNKNOWNS CONVERGED
+  CONSTRAINTS UNSATISFIED
+  ALL SPECIFIED CRITERIA SATISFIED
+LOOP NUMBER ......... [INITIAL]			1    		2
+UNKNOWNS
+  THRUST 		( 3) 0.510731E+04 0.510287E+04 0.510421E+04
+  TBURN 		( 1) 0.120632E+03 0.115965E+03 0.115965E+03
+CONSTRAINTS
+  G 			( 1) 0.369694E+02 -0.129275E+01 -0.157237E-03
+  G 			( 2) 0.466703E+01 0.000000E+00 0.000000E+00
+---END OF LOOP SUMMARY
+--- AJAX SUMMARY,INVOKED AT STAGES[23] FOR MODEL EQNS ----
+CONVERGENCE CONDITION AFTER 2 ITERATIONS
+UNKNOWNS CONVERGED
+CONSTRAINTS SATISFIED
+ALL SPECIFIED CRITERIA SATISFIED
+LOOP NUMBER ......... [INITIAL] 		1 		2
+UNKNOWNS
+  THRUST 		( 3) 0.510421E+04 0.511094E+04 0.511094E+04
+  TBURN 		( 1) 0.115965E+03 0.115854E+03 0.115854E+03
+CONSTRAINTS
+  G 			( 1) -0.563950E+01 -0.470836E-02 -0.208092E-08
+  G 			( 2) 0.111206E+00 0.000000E+00 0.000000E+00
+---END OF LOOP SUMMARY
+</pre>
+FIGURE 6-7 Output Listing (Continued in Fig. 6-3)
+
+<A NAME="OptDifEqMod" ID="OptDifEqMod"><H3>6.3.2 Optimizing Differential Equations Models</H3></A>
+
+<P>In optimization hierarchies where the inner problem is an initial 
+value problem of ordinary differential equations, the underlying procees 
+of differential arithmetic is used to differentiate the integration 
+prcess as it is executing, propagating partial derivatives of the 
+output of integation (along the integral curves) with respect to variables 
+which are input to the integration process, i.e. initial conditions 
+or parameters of the differential equations. Various kinds of inverse 
+problems of differential equations can be solved with this kind of 
+problem structure.  The following applications are typical.</P>
+
+<A NAME="ChemkinProcId" ID="ChemkinProcId"><H3>APPLICATION 6-2 Chemical Kinetics Process Identification</H3></A>
+
+<H4 class="style1">(Multipoint Boundary Value, Model-Fitting Optimization)</H4>
+
+<P>A chemical reaction process 
+
+<div style="margin-left: 50px">
+<img src="../images/ChemReaction.png" height="89" width="168">
+</div>
+
+can be represented by a system of first order differential equations 
+defining the rate of production of the chemical species A, B, C, and 
+D.<BR><BR>
+
+&nbsp;&nbsp;&nbsp; <I>dC/dt = P<SUB>1</SUB>AB</I><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>dA/dt = - P<SUB>1</SUB>AB-(0.01+P<SUB>2</SUB>)A = - dC/dt-(0.01+P<SUB>2</SUB>)A</I><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>dB/dt = - P<SUB>1</SUB>AB-0.05BD = - dC/dt-0.05BD</I><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>dD/dt = (0.01+P<SUB>2</SUB>)A -0.05BD = dB/dt-dA/dt</I><BR><BR>
+
+where <I>P<SUB>1</SUB></I> and <I>P<SUB>2</SUB></I> are unknown reaction rate parameters.  In 
+an experiment involving the chemical reaction, the concentrations 
+A and C were measured at 10 minute intervals for one hour, resulting 
+in the following data:<br><br>
+
+<div class="indented">
+<TABLE length="70%" style="width: 564px"><TR>
+	<TH ALIGN="LEFT" style="width: 141px">Time:<I>&nbsp;&nbsp;&nbsp;t<SUB>m</SUB></I></TH>
+    <TH style="width: 13%"> 0</TH><TH style="width: 13%"> 10</TH>
+	<TH style="width: 13%"> 20</TH><TH style="width: 13%"> 30</TH>
+	<TH style="width: 13%"> 40</TH><TH style="width: 13%"> 50</TH>
+	<TH style="width: 13%"> 60</TH></TR>
+
+<TR><TD class="style2" style="width: 141px">A<SUB>m</SUB></TD>
+    <TD style="width: 13%">1.0</TD><TD style="width: 13%">0.483</TD>
+	<TD style="width: 13%">0.281</TD><TD style="width: 13%">0.191</TD>
+	<TD style="width: 13%">0.134</TD><TD style="width: 13%">0.097</TD>
+	<TD style="width: 13%">0.065</TD></TR>.
+
+<TR><TD class="style2" style="width: 141px">C<SUB>m</SUB></TD>
+    <TD style="width: 13%">0.0</TD><TD style="width: 13%">0.419</TD>
+	<TD style="width: 13%">0.563</TD><TD style="width: 13%">0.629</TD>
+	<TD style="width: 13%">0.666</TD><TD style="width: 13%">0.689</TD>
+	<TD style="width: 13%">0.708</TD></TR>
+</TABLE>    .
+</div>
+
+
+<P>A program is required to identify the process by selecting values 
+of the parameters <I>P<SUB>1</SUB></I> and <I>P<SUB>2</SUB></I> for which the integrated 
+concentrations A and C match their respective measured values in a 
+least-squares sense. Specifically, the cumulative error function
+
+<div style="margin-left: 50px">
+<img src="../images/CumErrorDiffCurve.png" height="99" width="620">
+</div>
+
+<br>is to be minimized with respect to the parameters <I>P<SUB>1</SUB></I> and <I>P<SUB>2</SUB></I> 
+where the concentrations <I>A(P<SUB>1</SUB>, P<SUB>2</SUB>, t<SUB>i</SUB>), C(P<SUB>1</SUB>, 
+P<SUB>2</SUB>, t<SUB>i</SUB>), i=1,...,6</I>  are determined by integrating the 
+differential equations given initial conditions<br><br> 
+
+&nbsp;&nbsp;&nbsp;&nbsp; <I>A<SUB>0</SUB> = 1  B<SUB>0</SUB> = 1.03  C<SUB>0</SUB> = 0  D<SUB>0</SUB> = 0</I><BR><BR> 
+The output of the program will include the values of P<SUB>1</SUB> and P<SUB>1</SUB>.
+
+<P>The program is given in Figure 6-8, and output is shown in figure 6-9.<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PROBLEM DIFCRV(5000,1000,1000)&nbsp; !&nbsp; Chemical Kenetics Process Ident<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+COMMON /PARAMS/ P1,P2<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DIMENSION TM(6),CM(6),AM(6)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATA TM/10,20,30,40,50,60/&nbsp; ! Time points for measurements<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATA CM/0.419,0.563,0.629,0.666,0.689,0.708/ ! C measurements<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATA AM/0.483,0.281,0.191,0.134,0.097,0.065/ ! A measurements<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATA NM,A0,B0,C0,D0,DT/6,1.0,1.03,0.0,0.0,2.0/ ! Initial Cond.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATA B1,B2/0.015,0.015/ ! Optimization step bounds<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; P1=0.01 : P2=0.05 ! Parameter starting guesses<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FIND P1,P2; IN CURFIT;<br>&nbsp;&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp; BY HERA(SET); WITH BOUNDS B1,B2; TO MINIMIZE ERROR<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MODEL CURFIT<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; COMMON /TRAJ/DADT,A,DBT,B,DCDT,C,DDDT,D,T<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DIMENSION TM(*),CM(*),AM(*)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A=A0 : B=B0 : C=C0 : D=D0 : T=0 : TF=0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INITIATE ISIS; FOR DIFEQS;<br>&nbsp;&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp; EQUATIONS DADT/A,DBDT/B,DCDT/C,DDDT/D;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp; *&nbsp;&nbsp;&nbsp; OF T; STEP DT; TO TF<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ERROR=0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DO 10 I= 
+1,NM<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TF=TM(I)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; INTEGRATE DIFEQS; BY ISIS<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ERROR=ERROR+(AM(I)-A)**2+(CM(I)-C)**2&nbsp;&nbsp; ! Cumulative error<br>10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CONTINUE<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TERMINATE DIFEQS<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MODEL DIFEQS ! Rates of reaction differential equations<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; COMMON /PARAMS/P1,P2&nbsp; /TRAJ/DADT,A,DBT,B,DCDT,C,DDDT,D,T<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DCDT=P1*A*B<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DADT=-(DCDT+(.01+P2)*A<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DBDT=-(DCDT+.05*B*D)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DDDT=DBDT-DADT<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CONTROLLER SET(HERA)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DELTA=1E-2<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DETAIL=1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ADJUST=2<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; END<br></P>
+<P>FIG 6-8. Program for Process Identification&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+[CK TEST THIS VERSION, AND ~G VERSION]</P>
+<P>Bounding is used in this problem to limit the optimization search 
+stepping.  Fixed bounding is employed as specified by the control 
+variable ADJUST=2 in the controller SET.</P>
+<pre>
+fig69
+ ---- HERA SUMMARY, INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+
+   CONVERGENCE CONDITION AFTER  6 ITERATIONS
+       UNKNOWNS CONVERGED
+       OBJECTIVE CRITERION UNSATISFIED
+       ALL SPECIFIED CRITERIA SATISFIED
+
+   LOOP NUMBER .........   [INITIAL]         1             2
+  UNKNOWNS
+    P1                  0.100000E-01  0.274270E-01  0.429687E-01
+    P2                  0.500000E-01  0.379046E-01  0.234666E-01
+  OBJECTIVE
+    ERROR               0.160504E+01  0.775805E+00<N>0.294929E+00
+
+LOOP NUMBER .........   [INITIAL]         3             4
+  UNKNOWNS
+    P1                  0.100000E-01  0.551459E-01  0.682729E-01
+    P2                  0.500000E-01  0.609659E-02  0.324918E-02
+  OBJECTIVE
+    ERROR               0.160504E+01  0.505781E-01  0.511270E-02
+
+   LOOP NUMBER .........   [INITIAL]         5             6
+  UNKNOWNS
+    P1                  0.100000E-01  0.747395E-01  0.760619E-01
+    P2                  0.500000E-01  0.370729E-02  0.388164E-02
+  OBJECTIVE
+    ERROR               0.160504E+01  0.274014E-03  0.136268E-03
+
+ ---END OF LOOP SUMMARY
+  ELAPSED TIME =   32.41 SECONDS
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  --- SCROLL TABLE OF CONTENTS
+   0.  ---- HERA ITERATION 0 INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+   1.  ---- HERA ITERATION 1 INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+   2.  ---- HERA ITERATION 2 INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+   3.  ---- HERA ITERATION 3 INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+   4.  ---- HERA ITERATION 4 INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+   5.  ---- HERA ITERATION 5 INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+   6.  ---- HERA ITERATION 6 INVOKED AT DIFCRV[11] FOR MODEL CURFIT ----
+         ==== SCROLL SECTION     0
+
+ ---- HERA ITERATION 0 INVOKED AT DIFCRV[11] FOR MODEL 
+
+    OBJECTIVE [F]  0.160504E+01                                                 
+    INDEPENDENT VARIABLES [X]
+      0.100000E-01   0.500000E-01                                               
+    HESSIAN MATRIX [D2F/DXDX]                 
+                 (   1)         (   2)
+    (   1)    0.253315E+04   0.475965E+03
+    (   2)    0.475965E+03  -0.164538E+02                                       
+    GRADIENT VECTOR [DF/DX]
+     -0.557362E+02   0.796051E+01                                               
+    EIGENVALUES OF HESSIAN MATRIX     
+      0.589299E+00  -0.230423E-01                                               
+    MATRIX OF EIGENVECTORS
+                 (   1)         (   2)
+    (   1)    0.984081E+00  -0.177719E+00    
+    (   2)    0.177719E+00   0.984081E+00                                       
+    DELTA-X [|=BOUNDED,!=ANTI-NEWTON]      
+       0.174270E-01| -0.120954E-01!                                              
+    DELTA-X / X      0.174270E+01  -0.241909E+00                                               
+    CONVERGENCE CONDITION AFTER  0 ITERATIONS
+       UNKNOWNS NOT CONVERGED       OBJECTIVE CRITERION UNSATISFIED
+       SPECIFIED CRITERIA UNSATISFIED                                           
+ ---- END HERA ITERATION 0                                                                                                                                      
+</pre>
+<P>FIG 6-9. Process Identification Output Listing Files</P>
+
+<P>The optimization model CURFIT contains logic to initialize and integrate 
+the differential equations while accumulating the objective function 
+ERROR at time points corresponding to measured values.</P>
+
+<P>Since, in this problem, an integration process is nested inside an 
+optimization process, partial derivatives are propagated through the 
+integration, requiring that the propagating solver ISIS be used for 
+integration.</P>
+
+<P>The output consists of two files, shown in the upper and lower portions 
+of Figure 6-9. First  the HERA summary report was printed on the  console 
+(nominal output corresponding to SUMOUT=-1).  Since DETAIL=1 was specified 
+in the controller block .SET, detailed reports were written on the 
+SCROLL files for each HERA iteration.  These files were appended to 
+the console file.  The first and second of these files, containing 
+the table of contents and the first iteration report (ITERATION 0 
+detailing the initial state of the optimization search) are shown 
+in the lower portion of Figure 6-9.</P>
+
+<A NAME="OptDes" ID="OptDes"><H3>APPLICATION  6-3   Optimal Design And Control</H3></A>
+
+<H4 class="style1">(Optimization of a Two Point Boundary Value Model)</H4>
+
+A basic problem in modern control theory is that of minimizing the 
+scalar functional
+
+<div style="margin-left: 50px">
+<img src="../images/ScalarFunctional.png" height="77" width="212">
+</div>
+
+with respect to the vector function y(t), known as the control function, 
+where x(t) is the state function being controlled.  The functions 
+x(t) and y(t) are connected by the state differential equation
+
+<div style="margin-left: 50px">
+<img src="../images/StateDiffEq..png" height="79" width="277">
+</div>
+
+Frequently, the problem is a more general one of minimizing the functional
+
+<div style="margin-left: 50px">
+<img src="../images/MinimizeFunctional.png" height="85" width="337">
+</div>
+
+with respect to y(t) where the state equation is now
+
+<div style="margin-left: 50px">
+<img src="../images/StartDifEQ2.png" height="76" width="271">
+</div>
+
+These entail questions of design since &alpha; is a design parameter.  In 
+most cases, optimal control problems are transformed into two point 
+boundary value problems using principles of the calculus of variations.  For 
+example, consider the functional
+
+<div style="margin-left: 50px">
+<img src="../images/ActualFunctional.png" height="75" width="330">
+</div>
+
+where the state differential equation is
+
+<div style="margin-left: 50px">
+<img src="../images/stateDE3.png" height="73" width="148">
+</div>
+
+Assuming, for the moment, that &alpha; is simply a constant we may 
+consider the objective to be minimized as simply
+
+<div style="margin-left: 50px">
+<img src="../images/IntegralObjective.png" height="75" width="154">
+</div>
+
+where <i>f(x,y) = (x<sup>2</sup>+y<sup>2</sup>)/2</i>,  subject to the equality 
+constraint<br><br>
+
+<div style="margin-left: 50px">
+<img src="../images/EqConstrODE.png" height="37" width="156">
+</div>
+
+By introducing the Lagrange multiplier &lambda; we may include the 
+constraint in the objective, so that<br>&nbsp;<div style="margin-left: 50px">
+<img src="../images/LagrangeMultiplerIntegrals.png" height="85" width="498">
+</div>
+
+
+The necessary condition for a local minimum is met by applying the 
+Euler-Lagrange equations to the variables x and y, namely<br>
+
+
+<div style="margin-left: 50px">
+<img src="../images/EulerLagrange.png" height="147" width="373">
+</div>
+
+hence y = &lambda; and
+
+<div style="margin-left: 50px; width: 100px;">
+<img src="../images/ControDifEq.png" height="47" width="134">
+</div>
+
+becomes the control differential 
+equation
+
+<div style="margin-left: 50px">
+<img src="../images/ControlDifEq2.png" height="52" width="186">
+</div>
+
+The boundary condition on y is determined by the transversality condition
+
+<div style="margin-left: 50px">
+<img src="../images/TransversalityCond.png" height="108" width="384">
+</div> 
+
+
+thus y(1) = &lambda;(1) = 0, since dx is in general nonzero.
+
+The minimization of the functional J(y,&alpha;) has now been reduced 
+to the two-point boundary value problem
+
+<div style="margin-left: 50px">
+<img src="../images/TwoPtBVprob.png" height="108" width="274">
+</div>
+
+Thus, for a given value of &lpha;, the function J(y,&alpha;, may 
+be minimized with respect to y by solving the two point boundary value 
+problem in the manner demonstrated in Section 2.  This involves a 
+statement of the form<br><br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;FIND y(0) IN <I>trajectory</I> TO MATCH <i>y(1)<br><br></i>where <I>trajectory</I> integrates the state and control differential 
+equations using the initial conditions x(0) and y(0).
+
+<br><br>However, this only partially solves the problem, since it is also 
+desired to find the value of &alpha; so that the functional
+
+<div style="margin-left: 50px">
+<img src="../images/ActualFunctional.png" height="75" width="330">
+</div>
+
+is minimized with respect to both y and &alpha;. This can be accomplished 
+by reformulating the integral into an ODE by introduction of an objective 
+state variable z, such that
+
+<div style="margin-left: 50px">
+<img src="../images/ObjStateEq.bmp" height="129" width="297">
+</div>
+
+The objective function now becomes
+
+<div style="margin-left: 50px">
+<img src="../images/ObjFunJ.png" height="168" width="328">
+</div>
+
+The objective differential equation may be simultaneously integrated 
+with the state and control differential equations and the value of 
+J(y,&alpha;) may be computed following the solution of the two-point 
+boundary value problem.  Thus, the functional may be minimized with 
+respect to &alpha; using HERA via the statement<BR><BR>
+
+&nbsp;&nbsp;&nbsp;&nbsp;FIND &alpha; IN <I>twopt</I> TO MINIMIZE J<BR><BR>
+
+where <I>twopt</I> solves the two-point boundary value problem and 
+computes J.
+
+<br><br>The FC program for this problem begins with the problem procedure 
+OPTDES which solves the minimization problem for &alpha;.
+
+<PRE>
+      PROBLEM OPTDES (5000,1000,1000)
+        COMMON/PARAM/ALPHA/TRAJ/XDOT,X,YDOT,Y,ZDOT,Z
+        FIND ALPHA; IN TWOPT(OBJ); BY HERA; TO MINIMIZE OBJ
+     END
+</PRE>      
+      
+The model TWOPT solves the two-point boundary value problem and computes 
+the objective variable J, for each iteration of the minimization problem.
+
+<PRE>
+      MODEL TWOPT(OBJ)  ! two-point boundary value model
+        COMMON/PARAM/ALPHA/TRAJ/XDOT,X,YDOT,Y,ZDOT,Z
+        YO=.7
+        FIND YO IN TRAJECT(Y0,Y1); BY AJAX; TO MATCH Y1
+        OBJ=Z/2+A**2/2
+      END
+</PRE>
+
+The model TRAJECT solves the initial value problem using the solver 
+JANISIS for the current estimate of the initial condition y(0), where 
+the differential equations are contained in the model DIFF.
+
+<PRE>
+      MODEL TRAJECT(Y0,Y1) ! Initial value problem model
+        COMMON/PARAM/ALPHA/TRAJ/XDOT,X,YDOT,Y,ZDOT,Z
+        Y=Y0 : X=1 : Z=0 : T=0 : DT=.025 : TF=1
+        INITIATE JANIS; FOR DIFF;
+        EQUATIONS ZDOT/Z, XDOT/X, YDOT/Y; OF T; STEP DT; TO TF
+        INTEGRATE DIFF
+        Y1=Y
+      END
+
+      MODEL DIFF
+        COMMON/PARAM/ALPHA/TRAJ/XDOT,X,YDOT,Y,ZDOT,Z
+        ZDOT=X**2+Y**2  ! Objective equation
+        XDOT=-ALPHA*X+Y ! State equation
+        YDOT=X+ALPHA*Y  ! Control equation
+      END
+</PRE>
+
+The  output consists of the AJAX summaries for the two-point boundary 
+value solutions during each HERA iteration, followed by the HERA summary 
+of the optimization iterations.
+<PRE>
+--- AJAX SUMMARY,INVOKED AT TWOPT[8] FOR MODEL TRAJECT ----
+      CONVERGENCE CONDITION AFTER 1 ITERATIONS 
+UNKNOWNS CONVERGED 
+CONSTRAINTS SATISFIED 
+ALL SPECIFIED CRITERIA SATISFIED 
+LOOP NUMBER  [INITIAL]     1
+UNKNOWNS       
+	yO 	   0.700000E+00 -0.761580E+00
+CONSTRAINTS 
+	Y1 	   0.225529E+01 -0.183664E-15
+---END OF LOOP SUMMARY 
+--- AJAX SUMMARY,INVOKED AT TWOPT[8] FOR MODEL TRAJECT ----
+UNKNOWNS CONVERGED 
+CONSTRAINTS SATISFIED 
+ALL SPECIFIED CRITERIA SATISFIED 
+LOOP NUMBER  [INITIAL]     1 
+UNKNOWNS 
+	YO           0.700000E+00 -0.642454+00
+CONSTRAINTS 
+	Y1    	     0.247563E+01 0.602491E-15
+---END OF LOOP SUMMARY 
+--- AJAX SUMMARY,INVOKED AT TWOPT [8] FOR MODEL TRAJECT 
+CONVERGENCE CONDITION AFTER 1 ITERATIONS 
+UNKNOWNS CONVERGED 
+CONSTRAINTS SATISFIED 
+ALL SPECIFIED CRITERIA SATISFIED 
+LOOP NUMBER  [INITIAL]     1 
+UNKNOWNS 
+	YO 	      0.700000E+00 -0.640252E+00
+CONSTRAINTS 
+	Y1 	      0.248091E+01 -0.174665E-15
+---END OF LOOP SUMMARY 
+--- AJAX SUMMARY,INVOKED AT TWOPT[8] FOR MODEL TRAJECT ----
+UNKNOWNS CONVERGED 
+CONSTRAINTS SATISFIED 
+ALL SPECIFIED CRITERIA SATISFIED 
+LOOP NUMBER  [INITIAL]      1 
+UNKNOWNS 
+	YO         0.700000E+00 -0.640251E+00
+CONSTRAINTS 
+	Y1         0.248091E+01 -0.234730E+30
+---END OF LOOP SUMMARY 
+---- HERA SUMMARY, INVOKED AT OPTDES(3) FOR HODEL TWOPT ----
+CONVERGENCE CONDITION AFTER 3 ITERATIONS 
+UNKNOWNS CONVERGED 
+OBJECTIVE CRITERION SATISFIED 
+ALL SPECIFIED CRITERIA SATISFIED 
+LOOP NUMBER  [INITIAL]         1             2
+UNKNOWNS 
+	ALPHA 	     O.OOOOOOE+OO 0.228183E+00 0.232902E+00
+OBJECTIVE 
+	OBJ 	     0.380810E+00 0.347279E+00 0.347265E+00
+
+ LOOP NUMBER  [INITIAL] 
+UNKNOWNS                                   3
+	ALPHA 	     O.OOOOOOE+OO 0.232900E+00 
+OBJECTIVE 
+	OBJ 	     0.380810E+00 0.347265E+00
+---END OF LOOP SUMMARY 
+
+	ELAPSED TIME = 	5.27 SECONDS 
+</PRE>
+<A NAME="VEDISE" ID="VEDISE"><H2>6.4 ADS Solvers VESTA, DIANA, and SELENE</H2></A>
+
+<p>The unconstrained optimization solvers VESTA, DIANA, and SELENE are 
+adaptations of the Automated Design Synthesis (ADS) algorithms developed 
+for NASA by G. N. Vanderplaats and coworkers at the Naval Postgraduate 
+School in Monterey, California.  They have been integrated to conform 
+with FC output formats and their control variables have been adapted 
+to conform to the precedents of FC.  They are available in a separate 
+library as an extension to FC.</p>
+
+<p>VESTA applies the Fletcher-Reeves conjugate gradient method for unconstrained 
+minimization:</p>
+
+<UL>
+<LI>Fletcher, R., and Reeves, C. M.: "Function Minimization L
+by Conjugate Gradients."  Computer J., Vol. 7, No. 2, 1964, pp. 149-154.</LI></UL>
+
+<p>DIANA applies the Davidon-Fletcher-Powell (DFP) variable metric method 
+for unconstrained minimization:</p> 
+
+<ul>
+<LI>Davidon, W. C.:  "Variable Metric Method for Minimization," 
+Argone National Laboratory, ANL-5990 Rev., University of Chicago, 
+1959;</LI> 
+
+<LI>Fletcher, R. and Powell, M. J. D.,  "A Rapidly Convergent 
+Method for Minimization," Computer Journal, Vol. 6, No. 2, 1963, pp. 
+163-168.</LI></UL>
+
+<p>SELENE applies the Broyden-Fletcher-Goldfarb-Shanno (BFGS) variable-metric 
+method for unconstrained minimization:</p> 
+
+<ul>
+<LI>Broydon, C. G.,  "The Convergence of a Class of Double Rank Minimization Algorithms," Parts I and II, J. Inst. Maths. Applns., 
+Vol. 6, 1970, pp. 76-90 and 222-231;</LI> 
+
+<LI>Fletcher, R.,  "A New Approach to Variable Metric Algorithms," 
+Computer Journal, Vol. 13, 1970, pp. 317-322;</LI> 
+
+<LI>Goldfarb, D.,  "A Family of Variable Metric Methods Derived 
+by Variational Means,"  Maths. Comput., Vol. 24, 1970, pp. 23-36;</LI>
+
+<LI>Shanno, D. F.,  "Conditional of Quasi-Newton Methods for 
+Function Minimization,"  Maths. Comput., Vol. 24, 1970, pp. 647-656.</LI></UL>
+
+<p>The FIND statement for VESTA, DIANA, and SELENE has the following 
+general form:</p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;<B>FIND</B> <I>unknowns</I><B>; IN</B> <I>modelcall</I><B>;  BY 
+VESTA</B>|<B>DIANA</B>|<B>SELENE </B>{<B>(</B><I>controller</I><B>)</B>}<B>;</B><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{<B>WITH</B>|<B>AND</B>} 
+<B>LOWER</B> <I>floor</I><B>;</B>} {{<B>WITH</B>|<B>AND</B>} 
+<B>UPPER</B> <I>ceiling</I><B>;</B>}<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<B>REPORTING</B> <I>auxiliaries</I><B>;</B>} {{<B>WITH</B>} <B>FLAG</B> <I>signal</I><B>;</B>}<BR>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>TO MINIMIZE</B>|<B>MAXIMIZE</B> <I>objective</I>
+
+<P>The <I>modelcall</I> symbol is the model name optionally followed 
+by an argument list as in the right-hand-side of a CALL statement.</p>
+
+<p><B><I>Controls </I></b>-  The control variables for VESTA, DIANA, and 
+SELENE are identical, they are as follows:</p>
+
+<HR>
+<TABLE border=2>
+<TR align=left>
+<TH class="style4">Variable</TH>
+<TH class="style4">Preset Value</TH>
+<TH class="style4">Value</TH>
+<TH class="style4">Option</TH>
+</TR>
+
+<TR>
+<TD rowspan=4><B>VSEARCH</B></TD>
+<TD rowspan=4>1</TD>
+<TD>1</TD>
+<TD>Golden-section search method</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Golden-section search+polynomial interpolation</TD>
+</TR>
+
+<TR>
+<TD>3</TD>
+<TD>Bounded polynomial interpolation</TD>
+</TR>
+
+<TR>
+<TD>4</TD>
+<TD>Unbounded polynomial interpolation</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>ABORT</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>Delay a model abort until the current iteration is complete.</TD>
+</TR>
+ 
+<TR>
+<TD>1</TD>
+<TD>Execute a model abort after the currentstep in which an ABORT statement was executed.</TD>
+</TR>            
+
+<TR>
+<TD rowspan=2><B>DETAIL</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>No detailed iteration print</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Detailed print every nth iteration plus first and last</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SUMMARY</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Print iteration summary</TD>
+</TR>
+
+<TR>
+<TD>0</TD>
+<TD>No iteration summary</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>BREAKIN</B></TD>
+<TD rowspan=2>0</TD>
+<TD>0</TD>
+<TD>No interactive breakpoints</TD>
+</TR>
+
+<TR>
+<TD>n</TD>
+<TD>Breakpoint after each nth iteration</TD>
+</TR>
+
+<TR>
+<TD rowspan=3><B>DETOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Detailed report to PRINTER</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Detailed report to SCROLL</TD>
+</TR>
+        
+<TR>
+<TD>-1</TD>
+<TD>Detailed report to Console stream</TD>
+</TR>        
+
+<TR>
+<TD rowspan=3><B>SUMOUT</B></TD>
+<TD rowspan=3>+1</TD>
+<TD>0</TD>
+<TD>Summary report to DETAIL stream</TD>
+</TR>
+
+<TR>
+<TD>+1</TD>
+<TD>Summary report to SUMMARY stream</TD>
+</TR>
+
+<TR>
+<TD>-1</TD>
+<TD>Summary report to Console stream</TD>
+</TR>        
+
+<TR>
+<TD><B>REDO</B></TD>
+<TD>n<SUB>iv</SUB>+1</TD>
+<TD>&nbsp;</TD>
+<TD>Restart parameter for conjugate direction and variable metric methods. 
+Unconstrained minimization is restarted with a steepest descent 
+direction every REDO iterations.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>SCALE</B></TD>
+<TD rowspan=2>1</TD>
+<TD>0</TD>
+<TD>No scaling is done.</TD>
+</TR>
+
+<TR>
+<TD>1</TD>
+<TD>Design variables, objective and constraints are scaled automatically.</TD>
+</TR>
+
+<TR>
+<TD><B>REMAXO</B></TD>
+<TD>40</TD>
+<TD>&nbsp;</TD>
+<TD>Maximum number of iterations allowed at the optimizer level.</TD>
+</TR>
+
+<TR>
+<TD><B>CONSECO</B></TD>
+<TD>3</TD>
+<TD>&nbsp;</TD>
+<TD>The number of consecutive iterations for which the absolute and/or relative 
+convergence criteria must be met to indicate convergence at the optimizer level.</TD>
+</TR>
+
+<TR>
+<TD rowspan=2><B>CONVERGO</B></TD>
+<TD rowspan=2>1</TD>
+<TD>1</TD>
+<TD>Satisfy relative <B>or </B>absolute convergence</TD>
+</TR>
+
+<TR>
+<TD>2</TD>
+<TD>Satisfy relative <B>and </B>absolute convergence</TD>
+</TR>        
+
+<TR>
+<TD><B>ABCONV</B></TD>
+<TD>0.0001</TD>
+<TD>&nbsp;</TD>
+<TD>Absolute convergence criteria for the one-dimensional search when using the
+Golden Section method..</TD>
+</TR>
+
+<TR>
+<TD><B>PROGRESO</B></TD>
+<TD>0.001</TD>
+<TD>&nbsp;</TD>
+<TD>Maximum relative change in the objective between 
+two consecutive iterations to indicate convergence in optimization.</TD>
+</TR>
+
+<TR>
+<TD><B>REDELOI</B></TD>
+<TD>0.1</TD>
+<TD>&nbsp;</TD>
+<TD>Relative change in the objective function a ttempted on the first optimization 
+iteration. Used to estimate initial move in the one-dimensional search. 
+Updated as the optimization progresses.</TD>
+</TR>
+
+<TR>
+<TD><B>ABDELOI</B></TD>
+<TD>1000</TD>
+<TD>&nbsp;</TD>
+<TD>Absolute change in the objective function attempted on the first optimization 
+iteration. Used to estimate initial move in the one-dimensional search. Updated as 
+the optimization progresses.</TD>
+</TR>
+
+<TR>
+<TD><B>REDELXI</B></TD>
+<TD>0.01</TD>
+<TD>&nbsp;</td>
+<TD>Maximum relative change in a design variable attempted on the first optimization 
+iteration. Used to estimate the initial move in the one-dimensional search. Updated 
+as the optimization progresses.</TD>
+</TR>
+			
+<TR>
+<TD><B>ABDELXI</B></TD>
+<TD>0.2</TD>
+<TD>&nbsp;</TD>
+<TD>Maximum absolute change in a design variable attempted on the first optimization 
+iteration. Used to estimate the initial move in the one-dimensional search. Updated 
+as the optimization progresses.</TD>
+</TR>
+
+<TR>
+<TD><B>EXTRAP</B></TD>
+<TD>5</TD>
+<TD>&nbsp;</TD>
+<TD>Maximum multiplier of the search step in the one-dimensional search using polynomial 
+interpolation/extrapolation.</TD>
+</TR>
+
+<TR>
+<TD><B>SCALO</B></TD>
+<TD>1.0</TD>
+<TD>&nbsp;</TD>
+<TD>The user-supplied value of the scale factor for the objective function if the default 
+or calculated value is to be overridden.</TD>
+</TR>
+
+<TR>
+<TD><B>SCALMIN</B></TD>
+<TD>0.001</TD>
+<TD>&nbsp;</TD>
+<TD>Minimum numerical value of any scale factor allowed.</TD>
+</TR>
+
+<TR>
+<TD><B>AMULT</B></TD>
+<TD>2.618034</TD>
+<TD>&nbsp;</TD>
+<TD>Multiplier on the search step in the one-dimensional search to find bounds on the 
+solution.</TD>
+</TR>
+
+<TR>
+<TD><B>ZRO</B></TD>
+<TD>0.00001</TD>
+<TD>&nbsp;</TD>
+<TD>Numerical estimate of zero on the computer Usually the default value is adequate. 
+If a computer with a short word length is used, ZRO=10E-4 may be preferred.</TD>
+</TR>
+
+</TABLE>
+
+</body>
+</html>
+
+
+
+
