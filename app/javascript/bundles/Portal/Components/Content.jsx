@@ -57,7 +57,7 @@ export default class Content extends React.Component {
         view_object = <Submission model="acmotor"/>;
         break;
       case 'Submission Results':
-        view_object = <Result model="acmotor" />;
+        view_object = <Result user = "frank" model="acmotor" />; //need user from portal passed into content
         break;
       case 'Documentation':
         view_object = <Doc section="introduction" />;
