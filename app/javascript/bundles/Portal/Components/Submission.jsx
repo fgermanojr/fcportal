@@ -27,6 +27,7 @@ export default class Submission extends React.Component {
 
     var form = document.getElementById('formSubmission');
     var formData = new FormData(form);
+    // TBD Generalize: cycle all input fields, pack values into formData.
     // var formData = new FormData();
     formData.append('userName',document.getElementById('userName').value);
     formData.append('modelName',document.getElementById('modelName').value);
@@ -44,10 +45,10 @@ export default class Submission extends React.Component {
       formData.append('datFile', file, file.name);
     }
 
-    formData.append('checkBoxMap',document.getElementById('checkBoxMap').value);
-    formData.append('checkBoxBuild',document.getElementById('checkBoxBuild').value);
-    formData.append('checkBoxRun',document.getElementById('checkBoxRun').value);
-    formData.append('checkBoxRtnFile',document.getElementById('checkBoxRtnFile').value);
+    formData.append('checkBoxMap',document.getElementById('checkBoxMap').checked);
+    formData.append('checkBoxBuild',document.getElementById('checkBoxBuild').checked);
+    formData.append('checkBoxRun',document.getElementById('checkBoxRun').checked);
+    formData.append('checkBoxRtnFile',document.getElementById('checkBoxRtnFile').checked);
 
     axios.post('/submissions/submit', formData, {
       headers: {

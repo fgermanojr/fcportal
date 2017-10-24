@@ -1,7 +1,5 @@
 class NotificationChannel < ApplicationCable::Channel
-    stream_from "notification_channel"
-  end
-
+  # THIS IS NOT USED remove
   # Called when the consumer has successfully
   # bedome a subdscriber of this channel
   def subscribed

@@ -1,3 +1,5 @@
+require 'resque/server'
+
 Rails.application.routes.draw do
   get 'docs/show'
   post 'submissions/submit'
@@ -17,4 +19,5 @@ Rails.application.routes.draw do
   delete '/logout',  to: 'sessions#destroy', :defaults => { :format => 'json' } # logs out
 
   mount ActionCable.server => '/cable'
+  mount Resque::Server.new, at: "/resque"
 end
