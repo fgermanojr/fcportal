@@ -22,7 +22,8 @@ class SubmissionsController < ApplicationController
       fcFileContents: read_file(submission_params[:fcFile]),
       datFileContents: read_file(submission_params[:datFile])
     }
-    Resque.enqueue(PortalWorker, portal_worker_parameters)
+    # Resque.enqueue(PortalWorker, portal_worker_parameters )
+    PortalWorker.perform_later(portal_worker_parameters)
     ActionCable.server.broadcast 'web_notifications_channel', message: 'enqueued'
 
        # create job_id to mimic bear's run id
