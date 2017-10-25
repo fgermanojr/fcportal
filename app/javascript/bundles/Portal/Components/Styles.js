@@ -25,7 +25,8 @@ export const Styles = {
 
   sidebarStyle: {
     border: '1px solid black',
-    width: '20%'
+    width: '20%',
+    verticalAlign: 'text-top'
   },
 
   viewportStyle: {
@@ -59,7 +60,7 @@ export const Styles = {
   },
 
   menuStyle: {
-    textAlign: 'left'
+    textAlign: 'left',
   },
 
   helpbtnStyle: {

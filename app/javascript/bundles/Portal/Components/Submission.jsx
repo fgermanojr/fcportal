@@ -7,6 +7,7 @@ export default class Submission extends React.Component {
   static propTypes = {
     user: PropTypes.string.isRequired,
     model: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -15,10 +16,12 @@ export default class Submission extends React.Component {
   }
 
   updateModel = (model) => {
+    console.log(model);
     this.setState({ model: model });
   };
 
   updateUser= (user) => {
+    console.log(user);
     this.setState({ user: user });
   };
 
@@ -38,7 +41,6 @@ export default class Submission extends React.Component {
     formData.append('fcFile', file, file.name);
 
     var datFile = document.getElementById('dat_file');
-
     if(datFile.value != '') {
       files = dat_file.files;
       file = files[0];
@@ -111,7 +113,7 @@ export default class Submission extends React.Component {
                        onChange={(e) => this.updateProblem(e.target.value)} />
               </span>
             </td>
-            <td style={s.submissionRightStyle}><span>STATUS</span></td>
+            <td style={s.submissionRightStyle}><span>{this.props.status}</span></td>
           </tr>
           <tr>
             <td style={s.submissionLeftStyle}>Upload FC File</td>

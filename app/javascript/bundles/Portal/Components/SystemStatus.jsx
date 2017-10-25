@@ -20,7 +20,6 @@ export default class SystemStatus extends React.Component {
   }
 
   updateSystemStatus = (status) => {
-    console.log(status);
     this.setState({ message: status });
   }
 
@@ -30,7 +29,6 @@ export default class SystemStatus extends React.Component {
     const cable = ActionCable.createConsumer('ws://localhost:3000/cable'); //CANT be right in production
     cable.subscriptions.create('WebNotificationsChannel', {
       received: (data) => {
-        console.log('received wn'+data.message);
         this.updateSystemStatus(data.message);
       }
     });

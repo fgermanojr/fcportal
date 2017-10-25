@@ -54,10 +54,10 @@ export default class Content extends React.Component {
         view_object = <NotYetImplemented />;
         break;
       case 'Model Submission':
-        view_object = <Submission model="acmotor"/>;
+        view_object = <Submission user="frank" model="acmotor"  status="Initial" />;
         break;
       case 'Submission Results':
-        view_object = <Result user = "frank" model="acmotor" />; //need user from portal passed into content
+        view_object = <Result user="frank" model="acmotor" status="Initial" />; //need user from portal passed into content
         break;
       case 'Documentation':
         view_object = <Doc section="introduction" />;
