@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ActionCable from 'actioncable';
+import ActionCable from 'actioncable'; // This is important and not obvious
 
 import * as myStyles from './Styles.js'; //not used
 
@@ -23,11 +23,14 @@ export default class SubmissionStatus extends React.Component {
   subscribeSubmissionChannel = () => {
     // Thanks Artur Chmaro for this example and key step of yarn add actioncable
     const cable = ActionCable.createConsumer('ws://localhost:3000/cable'); //CANT be right in production
-    cable.subscriptions.create('SubmissionsChannel', {
+    // where can I get job ID. it is created on server if I use database job id.
+    // it can come back in the submission json response. do both ID's ???
+    // should i use user+model_bearrunid ??, create on client ???
+    cable.subscriptions.create({ channel: 'SubmissionsChannel', job_id: '12345' } , {
       received: (data) => {
-        this.updateSubmissionStatus(data.message);
+        this.updateSubmissionStatus(data.message + data.job_id);
       }
-    });
+    })
   }
 
   render() {

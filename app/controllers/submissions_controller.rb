@@ -22,12 +22,17 @@ class SubmissionsController < ApplicationController
       fcFileContents: read_file(submission_params[:fcFile]),
       datFileContents: read_file(submission_params[:datFile])
     }
-    # Resque.enqueue(PortalWorker, portal_worker_parameters )
-    PortalWorker.perform_later(portal_worker_parameters)
-    ActionCable.server.broadcast 'submissions_channel', message: 'enqueued'
 
-       # create job_id to mimic bear's run id
-    render json: {result: 'submitted', job_id: '12345'}.to_json
+    # CREATE JOB IN DATABASE HERE/ add job_id to parameters.
+    job_id='12345' # we will store an instance of FCJOB, and use its it.
+
+    PortalWorker.perform_later(portal_worker_parameters)
+
+    ActionCable.server.broadcast "submissions_channel", {message: 'enqueued', job_id: job_id}
+
+       # create job_id to mimic bear's run id or do both.
+    render json: {result: 'submitted', job_id: job_id}.to_json
+    # XXX not checking this response.
   end
 
   private

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ActionCable from 'actioncable'; //This was important.
+import ActionCable from 'actioncable'; // This is important and not obvious
 
 import * as myStyles from './Styles.js';
 
@@ -9,9 +9,6 @@ export default class SystemStatus extends React.Component {
     message: PropTypes.string.isRequired,
   };
 
-  /**
-   * @param props - Comes from your rails view.
-   */
   constructor(props) {
     super(props);
 
