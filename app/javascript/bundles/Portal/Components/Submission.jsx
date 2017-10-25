@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import SubmissionStatus from './SubmissionStatus';
 import * as myStyles from './Styles.js';
 import axios from 'axios';
 
@@ -113,7 +114,7 @@ export default class Submission extends React.Component {
                        onChange={(e) => this.updateProblem(e.target.value)} />
               </span>
             </td>
-            <td style={s.submissionRightStyle}><span>{this.props.status}</span></td>
+            <td style={s.submissionRightStyle}><span>{<SubmissionStatus message="Initial"/>}</span></td>
           </tr>
           <tr>
             <td style={s.submissionLeftStyle}>Upload FC File</td>

@@ -24,7 +24,7 @@ class SubmissionsController < ApplicationController
     }
     # Resque.enqueue(PortalWorker, portal_worker_parameters )
     PortalWorker.perform_later(portal_worker_parameters)
-    ActionCable.server.broadcast 'web_notifications_channel', message: 'enqueued'
+    ActionCable.server.broadcast 'submissions_channel', message: 'enqueued'
 
        # create job_id to mimic bear's run id
     render json: {result: 'submitted', job_id: '12345'}.to_json
@@ -42,7 +42,7 @@ class SubmissionsController < ApplicationController
     # TBD do some post processing filtering and cleanup
   end
 
-  def save_file(file_data)
+  def save_file(file_data) # not used
     directory = '/tmp' #  WHERE ?
     path = File.join(directory, file_data.original_filename)
     File.open(path, "w") { |f| f.write(File.read(file_data.path)) }

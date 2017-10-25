@@ -1,45 +1,40 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ActionCable from 'actioncable'; //This was important.
+import ActionCable from 'actioncable';
 
-import * as myStyles from './Styles.js';
+import * as myStyles from './Styles.js'; //not used
 
-export default class SystemStatus extends React.Component {
+export default class SubmissionStatus extends React.Component {
   static propTypes = {
     message: PropTypes.string.isRequired,
   };
 
-  /**
-   * @param props - Comes from your rails view.
-   */
   constructor(props) {
     super(props);
 
     this.state = { message: this.props.message };
-    this.subscribeChannel();
+    this.subscribeSubmissionChannel();
   }
 
-  updateSystemStatus = (status) => {
+  updateSubmissionStatus = (status) => {
     this.setState({ message: status });
   }
 
-  subscribeChannel = () => {
+  subscribeSubmissionChannel = () => {
     // Thanks Artur Chmaro for this example and key step of yarn add actioncable
     const cable = ActionCable.createConsumer('ws://localhost:3000/cable'); //CANT be right in production
-    cable.subscriptions.create('WebNotificationsChannel', {
+    cable.subscriptions.create('SubmissionsChannel', {
       received: (data) => {
-        this.updateSystemStatus(data.message);
+        this.updateSubmissionStatus(data.message);
       }
     });
   }
 
-
   render() {
     var s = myStyles.Styles;
-
     return (
-      <span className="system_status">
-        {this.state.message}
+      <span id="submission_status">
+        STATUS {this.state.message}
       </span>
     );
   }

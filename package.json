@@ -9,9 +9,12 @@
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-on-rails": "^9.0.0"
+    "react-on-rails": "^9.0.0",
+    "redux": "^3.7.2"
   },
   "devDependencies": {
     "webpack-dev-server": "^2.7.1"
-  }
+  },
+  "scripts": { "postinstall": "cd client && npm install" },
+  "cacheDirectories": ["node_modules","client/node_modules"]
 }

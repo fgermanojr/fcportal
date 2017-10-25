@@ -5,7 +5,7 @@ import Sidebar from './sidebar';
 import Footer from './footer';
 import Header from './header';
 import Content from './content';
-import Status from './status'; // pull
+import SystemStatus from './SystemStatus';
 import * as myStyles from './Styles.js';
 
 export default class Portal extends React.Component {
@@ -40,12 +40,13 @@ export default class Portal extends React.Component {
     return (
       <table style={s.tableStyle}>
         <tbody>
-          <Header version="0.1" username="frankgermano"
+          <Header version="0.1"
+                  username="frankgermano"
                   is_logged_in={this.state.is_logged_in}
                   status={this.state.status}/>
           <tr id="center">
             <td id="side-bar" style={s.sidebarStyle}>
-              <Sidebar is_logged_in="this.props.is_logged_in"
+              <Sidebar is_logged_in={this.state.is_logged_in}
                        current_menu_item={this.state.current_menu_item}
                        handler={this.updateCurrentMenuItem} //The handler lets sidebar update the current menu item in Sidebar component
               />
