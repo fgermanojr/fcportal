@@ -1,10 +1,75 @@
-<A NAME="METACALC" ID="METACALC"><H1> 2.0 Modeling Templates and Processes</H1></A>
+import PropTypes from 'prop-types';
+import React from 'react';
 
-<P>[Simplify]Metacalculus extends ordinary programming languages for modeling and solving mathematical 
+import * as myStyles from '../../../Styles.js';
+
+import TypeModels70 from '../images/TypeModels70.png'
+import GeneralIter70 from '../images/GeneralIter70.png'
+import MixedModel50 from '../images/MixedModel50.png'
+import ExplicitODESolution70 from '../images/ExplicitODESolution70.png'
+import GasEquations2 from '../images/ExplicitODESolution70.png'
+import PumpSys60 from '../images/PumpSys60.png'
+import Circuit42 from '../images/Circuit42.png'
+import AdmitEq1 from '../images/AdmitEq1.png'
+import AdmitEq2 from '../images/AdmitEq2.png'
+import AdmitEq3 from '../images/AdmitEq3.png'
+import AdmitEq4 from '../images/AdmitEq4.png'
+import SurgeHt90 from '../images/SurgeHt90.png'
+import SurgeHtEq1 from '../images/SurgeHtEq1.png'
+import SurgeHtEq2 from '../images/SurgeHtEq2.png'
+import SurgeHtEq3 from '../images/SurgeHtEq3.png'
+import SurgeHtEq4 from '../images/SurgeHtEq4.png'
+import SurgeHtEq5 from '../images/SurgeHtEq5.png'
+import SurgeHtEq6 from '../images/SurgeHtEq6.png'
+import ImpdesEq1 from '../images/ImpdesEq1.png'
+import ImpdesEq2 from '../images/ImpdesEq2.png'
+import ImpdesStructure1 from '../images/ImpdesStructure1.png'
+import MotionEquations from '../images/MotionEquations.png'
+import BvodesStructure1 from '../images/BvodesStructure1.png'
+import MotionVariables from '../images/MotionVariables.png'
+import SherwoodUnconstrainedOptFormula from '../images/SherwoodUnconstrainedOptFormula.png'
+import ConsoptObj from '../images/ConsoptObj.png'
+import ConsoptC1 from '../images/ConsoptC1.png'
+import ConsoptC2 from '../images/ConsoptC2.png'
+import ConsoptC3 from '../images/ConsoptC3.png'
+import ConsoptC4 from '../images/ConsoptC4.png'
+import ConsoptC5 from '../images/ConsoptC5.png'
+import ModelProc80 from '../images/ModelProc80.png'
+import SolverProcess60 from '../images/SolverProcess60.png'
+import Gener5step70 from '../images/Gener5step70.png'
+import ODERates5step70 from '../images/ODERates5step70.png'
+import DiffIntegral from '../images/DiffIntegral.png'
+import ydotode from '../images/ydotode.png'
+import yPrimePrimeODE from '../images/yPrimePrimeODE.png'
+import ConstraintModel5step70 from '../images/ConstraintModel5step70.png'
+import UnconstrainedOpt5step70 from '../images/UnconstrainedOpt5step70.png'
+import ConsOpt5step70 from '../images/ConsOpt5step70.png'
+
+export default class Chap2 extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+// move to helper file
+curlyStart = () => {
+  return '{'
+};
+
+curlyEnd = () => {
+  return '}'
+};
+
+render() {
+  var s = myStyles.Styles;
+
+  return(<div>
+<h1> 2.0 Modeling Templates and Processes</h1>
+
+<p>***Simplify***Metacalculus extends ordinary programming languages for modeling and solving mathematical 
 applications in their natural <i>holistic</i> form as <i>inverse problems</i>, involving multiple 
 unknowns shared by nonlinear simultaneous equations which cannot be reduced. Such problems require 
 hidden solution engines from a library supported by differential calculus arithmetic. This 
-arithmetic extends basic hardware arithmetic to produce arrays of numbers called <I>fluxions</I> 
+arithmetic extends basic hardware arithmetic to produce arrays of numbers called <i>fluxions</i> 
 by Isaac Newton, who invented them as tools to understand particle motion. We know them as rates 
 of change of variables with respect to the dimensions in which they vary, like velocity and 
 acceleration. They measure the slopes of curves at every point. Most of the study of calculus 
@@ -12,9 +77,10 @@ involves the derivation and use of these quantities. But that is not the purpose
 the computer is equipped to do that for us. Thus the metacalculus modeler-programmer is not 
 involved in calculus methods, in the way that Newton and all subsequent generations have been. 
 Models only involve algebraic formulas (like in spreadsheets), even though some of them may 
-contain <I>rate</I> variables (fluxions), and integrals (<I>fluents</I> - Newton's other term, 
+contain <i>rate</i> variables (fluxions), and integrals (<i>fluents</i> - Newton's other term, 
 subsequently discarded by mathematicians who were focused on deriving calculus methods rather 
-than modeling).</P>
+than modeling).</p>
+
 
 <p>One of the advantages of thinking holistically about mathematical problems is that modeling 
 is greatly simplified if we don't worry about how to solve the equations. In learning to 
@@ -37,7 +103,7 @@ does all the work, metacalculus unifies and simplifies the posing and solving of
 systems which are hierarchies of holistic problems. This shifts our focus toward intuitive 
 understanding of mathematics and true symbiosis of the talents of man and computer.</p>
 
-<P>This chapter describes a pattern of thinking about holistic  
+<p>This chapter describes a pattern of thinking about holistic  
 systems and the metacalculus processes of solving them.  It is divided 
 into two parts, holistic synthesis and metacalculus processes. The first 
 is an orientation in the basic structure of holistic systems mathematics, delineating 
@@ -48,11 +114,11 @@ engines.  These processes are dynamic transactions of numerical variables,
 having characteristic behavior which is easy to learn.  They 
 are also building-blocks, from which higher-order processes are composed.  The 
 treatment focuses on the basic processes, but some examples of higher-order 
-nested structure are given.</P>
+nested structure are given.</p>
 
-<A NAME="HOLISYN" ID="HOLISYN"><H2>2.1 Holistic Synthesis </H2></A>
+<a name="HOLISYN" id="HOLISYN"><h2>2.1 Holistic Synthesis </h2></a>
 
-<P>Holistic mathematical systems may be loosely defined as sets of formulas which share
+<p>Holistic mathematical systems may be loosely defined as sets of formulas which share
 more than one unknown.  System models representing real systems 
 are usually composite blends of relationships including some, such 
 as integrals, differential "rate" equations or implicit equations, that are 
@@ -60,64 +126,62 @@ computationally intractable, i.e., require indirect solution procedures.  Progra
 development must focus on defining a structure that applies  general 
 solution techniques to the intractable portions, while treating the 
 tractable portions (i.e. explicit algebraic formulas) as auxiliary 
-calculations.</P>
+calculations.</p>
 
-An explicit formula system:<BR><BR>
+An explicit formula system:<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>f<SUB>i</SUB> = e<SUB>i</SUB>(v<SUB>j</SUB>)</I>,
-&nbsp;&nbsp;&nbsp;&nbsp; <I> i=1,...,m,&nbsp;&nbsp;&nbsp;&nbsp;
-j=1,...,n</I><BR><BR>
+&nbsp;&nbsp;&nbsp;&nbsp; <i>f<sub>i</sub> = e<sub>i</sub>(v<sub>j</sub>)</i>,
+&nbsp;&nbsp;&nbsp;&nbsp; <i> i=1,...,m,&nbsp;&nbsp;&nbsp;&nbsp;
+j=1,...,n</i><br /><br />
 
 can be used to represent a set of equations in terms of a set of input 
-variables <I>v<SUB>j</SUB></I> and a set of output variables <I>f<SUB>i</SUB></I>.  The 
+variables <i>v<sub>j</sub></i> and a set of output variables <i>f<sub>i</sub></i>.  The 
 solution of such a system is a set of values of the variables which 
 satisfy output conditions or criteria.  Three kinds of criteria may 
-be employed:<BR><BR>
+be employed:<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;Simulation criteria:  <I>m=n  (determined)</I>,    <I>f<SUB>i</SUB> = 0 </i><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;Simulation criteria:  <i>m=n  (determined)</i>,    <i>f<sub>i</sub> = 0 </i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;Optimization criteria: <I>m&lt;&lt;n (underdetermined), </I> 
-<I>f<SUB>k</SUB></I> = optimum, etc.<BR> 
+&nbsp;&nbsp;&nbsp;&nbsp;Optimization criteria: <i>m&lt;&lt;n (underdetermined), </i> 
+<i>f<sub>k</sub></i> = optimum, etc.<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;Correlation criteria:  <I>m>>n  (overdetermined), </I> error(<I>f<SUB>i</SUB></I>) 
-= minimum, etc<BR><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;Correlation criteria:  <i>m>>n  (overdetermined), </i> error(<i>f<sub>i</sub></i>) 
+= minimum, etc<br /><br />
+<p>Thus holistic synthesis may be subdivided into three related methodologies 
+for finding solutions to holistic mathematical systems.</p>
 
-Thus holistic synthesis may be subdivided into three related methodologies 
-for finding solutions to holistic mathematical systems.</P>
-
-<A name="SYMSYN" id="SYMSYN"><P><B><I>Simulation Synthesis</I></B></A> - 
-Simulation employs the relationships 
+<a name="SYMSYN" id="SYMSYN"><b><i>Simulation Synthesis</i></b></a> - 
+<p>Simulation employs the relationships 
 of a model to compute a set of output variable values for a given 
 set of input-variable values.  The number of unknowns of the model 
 must equal the number of equations.  Thus, there is no freedom for 
 the solution to vary, i.e., it is uniquely determined for a given 
-set of inputs.</P>
+set of inputs.</p>
 
-<div style="margin-left: 50px">
-<img src="../images/TypeModels70.png" height="414" width="558">
-<br>
+<div style={s.marginLeft}>
+<img src={TypeModels70} height="414" width="558" /><br /> 
 <b>Figure 2-1  Explicit and Implicit Problems</b>
-<br>
+<br />
 </div>
 
-<P>The relationships of the model may be explicit, implicit or combinations 
+<p>The relationships of the model may be explicit, implicit or combinations 
 of both.  If all of the formulas are explicit, the unknowns of the 
 model are the output (dependent) variables and knowns are the input 
 (independent) variables. This is the well-known form of spreadsheet computations.
 If the relationships are implicit, the unknowns are the input variables and the 
 output must be constrained to equal zero. This is the form of <i>inverse problems</i>. 
 For example, an irreducible implicit formula in the form of 
-a FORTRAN assignment<BR><BR>
+a FORTRAN assignment<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>x<SUB>i</SUB> = f<SUB>i</SUB>(<B>x</B>)</I><BR><BR>    
+&nbsp;&nbsp;&nbsp;&nbsp; <i>x<sub>i</sub> = f<sub>i</sub>(<b>x</b>)</i><br /><br /> 
 
 must be recast as a constraint relationship by defining an equality 
-constraint<BR><BR>
+constraint<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>g<SUB>i</SUB> = x<SUB>i</SUB> - f<SUB>i</SUB>(<B>x</B>)</I> = 0<BR><BR>
+&nbsp;&nbsp;&nbsp;&nbsp; <i>g<sub>i</sub> = x<sub>i</sub> - f<sub>i</sub>(<b>x</b>)</i> = 0<br /><br />
 
-and we must find the values of the <I><B>x</B></I>-vector which causes the 
-constraint vector <I><B>g</B></I> to equal zero.  This is accomplished by 
+and we must find the values of the <i><b>x</b></i>-vector which causes the 
+constraint vector <i><b>g</b></i> to equal zero.  This is accomplished by 
 an iterative technique, as illustrated in Figure 2-2.  In essence 
 we are converting an implicit model into an explicit one whose output 
 must be a known constant, namely zero.  The iterative technique is 
@@ -135,55 +199,55 @@ a new position in the coordinate system of the unknowns from which
 to evaluate the model for the next iteration. I believe that this manifestation
 of mathematical leverage is grossly unappreciated by all mathematicians and
 scientists. I suspect this is the root of Einstein's great regard for the 
-mind of Newton.</P>
+mind of Newton.</p>
 
-<div style="margin-left: 50px">
-<img src="../images/GeneralIter70.png" height="264" width="452">
-<br>
+<div style={s.marginLeft}>
+<img src={GeneralIter70} height="264" width="452" />
+<br />
 <b>Figure 2-2 Stucture of Implicit Problems</b>
-<br>
+<br />
 </div>
 
-<P>In a mixed model, namely</P>
+<p>In a mixed model, namely</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I><B>g</B>(<B>x</B>,<B>y</B>)</I> = 0
+&nbsp;&nbsp;&nbsp;&nbsp; <i><b>g</b>(<b>x</b>,<b>y</b>)</i> = 0
 
 <p>where</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>g<SUB>i</SUB> = y<SUB>i</SUB> - f<SUB>i</SUB>(<B>x</B>) &nbsp;&nbsp;&nbsp; i=1,..., 
-k</I>
+&nbsp;&nbsp;&nbsp;&nbsp; <i>g<sub>i</sub> = y<sub>i</sub> - f<sub>i</sub>(<b>x</b>) &nbsp;&nbsp;&nbsp; i=1,..., 
+k</i>
 
 <p>or</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>y<SUB>i</SUB>=f<SUB>i</SUB>(<B>x</B>)</I>
+&nbsp;&nbsp;&nbsp;&nbsp; <i>y<sub>i</sub>=f<sub>i</sub>(<b>x</b>)</i>
 
 <p>and</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>g<SUB>j</SUB>=h<SUB>j</SUB>(<B>x</B>,<B>y</B>) &nbsp;&nbsp;&nbsp; j=k+1,...,m</I><P>The relationships consist of an implicit set and an explicit set.  In 
-this case, some of the unknowns, namely the dependent variables  <I>y<SUB>i</SUB></I> 
+&nbsp;&nbsp;&nbsp;&nbsp; <i>g<sub>j</sub>=h<sub>j</sub>(<b>x</b>,<b>y</b>) &nbsp;&nbsp;&nbsp; j=k+1,...,m</i><p>The relationships consist of an implicit set and an explicit set.  In 
+this case, some of the unknowns, namely the dependent variables  <i>y<sub>i</sub></i> 
 may be solved for directly from the explicit equations</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;  <I>y<SUB>i</SUB> = f<SUB>i</SUB>(<B>x</B>)</I><BR>
+&nbsp;&nbsp;&nbsp;&nbsp;  <i>y<sub>i</sub> = f<sub>i</sub>(<b>x</b>)</i><br />
 
-<p>Then these values of <I>y<SUB>i</SUB></I> may be used, along with estimates 
-of the unknown independent variables <I><B>x</B></I> to compute the constraints 
-<I>g<SUB>j</SUB></I> which must be driven to zero via an iterative process.  Note 
+<p>Then these values of <i>y<sub>i</sub></i> may be used, along with estimates 
+of the unknown independent variables <i><b>x</b></i> to compute the constraints 
+<i>g<sub>j</sub></i> which must be driven to zero via an iterative process.  Note 
 that, although the solution process is iterative, the number of unknowns 
 is still the same as the number of equations (m=n), thus we still 
-have a <I>determined</I> system of equations.  This is what characterizes 
+have a <i>determined</i> system of equations.  This is what characterizes 
 a simulation process. The solution is not free to vary, but is restricted 
 to determined values which satisfy the equation system.  Of course, 
-a nonlinear system may have more than one set of values that are solutions.</P>
+a nonlinear system may have more than one set of values that are solutions.</p>
 
-<div style="margin-left: 50px">
-<img src="../images/MixedModel50.png" height="237" width="415">
-<br>
+<div style={s.marginLeft}>
+<img src={MixedModel50} height="237" width="415" />
+<br />
 <b>Figure 2-3 Stucture of Mixed Problems</b>
-<br>
+<br />
 </div>
 
 
-<A ID="OPTSYN" NAME="OPTSYN"></A><P><B><I>Optimization Synthesis</I></B></A> - 
+<a id="OPTSYN" name="OPTSYN"><b><i>Optimization Synthesis</i></b></a><p> - 
 Optimization is the generalization 
 of simulation where one or more input variables is varied by an iterative 
 procedure until some specified output variable is optimized. Each 
@@ -192,12 +256,12 @@ we must have freedom to vary the input of a model to find the input
 values which lead to the optimal desired output.  Freedom implies 
 that certain input variables must remain unconstrained over a range 
 of values, so that they may be varied and the effect  on the desired 
-optimum output variable be used to control the iterative process.</P>
+optimum output variable be used to control the iterative process.</p>
 
-<P>Before we define any model relationships, all unknowns are independent 
+<p>Before we define any model relationships, all unknowns are independent 
 and are free to take on any values, thus the number of degrees of 
-freedom is equal to the number of unknowns.  As we define an <I>equality 
-constraint</I> (implicit equation) we fix the value of one independent unknown, 
+freedom is equal to the number of unknowns.  As we define an <i>equality 
+constraint</i> (implicit equation) we fix the value of one independent unknown, 
 thus we decrease the number of degrees of freedom by one. We can define explicit 
 equations without altering the number of degrees of freedom, because they do not
 fix the independent unknowns of optimization, but may merely define additional 
@@ -205,56 +269,57 @@ dependent variables.  In simulation, there are no degrees of freedom because the
 number of unknowns is equal to the number of equations.  Optimization is 
 characterized by the number of independent unknowns being greater than the number of 
 equations, and the number of degrees of freedom is the difference 
-between them.  In this case the model is said to be <I>underdetermined.</I> It 
-often occurs that independent unknowns are also subject to <I>inequality</I> 
+between them.  In this case the model is said to be <i>underdetermined.</i> It 
+often occurs that independent unknowns are also subject to <i>inequality</i> 
 constraints, which serve to restrict the range of allowed values. 
 But only equality relationships truly bind independent unknowns, thus 
-only equality constraints can eliminate degrees of freedom.<P>In optimization, the values of the free input variables are determined 
+only equality constraints can eliminate degrees of freedom.</p>
+<p>In optimization, the values of the free input variables are determined 
 by iteratively varying their values in a systematic way until optimization 
-criteria are satisfied.</P>  
+criteria are satisfied.</p>  
 
-<P>The following four cases of optimization arise in practice:</P>
+<p>The following four cases of optimization arise in practice:</p>
 
-<OL TYPE="1">
-    <LI><I>Unconstrained optimization</I>, where the unknowns may 
+<ol>
+    <li><i>Unconstrained optimization</i>, where the unknowns may 
 take on any values and the number of degrees of freedom is equal to 
 the number of unknowns.  In this case the objective must be a nonlinear 
-function of the unknowns, otherwise no optimum exists.</LI> 
+function of the unknowns, otherwise no optimum exists.</li> 
 
-<LI><I>Optimization with inequality constraints</I>, where the 
+<li><i>Optimization with inequality constraints</i>, where the 
 unknowns may be restricted but unspecified values, thus the number 
 of degrees of freedom is still equal to the number of unknowns; however, 
-the objective may be linear.</LI>
+the objective may be linear.</li>
 
-<LI><I>Optimization with equality constraints</I>, where the 
+<li><i>Optimization with equality constraints</i>, where the 
 number of degrees of freedom is equal to the number of unknowns minus 
 the number of equality constraints, some of the unknowns being specified 
-by the constraints.</LI>
+by the constraints.</li>
 
-<LI><I>Optimization with mixed constraints</I> (same as in 3).</LI>
-</OL>
+<li><i>Optimization with mixed constraints</i> (same as in 3).</li>
+</ol>
 
-<P>The optimization criteria is that one of the output variables, the 
+<p>The optimization criteria is that one of the output variables, the 
 objective variable, must be an extremum and that constraints, if any, 
-must be satisfied.</P>
+must be satisfied.</p>
 
-<P>When solving a constrained optimization problem, we 
+<p>When solving a constrained optimization problem, we 
 often start out by ignoring the constraints and finding the unconstrained 
 optimum if the objective function is nonlinear.  This is much easier 
 in general, and useful insight into the properties of the function 
 is gained.  Moreover, when only inequality constraints are involved, 
 often none of the constraints are active and the unconstrained solution 
-is the same as the constrained solution.</P>
+is the same as the constrained solution.</p>
 
-<A NAME="CORSYN" ID="CORSYN"></A><P><B><I>Correlation Synthesis</I></B></A> - 
+<a name="CORSYN" id="CORSYN"><b><i>Correlation Synthesis</i></b></a><p> - 
 In correlation synthesis, the 
 number of equations is greater than the number of unknowns, which 
 are the free parameters in the model.  In this case, the problem is 
-said to be <I>overdetermined</I>, i.e., there is redundant information.  The 
+said to be <i>overdetermined</i>, i.e., there is redundant information.  The 
 difference between the number of equations and the number of unknowns 
-is called the number of degrees of redundancy.</P>
+is called the number of degrees of redundancy.</p>
 
-<P>Correlation problems most often arise where the output of a model 
+<p>Correlation problems most often arise where the output of a model 
 is being matched (co-related) to the measured output of a physical 
 process that the model represents, as in an experimental test.  Each 
 correlated measurement is an equation relating an output (dependent) 
@@ -263,12 +328,12 @@ must be an implicit equation defining an equality constraint as the
 difference between the output variable and the measurement parameter 
 or constant. The number of such equations is often much larger than 
 the number of unknowns, since the greater the redundancy, the greater 
-the confidence of the solution, in general.
+the confidence of the solution, in general.</p>
 
-<P>Correlation problems are solved by optimization methods to find a 
+<p>Correlation problems are solved by optimization methods to find a 
 set of values of the unknown parameters that minimizes the error between 
 the model outputs and the measurements.  The most common method is 
-least-squares optimization.</P>
+least-squares optimization.</p>
 
 <p><i><b>Problem Characterization</b></i> - The first step in defining a metacalculus program is the characterization
 of the problem according to the three categories of determinancy; the
@@ -299,13 +364,13 @@ equations involving both differentials and integrals.</p>
 
 <h4>Examples</h4>
 
-<div style="margin-left: 25px">
+<div style={s.marginLeft}>
 
 <p>(a) <i>Problem Statement</i>: Given the following equations, the object is to find x, y and
 z.</p>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>3x<sup>2</sup> + y<sup>2</sup> - 2 = 0</i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>x<sup>2</sup> - z/y = 0 </i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>y - z<sup>2</sup> - 2 =0 </i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>3x<sup>2</sup> + y<sup>2</sup> - 2 = 0</i><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<i>x<sup>2</sup> - z/y = 0 </i><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<i>y - z<sup>2</sup> - 2 =0 </i><br />
 
 <p><i>Problem characterization</i>: There are three equations and three unknowns. Three
 unknowns give us three degrees of freedom but each equation takes away one
@@ -320,9 +385,9 @@ equations.</p>
 <p>(b) <i>Problem Statement</i>: The cost of a certain operation is given by two variables
 x and y such that:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<i>Cost = (x-2)<sup>2</sup> + (y-1)<sup>2</sup></i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>1 - x<sup>2</sup> - y &ge; 0</i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>e<sup>xy</sup> - x - 2 = 0</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>Cost = (x-2)<sup>2</sup> + (y-1)<sup>2</sup></i><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<i>1 - x<sup>2</sup> - y &ge; 0</i><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<i>e<sup>xy</sup> - x - 2 = 0</i><br />
 
 <p>The objective is to find x, y such that Cost is minimum.</p>
 
@@ -345,9 +410,9 @@ characterized as an underdetermined system of nonlinear and implicit algebraic
 equations. This problem would be solved by optimization techniques.</p>
 
 <p>(c) <i>Problem Statement</i>: Solve for x<sub>1</sub> and x<sub>2</sub> in the equations</p>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>x<sub>l</sub> + 2x<sub>2</sub> = 4</i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>2x<sub>1</sub> - x<sub>2</sub> = 5</i><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<i>x<sub>1</sub> - 2x<sub>2</sub> = 2</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>x<sub>l</sub> + 2x<sub>2</sub> = 4</i><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<i>2x<sub>1</sub> - x<sub>2</sub> = 5</i><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<i>x<sub>1</sub> - 2x<sub>2</sub> = 2</i><br />
 
 <p><i>Problem Characterization</i>: There are two unknowns and three equations, therefore,
 the system belongs to overdetermined case. Furthermore, the equations are
@@ -359,29 +424,30 @@ is called least squares optimization.</p>
 
 </div>
 
-<P><B><I> Solution  Processes </I></B> - In regard to solution techniques, each 
+<p><b><i> Solution  Processes </i></b> - In regard to solution techniques, each 
 problem may be termed as direct or indirect, explicit or implicit.  Direct 
 problems are characterized by one pass solutions, not requiring a 
 solution technique other than the primitive arithmetic of the computer. 
 This is the spreadsheet scenario. Iterative or indirect problems require the 
-problem model to be executed iteratively until convergence criteria are met.</P> 
+problem model to be executed iteratively until convergence criteria are met.</p> 
 
-<P><I>Direct Procedures:</I>  When each equation has only one independent 
+<p><i>Direct Procedures:</i>  When each equation has only one independent 
 unknown and the unknown from each equation can be separated from the 
 knowns such that the unknown is on the left hand side of the equal 
 sign and all terms containing knowns can be brought to the right hand 
 side, then the system can be solved in one pass.  In this case the 
 solution technique is the arithmetic of the computer, and there is 
 no distinction between the model and its solution process.  Consequently, 
-only one procedure is usually involved.<P><I>Indirect Processes </I> are hierarchies involving at least three program 
+only one procedure is usually involved.</p>
+<p><i>Indirect Processes </i> are hierarchies involving at least three program 
 elements, a driver, a solver, and a model.  Models are user-defined 
 systems of equations and solvers are independent numerical algorithms 
 which control the execution of the models.  A driver is the user defined 
 program element (procedure or model) that invokes a solver to operate 
 on a model.  The structure and control of metacalculus processes is further 
-discussed in Section 2.2.</P>
+discussed in Section 2.2.</p>
 
-<P><I>Explicit Indirect Problems:</I>  If some or all the equations are 
+<p><i>Explicit Indirect Problems:</i>  If some or all the equations are 
 explicit differential equations, an external integration solver must 
 be employed in a multiple pass procedure as illustrated in Figure 
 2-4.  The differential equations are formulated in a model, computing 
@@ -389,17 +455,17 @@ the differential rate variables on the left of the equal sign.  The
 model is executed in multiple passes by the solver to obtain the rate 
 values intermittantly during the integration process.  Its output 
 is a set of dependent variable values tracing out the integral functions 
-over the interval of the independent variable <I>t</I> from <I>t<SUB>0</SUB></I> to 
-<I>t<SUB>f</SUB></I>.</P>
+over the interval of the independent variable <i>t</i> from <i>t<sub>0</sub></i> to 
+<i>t<sub>f</sub></i>.</p>
 
-<div style="margin-left: 50px">
-<img src="../images/ExplicitODESolution70.png" height="344" width="519">
-<br>
+<div style={s.marginLeft}>
+<img src={ExplicitODESolution70} height="344" width="519" />
+<br />
 <b>Figure 2-4 Solution of Explicit Differential Equations</b> 
 </div>
 
 
-<P><I>Implicit Indirect Problems:</I>  Implicit problems are characterized 
+<p><i>Implicit Indirect Problems:</i>  Implicit problems are characterized 
 by the unknowns being input (independent) variables or parameters.  The 
 solution is specified by conditions on output (dependent) variables, 
 such as constraint variables to be satisfied, or objective variables 
@@ -407,55 +473,55 @@ to be optimized or both.  Implicit problems include determined, underdetermined,
 overdetermined systems, boundary value differential equations problems, 
 optimization problems and data matching (curve fitting) problems. 
 Unlike explicit problems, solution of implicit problems is started 
-by guessing certain values of the independent unknowns.</P>
+by guessing certain values of the independent unknowns.</p>
 
-<P>If the output conditions based on these guessed input values are not 
+<p>If the output conditions based on these guessed input values are not 
 satisfied, a new guess is made for the unknowns by the solver, and 
 the model is re-executed.  This iterative procedure is continued until 
 a convergence criteria is satisfied. The methodology, common to all 
-implicit problems is shown in Figure 2-3.</P>
+implicit problems is shown in Figure 2-3.</p>
 
-<H3>Illustration Problems</H3>
+<h3>Illustration Problems</h3>
 
-<P>The application problems to follow are designed to illustrate the 
-points made earlier.  We will talk about the following types of problems:</P>
+<p>The application problems to follow are designed to illustrate the 
+points made earlier.  We will talk about the following types of problems:</p>
 
-<OL TYPE="1">
-    <LI>Simulation with explicit & Implicit Algebra</LI> 
+<ol>
+    <li>Simulation with explicit & Implicit Algebra</li> 
 
-    <LI>Simulation with Explicit ODE's</LI> 
+    <li>Simulation with Explicit ODE's</li> 
 
-    <LI>Simulation with Implicit ODE's and Boundary Value 
-        Problems</LI>
+    <li>Simulation with Implicit ODE's and Boundary Value 
+        Problems</li>
 
-        <LI>Unconstrained and Constrained Optimization</LI>
-</OL>
+        <li>Unconstrained and Constrained Optimization</li>
+</ol>
 
-<A NAME="IP1:IMALEQ" ID="IP1:IMALEQ"><h4>Illustration Problem No. 1 - Implicit Algebraic Equations</h4></A>
+<a name="IP1:IMALEQ" id="IP1:IMALEQ"><h4>Illustration Problem No. 1 - Implicit Algebraic Equations</h4></a>
 
-<P>The following equations can be shown to relate the temperatures and 
+<p>The following equations can be shown to relate the temperatures and 
 pressures on either side of a detonation wave that is moving into 
-a zone of unburned gas:</P>
+a zone of unburned gas:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/GasEquations2.png" height="108" width="321">
+<div style={s.marginLeft}>
+<img src={GasEquations2} height="108" width="321" />
 </div>
 
-where<BR><BR>
+where<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;T = absolute temperature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H<sub>r</sub> = heat of reaction<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;P = absolute pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C<sub>p</sub> = specific heat at constant pressure<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;&gamma; = ratio of specific heat at constant pressure to specific heat at constant volume<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;m = mean molecular weight<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;T = absolute temperature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;H<sub>r</sub> = heat of reaction<br /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;P = absolute pressure&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C<sub>p</sub> = specific heat at constant pressure<br /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&gamma; = ratio of specific heat at constant pressure to specific heat at constant volume<br /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;m = mean molecular weight<br /><br />
 
-<p>and the subscripts 1 and 2 refer to the unburned and burned gas respectively.</P>
+<p>and the subscripts 1 and 2 refer to the unburned and burned gas respectively.</p>
 
-<P>Find <I>T<SUB>2</SUB></I> and <I>P<SUB>2</SUB></I> which relate to the burned gas mixture 
+<p>Find <i>T<sub>2</sub></i> and <i>P<sub>2</sub></i> which relate to the burned gas mixture 
 with the following given data for the detonation of a mixture of hydrogen 
-and oxygen: <I>m<SUB>1</SUB></I>=12, <I>m<SUB>2</SUB></I>=18, <I>T<SUB>1</SUB></I>=300K, <I>P<SUB>1</SUB></I>=1 
-atm, <I>g<SUB>2</SUB></I>=1.31, <I>H<SUB>r1</SUB></I>=-58300, and <I>C<SUB>p2</SUB></I>=9.86.</P> 
+and oxygen: <i>m<sub>1</sub></i>=12, <i>m<sub>2</sub></i>=18, <i>T<sub>1</sub></i>=300K, <i>P<sub>1</sub></i>=1 
+atm, <i>g<sub>2</sub></i>=1.31, <i>H<sub>r1</sub></i>=-58300, and <i>C<sub>p2</sub></i>=9.86.</p> 
 
-<P><I>FC Program:</I> We will use universal correlation solver AJAX. There will be two FC procedures.  The 
+<p><i>FC Program:</i> We will use universal correlation solver AJAX. There will be two FC procedures.  The 
 PROBLEM procedure will read in data, initialize the problem and make 
 a call to AJAX to operate on the MODEL procedure which will contain 
 the equations written as equality constraint relationships to be matched 
@@ -463,8 +529,8 @@ to zero.</p>
 
 <h5>Program Variables</h5>
 
-&nbsp;&nbsp;&nbsp;&nbsp;GAMMA2 &equiv; &gamma;<sub>2</sub>&nbsp;&nbsp;&nbsp;&nbsp;EM1 &equiv; m<sub>1</sub>&nbsp;&nbsp;&nbsp;&nbsp;P2 &equiv; P<sub>2</sub>&nbsp;&nbsp;&nbsp;&nbsp;HR1 &equiv; H<sub>r1</sub><br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;EM2 &equiv; m<sub>2</sub>&nbsp;&nbsp;&nbsp;&nbsp;T1 &equiv; T<sub>1</sub>&nbsp;&nbsp;&nbsp;&nbsp;P1 &equiv; P<sub>1</sub>&nbsp;&nbsp;&nbsp;&nbsp;CP2 &equiv; C<sub>p2</sub><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;GAMMA2 &equiv; &gamma;<sub>2</sub>&nbsp;&nbsp;&nbsp;&nbsp;EM1 &equiv; m<sub>1</sub>&nbsp;&nbsp;&nbsp;&nbsp;P2 &equiv; P<sub>2</sub>&nbsp;&nbsp;&nbsp;&nbsp;HR1 &equiv; H<sub>r1</sub><br /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;EM2 &equiv; m<sub>2</sub>&nbsp;&nbsp;&nbsp;&nbsp;T1 &equiv; T<sub>1</sub>&nbsp;&nbsp;&nbsp;&nbsp;P1 &equiv; P<sub>1</sub>&nbsp;&nbsp;&nbsp;&nbsp;CP2 &equiv; C<sub>p2</sub><br /><br />
 
 <h5>Program</h5>
 <pre>
@@ -486,38 +552,38 @@ to zero.</p>
 
 
  
-<A NAME="IP2:EIMALEQ" ID="IP2:EIMALEQ"><h4>Illustration Problem No. 2 - 
-Explicit &amp; Implicit Algebra Simulation</h4></A>
+<a name="IP2:EIMALEQ" id="IP2:EIMALEQ"><h4>Illustration Problem No. 2 - 
+Explicit &amp; Implicit Algebra Simulation</h4></a>
 
-<div style="margin-left: 50px">
-<img src="../images/PumpSys60.png" height="383" width="461">
-<br>
+<div style={s.marginLeft}>
+<img src={PumpSys60} height="383" width="461" />
+<br />
 <b>Figure 2-5 Centrifugal Pump Piping System</b>
-<br>
+<br />
 </div>
 
-<P>The design of a piping system employing centrifugal pumps is a typical 
+<p>The design of a piping system employing centrifugal pumps is a typical 
 example of simultaneous nonlinear algebraic equations.  For flow of 
 a liquid in an inclined pipe between two points i and j, the pressure 
-drop is given by<br><br>
+drop is given by<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>P<SUB>i</SUB> - P<SUB>j</SUB></I> = 0.5 <I>f<SUB>m</SUB>&rho;u<SUB>m</SUB><SUP>2</SUP> 
-L/D + &rho;(Z<sub>j</sub> - Z<SUB>i</SUB>)</I><BR><BR>
+&nbsp;&nbsp;&nbsp;&nbsp; <i>P<sub>i</sub> - P<sub>j</sub></i> = 0.5 <i>f<sub>m</sub>&rho;u<sub>m</sub><sup>2</sup> 
+L/D + &rho;(Z<sub>j</sub> - Z<sub>i</sub>)</i><br /><br />
 
-where <I>P<SUB>i,j</SUB></I> denotes pressure and <I>Z<SUB>i,j</SUB></I> elevation at the 
-respective points, <I>f<SUB>m</SUB></I> is the Moody friction factor, <I>&rho;</I>  
-is the liquid density, <I>u<SUB>m</SUB></I> is the mean velocity, <I>L</I> is the pipe 
-length and <I>D</I> is the pipe diameter.  Assuming a constant value for 
+where <i>P<sub>i,j</sub></i> denotes pressure and <i>Z<sub>i,j</sub></i> elevation at the 
+respective points, <i>f<sub>m</sub></i> is the Moody friction factor, <i>&rho;</i>  
+is the liquid density, <i>u<sub>m</sub></i> is the mean velocity, <i>L</i> is the pipe 
+length and <i>D</i> is the pipe diameter.  Assuming a constant value for 
 the friction factor, this equation can be rewritten for turbulent 
 flow in pipes of average roughness in terms of the volumetric flow 
-rate <I>Q</I> in gpm as:<br><br>
+rate <i>Q</i> in gpm as:<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; <I>Z<SUB>j</SUB> - Z<SUB>i</SUB></I> + 2.31(<I>P<SUB>j</SUB> - P<SUB>i</SUB></I>) + 8.69x10<SUP>-4</SUP> 
-<I>Q<SUP>2</SUP>L/D<SUP>5</SUP></I> = 0</P> 
+&nbsp;&nbsp;&nbsp;&nbsp; <i>Z<sub>j</sub> - Z<sub>i</sub></i> + 2.31(<i>P<sub>j</sub> - P<sub>i</sub></i>) + 8.69x10<sup>-4</sup> 
+<i>Q<sup>2</sup>L/D<sup>5</sup></i> = 0</p> 
 
-<P>The pressure rise across a centrifugal pump can be represented by</P>
+<p>The pressure rise across a centrifugal pump can be represented by</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <i>&Delta;P = &alpha; - &beta;Q<sup>2</sup></i><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <i>&Delta;P = &alpha; - &beta;Q<sup>2</sup></i><br /><br />
 
 where &alpha; and &beta; are constants dependent upon a particular 
 pump.
@@ -526,39 +592,42 @@ For the piping system shown in Fig. 2-6, the pressures P<sub>1</sub> and
 P<sub>2</sub> are both essentially atmospheric (0 psig); there 
 is an increase in elevation between points 4 and 5, but pipes C and 
 D are horizontal.  Using the above equations as modeling elements, 
-the governing equations for this system are:<br><br><I>
+the governing equations for this system are:<br /><br /><i>
 
-&nbsp;&nbsp;&nbsp;&nbsp; P<SUB>2</SUB> = &alpha; <sub>A</sub> - &beta;<sub>A</sub>Q<sub>C</sub><sup>2</sup><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp; P<sub>2</sub> = &alpha; <sub>A</sub> - &beta;<sub>A</sub>Q<sub>C</sub><sup>2</sup><br /><br />
 
 
 
-&nbsp;&nbsp;&nbsp;&nbsp; 2.31(P<SUB>4</SUB>-P<SUB>2</SUB>) + 8.69x10<SUP>-4</SUP>Q<SUB>C</SUB><SUP>2</SUP>L<SUB>C</SUB>/D<SUB>C</SUB><sup>5</sup> = 0<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp; 2.31(P<sub>4</sub>-P<sub>2</sub>) + 8.69x10<sup>-4</sup>Q<sub>C</sub><sup>2</sup>L<sub>C</sub>/D<sub>C</sub><sup>5</sup> = 0<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; P<sub>3</sub> = &alpha;<sub>B</sub> - &beta;<sub>A</sub>Q<sub>D</sub><sup>2</sup><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp; P<sub>3</sub> = &alpha;<sub>B</sub> - &beta;<sub>A</sub>Q<sub>D</sub><sup>2</sup><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; 2.31(P<SUB>4</SUB>-P<SUB>3</SUB>) + 8.69x10<SUP>-4</SUP>Q<SUB>D</SUB><SUP>2</SUP>L<SUB>D</SUB>/D<SUB>d</SUB><sup>5</sup> = 0<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp; 2.31(P<sub>4</sub>-P<sub>3</sub>) + 8.69x10<sup>-4</sup>Q<sub>D</sub><sup>2</sup>L<sub>D</sub>/D<sub>d</sub><sup>5</sup> = 0<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; Q<sub>E</sub> = Q<sub>C</sub> +Q<sub>D</sub><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp; Q<sub>E</sub> = Q<sub>C</sub> +Q<sub>D</sub><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;Z<sub>5</sub> - Z<sub>4</sub> + 2.31(0-P<sub>4</sub>) +8.69x10<sub>-4</sub>Q<sub>E</sub><sup>2</sup>L<sub>E</sub>/D<sub>E</sub><sup>5</sup> = 0<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Z<sub>5</sub> - Z<sub>4</sub> + 2.31(0-P<sub>4</sub>) +8.69x10<sub>-4</sub>Q<sub>E</sub><sup>2</sup>L<sub>E</sub>/D<sub>E</sub><sup>5</sup> = 0<br /><br />
 
-</I>
+</i>
 A program is required to solve these equations for the unknowns, P<sub>2</sub>, 
 P<sub>3</sub>, P<sub>4</sub>, Q<sub>C</sub>,Q<sub>D</sub>, Q<sub>E</sub> if Z<sub>5</sub>-Z<sub>4</sub>
-is given as 70 feet and the pump and pipe characteristics are<p>&nbsp;</p>
-&nbsp;<div style="margin-left: 50px">
+is given as 70 feet and the pump and pipe characteristics are
+&nbsp;
+<div style={s.marginLeft}>
 <table width="60%">
-    <tr><th style="width: 109px">Pump</th><th style="width: 107px">&alpha;,psi</th><th>&beta;,psi(gpm)<sup>2</sup></th></tr>		
-    <tr><td align=center style="width: 109px">A</td>
-		<td align=center style="width: 107px">156.6</td><td align=center>0.00752</td></tr>
-    <tr><td align=center style="width: 109px">B</td>
-		<td align=center style="width: 107px">117.1</td><td align=center>0.00427</td></tr>
+  <tbody>
+    <tr><th style={s.width109}>Pump</th><th style={s.width109}>&alpha;,psi</th><th>&beta;,psi(gpm)<sup>2</sup></th></tr>
+    <tr><td style={s.width109Centered}>A</td><td style={s.width109Centered}>156.6</td><td style={s.width109}>0.00752</td></tr>
+    <tr><td style={s.width109Centered}>B</td><td style={s.width109Centered}>117.1</td><td style={s.width109}>0.00427</td></tr>
+  </tbody>
 </table>
 <table width="60%">
-    <tr><th width=20%>Pipe</th><th width=20%>D, in.</th><th>L, ft.</th></th>
-    <tr><td align=center>C</td><td align=center>1.278</td><td align=center>125</td></tr>
-    <tr><td align=center>D</td><td align=center>20.67</td><td align=center>125</td></tr>
-    <tr><td align=center>E</td><td align=center>2.469</td><td align=center>145</td></tr>
+  <tbody>
+    <tr><th style={s.width20Pc}>Pipe</th><th style={s.width20Pc}>D, in.</th><th>L, ft.</th></tr>
+    <tr><td style={s.width109}>C</td><td style={s.width109}>1.278</td><td style={s.width109}>125</td></tr>
+    <tr><td style={s.width109}>D</td><td style={s.width109}>20.67</td><td style={s.width109}>125</td></tr>
+    <tr><td style={s.width109}>E</td><td style={s.width109}>2.469</td><td style={s.width109}>145</td></tr>
+  </tbody>
 </table>
 </div>
 
@@ -566,15 +635,15 @@ is given as 70 feet and the pump and pipe characteristics are<p>&nbsp;</p>
 in the first three equations, thus they are dependent rather than 
 independent variables.  Since the remaining three equations are implicit 
 in the unknowns Q<sub>C</sub>, Q<sub>D</sub>, and P<sub>4</sub>, these equations 
-can be represented by the constraints G<sub>C</sub>, G<sub>D</sub>, and G<sub>E</sub>,<br><br>
+can be represented by the constraints G<sub>C</sub>, G<sub>D</sub>, and G<sub>E</sub>,<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;G<sub>C</sub> = 2.31(P<sub>4</sub>-P<sub>2</sub>) + 8.69x10<sub>-4</sub>Q<sub>C</sub><sup>2</sup>L<sub>C</sub>/D<sub>C</sub><sup>5</sup><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;G<sub>C</sub> = 2.31(P<sub>4</sub>-P<sub>2</sub>) + 8.69x10<sub>-4</sub>Q<sub>C</sub><sup>2</sup>L<sub>C</sub>/D<sub>C</sub><sup>5</sup><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;G<sub>D</sub> = 2.31(P<sub>4</sub>-P<sub>3</sub>) +8.69x10<sub>-4</sub>Q<sub>D</sub><sup>2</sup>L<sub>D</sub>/D<sub>D</sub><sup>5</sup><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;G<sub>D</sub> = 2.31(P<sub>4</sub>-P<sub>3</sub>) +8.69x10<sub>-4</sub>Q<sub>D</sub><sup>2</sup>L<sub>D</sub>/D<sub>D</sub><sup>5</sup><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;G<sub>E</sub> = Z<sub>5</sub>-Z<sub>4</sub> -2.31P<sub>4</sub> + 8.69x10<sub>-4</sub>Q<sub>D</sub><sup>2</sup>L<sub>E</sub>/D<sub>E</sub><sup>5</sup><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;G<sub>E</sub> = Z<sub>5</sub>-Z<sub>4</sub> -2.31P<sub>4</sub> + 8.69x10<sub>-4</sub>Q<sub>D</sub><sup>2</sup>L<sub>E</sub>/D<sub>E</sub><sup>5</sup><br /><br />
 
-<H5>Program</H5><pre>
+<h5>Program</h5><pre>
       PROBLEM TWOPUMP(10000,1000,1000)
         COMMON/RESULTS/QC,QD,QE,P2,P3,P4,GC,GD,GE
         QC=53 : QD=50 : P4=75  ! Initial guesses
@@ -596,28 +665,29 @@ can be represented by the constraints G<sub>C</sub>, G<sub>D</sub>, and G<sub>E<
 
 </pre>
 
-<A NAME="IP3:IMALCO" ID="IP2:IMALCO"><H4>Illustration Problem No. 3 - Implicit Algebra Correlation</H4></A>
+<a name="IP3:IMALCO" id="IP2:IMALCO"><h4>Illustration Problem No. 3 - Implicit Algebra Correlation</h4></a>
 
 The admittance (1/resistance) of an AC circuit has been measured at 
 21 frequencies in a breadboard experiment.  An equivalent circuit 
-containing two inductors and a capacitor is diagrammed below.<div style="margin-left: 50px">
-<img src="../images/Circuit42.png" height="204" width="335">
-<br>
+containing two inductors and a capacitor is diagrammed below.
+<div style={s.marginLeft}>
+<img src={Circuit42} height="204" width="335" />
+<br />
 <b>Figure 2-6 Admittance Ciruit</b>
-<br>
+<br />
 </div>
 
 <p>The admittance for this equivalent circuit is given by</p>
 
-<div style="margin-left: 50px">
-<img src="../images/AdmitEq1.png" height="67" width="177">
+<div style={s.marginLeft}>
+<img src={AdmitEq1} height="67" width="177" />
 </div>
 
 <p>For the lossless case, L, L<sub>s</sub>, and C<sub>s</sub> are real and Y<sub>12</sub> 
-is imaginary. Replacing Y<sub>12</sub> by 0+jY and rearranging yields</>
+is imaginary. Replacing Y<sub>12</sub> by 0+jY and rearranging yields</p>
 
-<div style="margin-left: 50px">
-<img src="../images/AdmitEq2.png" height="68" width="154">
+<div style={s.marginLeft}>
+<img src={AdmitEq2} height="68" width="154" />
 </div>
 
 <p>Given the 21 measurements of Y at frequencies from 2900x10<sup>6</sup>
@@ -626,21 +696,21 @@ L<sub>s</sub>, and C<sub>s</sub> to match the measurements.  For each measuremen
 Y<sub>i</sub> at frequency &omega;<sub>i</sub> we may estimate a matching admittance 
 Y<sub>ci</sub> as follows:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/AdmitEq3.png" height="88" width="178">
+<div style={s.marginLeft}>
+<img src={AdmitEq3} height="88" width="178" />
 </div>
 
 <p>With i = 1,...,21, this results in 21 equations in only three unknowns.  To 
 solve these equations by least squares correlation, we form a constraint 
 vector:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/AdmitEq4.png" height="46" width="198">
+<div style={s.marginLeft}>
+<img src={AdmitEq4} height="46" width="198" />
 </div>
 
 <p>and execute the find statement</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;FIND L, L<sub>s</sub>, C<sub>s</sub>;  ...  TO MATCH R<br>
+&nbsp;&nbsp;&nbsp;&nbsp;FIND L, L<sub>s</sub>, C<sub>s</sub>;  ...  TO MATCH R<br />
 
 <p>This program is given below</p>
 <pre>
@@ -668,13 +738,13 @@ vector:</p>
 </pre>
 
 
-<A NAME="IP4:EXPODES" ID="IP2:EXPODES"><h4>Illustration Problem No. 4 - Explicit ODE's</h4></A>
+<a name="IP4:EXPODES" id="IP2:EXPODES"><h4>Illustration Problem No. 4 - Explicit ODE's</h4></a>
 
-<div style="margin-left: 50px">
-<img src="../images/SurgeHt90.png" height="320" width="463">
-<br>
+<div style={s.marginLeft}>
+<img src={SurgeHt90} height="320" width="463" />
+<br />
 <b>Figure 2-7 Surge Tank Problem</b>
-<br>
+<br />
 </div>
 
 
@@ -685,33 +755,33 @@ the valve is closed quickly during an emergency.  Assuming constant
 density, and neglecting the effect of acceleration of water in the 
 surge tank, a momentum balance on the water in the pipe leads to</p>
 
-<div style="margin-left: 50px">
-<img src="../images/SurgeHtEq1.png" height="42" width="213">
+<div style={s.marginLeft}>
+<img src={SurgeHtEq1} height="42" width="213" />
 </div>
 
 <p>where</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;h= height of water in the surge tank<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;h= height of water in the surge tank<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;f<sub>m</sub> = Moody friction factor<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;f<sub>m</sub> = Moody friction factor<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;u = mean velocity in the pipe<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;u = mean velocity in the pipe<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;g = gravitational acceleration<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;g = gravitational acceleration<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;t = time<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;t = time<br /><br />
 
 <p>Also, continuity requires that</p>
 
-<div style="margin-left: 50px">
-<img src="../images/SurgeHtEq2.png" height="45" width="144">
+<div style={s.marginLeft}>
+<img src={SurgeHtEq2} height="45" width="144" />
 </div>
 
 <p>The flow rate Q<sub>v</sub> through the valve in the period 0&le;t&le;t<sub>c</sub> 
 during which it is being closed is approximated by</p>
 
-<div style="margin-left: 50px">
-<img src="../images/SurgeHtEq3.png" height="32" width="161">
+<div style={s.marginLeft}>
+<img src={SurgeHtEq3} height="32" width="161" />
 </div>
 
 <p>where the constant k depends on the particular valve and the downstream 
@@ -721,7 +791,7 @@ head h* depends on the particular emergency at the turbine.</p>
 variation with time of the level in the surge tank with the given 
 data as follows:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<i>g = 32.2 ft/sec<sup>2</sup>, H=100 ft, h<sub>0</sub> = 88 ft, f<sub>m</sub> = 0.024, L = 2000 ft, d = 2 ft </i><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>g = 32.2 ft/sec<sup>2</sup>, H=100 ft, h<sub>0</sub> = 88 ft, f<sub>m</sub> = 0.024, L = 2000 ft, d = 2 ft </i><br /><br />
 
 The above statement of the problem leads us to the following diagnosis:
 
@@ -734,16 +804,16 @@ there are three unknowns<i>h, u</i> and <i>Q<sub>v</sub></i>.</p>
 
 <p><b><i>Connecting Relationships:</i></b>  There are three equations:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/SurgeHtEq4.png" height="32" width="244">
+<div style={s.marginLeft}>
+<img src={SurgeHtEq4} height="32" width="244" />
 </div>
 
-<div style="margin-left: 50px">
-<img src="../images/SurgeHtEq5.png" height="52" width="244">
+<div style={s.marginLeft}>
+<img src={SurgeHtEq5} height="52" width="244" />
 </div>
 
-<div style="margin-left: 50px">
-<img src="../images/SurgeHtEq6.png" height="42" width="246">
+<div style={s.marginLeft}>
+<img src={SurgeHtEq6} height="42" width="246" />
 </div>
 
 <p>As we can see there are two explicit ODE's and one algebraic equation.</p>
@@ -791,7 +861,7 @@ it repeatedly, to solve the equations.</p>
       END
 
 </pre>
-<A NAME="IP5:IMPODES" ID="IP5:IMPODES"><h4>Illustration Problem No. 5  -  Implicit ODE's</h4></A>
+<a name="IP5:IMPODES" id="IP5:IMPODES"><h4>Illustration Problem No. 5  -  Implicit ODE's</h4></a>
 
 <p>Implicit ODE problems generally appear in two basic forms.   One form 
 involves an initial value problem in which derivative variables are 
@@ -801,32 +871,34 @@ these forms involve the nesting of problems similar to problems 2
 and 3.  This example is one of the first form, where the differential 
 equations  are implicit in their algebraic structure, as follows:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/ImpdesEq1.png" height="54" width="389">
+<div style={s.marginLeft}>
+<img src={ImpdesEq1} height="54" width="389" />
 </div>
 
-<div style="margin-left: 50px">
-<img src="../images/ImpdesEq2.png" height="54" width="397">
+<div style={s.marginLeft}>
+<img src={ImpdesEq2} height="54" width="397" />
 </div>
 
 <p>These equations represent a liquid rocket feed system operating with 
 damping longitudinal vibration. It is clear that if the derivatives 
 of x and y (oxidizer and fuel flow rates) are treated as simple variables, 
-the equations reduce to an <I>algebraic</I> implicit system, similar 
+the equations reduce to an <i>algebraic</i> implicit system, similar 
 to those of problem 4, and these flow-rate variables may be solved 
-<I>at any given value of time </I>using a problem structure similar 
+<i>at any given value of time </i>using a problem structure similar 
 to Figure 2-5.   If we regard this part of the problem as a "black 
 box", corresponding the the MODEL procedure of problem 2, then we 
 may integrate the black box, using a program structure similar to 
 Figure 2-7.  Thus the program structure to solve the implicit differential 
 equations is a nested combination of the structures of Figures 2-5 
-and 2-9, as shown in Figure 2-10.  
+and 2-9, as shown in Figure 2-10. 
+XXX below div width: 1259px also  width="40%" height="100%" on img tag below</p>
 
-<div style="margin-left: 50px; width: 1259px;">
-<img src="../images/ImpdesStructure1.png" width="40%" height="100%">
-<br>
+<div style={s.marginLeft}>
+
+<img src={ImpdesStructure1} height="402" width="600" />
+<br />
 <b>Figure 2-10 Structure of Implicit Differential Equations</b>
-<br>
+<br />
 </div>
 
 <h5>Program:</h5>
@@ -869,7 +941,7 @@ and 2-9, as shown in Figure 2-10.
 
 </pre>
 
-<A NAME="IP6:BVODES" ID="IP6:BVODES"><H4>Illustration Problem 6 - Boundary Value Problem</H4></A>
+<a name="IP6:BVODES" id="IP6:BVODES"><h4>Illustration Problem 6 - Boundary Value Problem</h4></a>
 
 <p>In the second form of implicit ODE problem, boundary values must be 
 satisfied and unknown initial conditions must be found by an iterative 
@@ -885,19 +957,19 @@ conditions.</p>
 <p>An object climbs from (0,0) to (2000,1000) in one second, distances 
 being in feet.  If equations of motion are:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/MotionEquations.png" height="124" width="145">
+<div style={s.marginLeft}>
+<img src={MotionEquations} height="124" width="145" />
 </div>
 
 
 <p>Find the initial velocity of the trajectory ending at (x(1)=2000, 
 y(1)=1000 ).</p>
 
-<div style="margin-left: 50px">
-<img src="../images/BvodesStructure1.png" width="50%" height="100%">
-<br>
+<div style={s.marginLeft}>
+<img src={BvodesStructure1} height="402" width="600" />
+<br />
 <b>Figure 2-11 Structure of Boundary Value Differential Equations</b>
-<br>
+<br />
 </div>
 
 <p>In this process, AJAX makes a calculated guess for the unknown initial 
@@ -914,8 +986,8 @@ partials of the boundary conditions with respect to the initial conditions.</p>
 
 <p><b>Program Variables</b></p>
 
-<div style="margin-left: 50px">
-<img src="../images/MotionVariables.png" height="172" width="380">
+<div style={s.marginLeft}>
+<img src={MotionVariables} height="172" width="380" />
 </div>
 
 <p><b>Program</b></p>
@@ -947,26 +1019,26 @@ partials of the boundary conditions with respect to the initial conditions.</p>
 
 </pre>
 
-<A NAME="IP7:UNCONSOP" ID="IP7:UNCONSOP"><h4>Illustration Problem No. 7  -  Unconstrained Optimization</h4></A>
+<a name="IP7:UNCONSOP" id="IP7:UNCONSOP"><h4>Illustration Problem No. 7  -  Unconstrained Optimization</h4></a>
 
 <p>Sherwood (Sherwood, T.K., A Course in Process Design, The MIT Press, 
 Cambridge, Mass.  1963, pp 85-96) considered the optimum design of 
 a gas transmission line.  He obtained the following expression for 
 the annual charges:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/SherwoodUnconstrainedOptFormula.png" height="60" width="516">
+<div style={s.marginLeft}>
+<img src={SherwoodUnconstrainedOptFormula} height="60" width="516" />
 </div>
 
-where<br><br>
+where<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;R = Ratio of pressure at inlet to pressure at outlet<br>
-&nbsp;&nbsp;&nbsp;&nbsp;L = Length of section between compressors<br>
-&nbsp;&nbsp;&nbsp;&nbsp;D = Diameter<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;R = Ratio of pressure at inlet to pressure at outlet<br />
+&nbsp;&nbsp;&nbsp;&nbsp;L = Length of section between compressors<br />
+&nbsp;&nbsp;&nbsp;&nbsp;D = Diameter<br /><br />
 
 <p>Find R, L and D which minimizes C</p>
 
-<p><I><b>Problem Synthesis:</b></i> There is one equation and three unknowns, 
+<p><i><b>Problem Synthesis:</b></i> There is one equation and three unknowns, 
 therefore the system is underdetermined.  In fact all optimization 
 problems must be underdetermined systems.  There are two degrees of 
 freedom in this optimization problem.  Further examination shows that 
@@ -993,37 +1065,37 @@ problem, we give the FC code below without further comment.</p>
 
 
 
-<A NAME="IP8:CONSOPT" ID="IP8:CONSOPT"><h4>Illustration Problem No. 8  -  Constrained Optimization</h4></A>
+<a name="IP8:CONSOPT" id="IP8:CONSOPT"><h4>Illustration Problem No. 8  -  Constrained Optimization</h4></a>
 
 <p>In considering the design of a three-member structural form, the following 
 optimization problem has been derived</p>
 
-Minimize<br>
+Minimize<br />
 
-<div style="margin-left: 50px">
-<img src="../images/ConsoptObj.png" height="28" width="130">
-</div>
-
-Subject to<br>
-
-<div style="margin-left: 50px">
-<img src="../images/ConsoptC1.png" height="52" width="196">
-</div>
-<div style="margin-left: 50px">
-<img src="../images/ConsoptC2.png" height="52" width="201">
-</div>
-<div style="margin-left: 50px">
-<img src="../images/ConsoptC3.png" height="24" width="106">
-</div>
-<div style="margin-left: 50px">
-<img src="../images/ConsoptC4.png" height="49" width="188">
-</div>
-<div style="margin-left: 50px">
-<img src="../images/ConsoptC5.png" height="41" width="106">
+<div style={s.marginLeft}>
+<img src={ConsoptObj} height="28" width="130" />
 </div>
 
+Subject to<br />
 
-<p><I><b>Problem Synthesis:</b></i> There are three unknowns one equation and 
+<div style={s.marginLeft}>
+<img src={ConsoptC1} height="52" width="196" />
+</div>
+<div style={s.marginLeft}>
+<img src={ConsoptC2} height="52" width="201" />
+</div>
+<div style={s.marginLeft}>
+<img src={ConsoptC3} height="24" width="106" />
+</div>
+<div style={s.marginLeft}>
+<img src={ConsoptC4} height="49" width="188" />
+</div>
+<div style={s.marginLeft}>
+<img src={ConsoptC5} height="41" width="106" />
+</div>
+
+
+<p><i><b>Problem Synthesis:</b></i> There are three unknowns one equation and 
 five inequality relationships.  Recalling that inequality relationships 
 do not eliminate any degrees of freedom (only equality constraints 
 can eliminate degrees of freedom), there are 3 degrees of freedom.  We 
@@ -1054,7 +1126,7 @@ solvers, we will first try THOR.</p>
 	  
 </pre>	  
 
-<A NAME="MCPROC" ID="MCPROC"><h2>2.2 Metacalculus Processes</h2></A>
+<a name="MCPROC" id="MCPROC"><h2>2.2 Metacalculus Processes</h2></a>
 
 <p>In this section, the language extension (template) statements associated with metacalculus 
 processes are discussed.  For those, such as FIND, which have optional forms, 
@@ -1064,14 +1136,14 @@ in subsequent chapters where their applications are described.</p>
 <p>A basic metacalculus process is a program structure to solve one of the 
 basic holistic problems.  This structure consists of</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;(a)  Process template statements<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;(a)  Process template statements<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;(b)  A <I>model</I> procedure designated as an operand 
-of these statements<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(b)  A <i>model</i> procedure designated as an operand 
+of these statements<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(c)  A <I>solver</I> algorithm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(c)  A <i>solver</i> algorithm<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(d)  A <I>controller</I> procedure containing solver control variables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(d)  A <i>controller</i> procedure containing solver control variables<br />
 
 <p>The process template statements set up the process by identifying the 
 model and the solver and by transferring information and control to 
@@ -1080,17 +1152,17 @@ as many times as necessary to achieve a solution.  Once the solution
 is reached, the process ends by returning execution control to the 
 statement following the last executed template statement.</p>
 
-<p><I><b>Problem Definition</b></i> -  The definition of an holistic problem 
+<p><i><b>Problem Definition</b></i> -  The definition of an holistic problem 
 consists of the model procedure containing the formulas of the problem, 
 and a specification of the principal variables of the problem.</p>
 
 <p>The principal variables of an holistic problem consist of</p>
 
-<ul><li><I><b>Independent variables</I></b> - variables defining the coordinate 
+<ul><li><i><b>Independent variables</b></i> - variables defining the coordinate 
 system in terms of which the model formulas are expressed and whose 
 values are to be varied by the solver to find or generate a solution.</li>
 
-<li><I><b>Criteria  variables</I></b> - variables computed via model 
+<li><i><b>Criteria  variables</b></i> - variables computed via model 
 formulas which define the essential functions of the problem and the 
 numerical conditions for solution.</li></ul>
 
@@ -1100,7 +1172,7 @@ values in the model.  The values and the derivatives of the criteria
 variables are subsequently used by the solver to vary the independent 
 variables and to test for satisfaction of the solution condition. </p>
 
-<p>The <I>unknowns</I> of a metacalculus process are variables computed by 
+<p>The <i>unknowns</i> of a metacalculus process are variables computed by 
 the solver algorithm whose values are the solution of the problem 
 whenever the criteria variables satisfy the solution conditions.  For 
 optimization processes, the unknowns are the independent variables. 
@@ -1114,9 +1186,9 @@ they are not unknowns in the mathematical sense because they have
 no special significance in the solution process.  (They are not principal 
 variables to the solver.)</p>
 
-<div style="margin-left: 50px">
-<img src="../images/ModelProc80.png" height="236" width="627">
-<br><br>
+<div style={s.marginLeft}>
+<img src={ModelProc80} height="236" width="627" />
+<br /><br />
 <b>Figure 2-11 Relstionships of variables to the model</b>
 </div>
 
@@ -1126,26 +1198,26 @@ as functions of the independent variables from the model formulas.
 The unknowns are varied by the solver algorithm and a considered constant 
 by the model.</p>
 
-<p><I><b>Solver Procedure</b></I>  -  The functions performed by the solver 
+<p><i><b>Solver Procedure</b></i>  -  The functions performed by the solver 
 algorithm are:</p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;(a)  Execution of the model program with current values 
-of the independent variables;<br> 
+of the independent variables;<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;(b)  Testing of the criteria for process termination;<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;(b)  Testing of the criteria for process termination;<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;(c)  Ending the process if the test succeeds;<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;(c)  Ending the process if the test succeeds;<br /> 
 
 &nbsp;&nbsp;&nbsp;&nbsp;(d)  Varying the independent variables and computing the 
-unknowns;<br> 
+unknowns;<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;(e)  Repeating from (a);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(e)  Repeating from (a);<br />
 
 <p>This procedure is illustrated in Figure 2-12.</p>
 
-<div style="margin-left: 50px">
-<img src="../images/SolverProcess60.png" height="292" width="436">
-<br><br>
+<div style={s.marginLeft}>
+<img src={SolverProcess60} height="292" width="436" />
+<br /><br />
 <b>Figure 2-12 Generic Steps of a Metacalculus Solver</b>
 </div>
 
@@ -1158,7 +1230,7 @@ has occurred, then the process continues with variation of the independent
 variables and computation of the unknowns.</p>
 
 <p>The variation of the independent variables is usually accomplished 
-with the aid of <I>derivative quantities</I>.  In the case of ordinary 
+with the aid of <i>derivative quantities</i>.  In the case of ordinary 
 differential equations, some or all of these derivatives may be computed 
 directly from the model formulas and are transmitted as principal 
 variables.  Otherwise, the derivative quantities consist of partial 
@@ -1168,7 +1240,7 @@ of the user's program but are stored as internal arrays, in the calculus
 environment.  They may be accessed, however, in the manner described 
 in Section 3.2 and 3.3</p>.
 
-<p><i><B>Process Profile</B></i> - The overall structure of a basic metacalculus 
+<p><i><b>Process Profile</b></i> - The overall structure of a basic metacalculus 
 process is illustrated in Figure 2-13.  The upper part of the diagram 
 illustrates the portion of the process which is visible in FC language 
 syntax.  The lower part illustrates the portion that is hidden in 
@@ -1177,30 +1249,30 @@ by the large arrows, while the flow of execution control is represented
 by the small dashed arrows.  The five basic steps of the process are 
 described as follows:</p>
 
-<div style="margin-left: 50px">
-<img src="../images/Gener5step70.png" height="362" width="608">
-<br><br>
+<div style={s.marginLeft}>
+<img src={Gener5step70} height="362" width="608" />
+<br /><br />
 <b>Figure 2-13 Profile of a Metacalculus Process</b>
 </div>
 
 
-<ol type=1>
+<ol>
 
 <li>The template statements define the problem and pass control 
-to the solver.</li><br>
+to the solver.</li><br />
 
 <li>The solver passes control to the model for execution 
-with the current values of the independent variables.</li><br>
+with the current values of the independent variables.</li><br />
 
 <li>The criteria test is performed based upon the values 
-of the criteria variables returned to the solver from the model.</li><br> 
+of the criteria variables returned to the solver from the model.</li><br /> 
 
 <li>If the criteria test passes, the process is exited 
 by passing control to the next statement following the last executed 
 process statement. In the case of integration processes there are 
 three process statements, the first being the INITIATE statement. The 
 values of all variables of the model at this point are the final output 
-values of the process.</li><br>
+values of the process.</li><br />
 
 <li>Otherwise, the independent variables are varied (usually 
 employing derivative quantities obtained from the model), the unknowns 
@@ -1224,83 +1296,83 @@ destructive usages.  If they are dynamic array elements, the size
 of their arrays may not be altered (via PURGE or ALLOT) while they 
 are pre-empted.</p>
 
-<p><I><b>Process Statements</b></I> - There are two distinct kinds of basic 
+<p><i><b>Process Statements</b></i> - There are two distinct kinds of basic 
 metacalculus processes:</p>
 
-<ul><li><I>Integration</I> processes in which function points are 
+<ul><li><i>Integration</i> processes in which function points are 
 generated step-by-step by varying an independent variable over a prescribed 
 interval;
 </li>
-<li><I>Optimization</I> processes in which independent variables 
+<li><i>Optimization</i> processes in which independent variables 
 are varied in an iterative search procedure to find their respective 
 values that satisfy optimization criteria.</li></ul>
 
 <p>Procedural control of integration processes is provided by three operation 
 statements:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INITIATE</B> to define and initialize the process<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INITIATE</b> to define and initialize the process<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INTEGRATE</B> to perform step-by-step variation and 
-point generation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INTEGRATE</b> to perform step-by-step variation and 
+point generation<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>TERMINATE</B> to  release the association of variables, 
-model, and solver<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>TERMINATE</b> to  release the association of variables, 
+model, and solver<br />
 
 <p>Procedural control of optimization processes is provided by a single 
 operation statement:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>FIND</B> to define the process and search for the unknown 
+&nbsp;&nbsp;&nbsp;&nbsp;<b>FIND</b> to define the process and search for the unknown 
 values of the independent variables which satisfy specific optimization 
-criteria<br>
+criteria<br />
 
-<A NAME="INTPROC" ID="INTPROC"><h3>2.2.1 Integration Processes</h3></A>
+<a name="INTPROC" id="INTPROC"><h3>2.2.1 Integration Processes</h3></a>
 
 <p>In an integration process, the principal formulas define ordinary 
-derivative variables <I>y<sub>i</sub>&acute;,...,y<sub>n</sub>&acute;</I>. 
+derivative variables <i>y<sub>i</sub>&acute;,...,y<sub>n</sub>&acute;</i>. 
 The results of integration are dependent variable functions <i> 
 y<sub>i</sub>,...,y<sub>n</sub> </i> represented as a "table" of point values 
 corresponding to discrete, contiguous values of an independent variable 
-<I>x</I> over a prescribed interval, from the initial value of <I>x</I> 
-to a final value, <I>x<sub>f</sub></I>.  Thus, integration is a process 
-of <I>generating</I> solution functions, point by point.  Figure 2-14 illustrates 
+<i>x</i> over a prescribed interval, from the initial value of <i>x</i> 
+to a final value, <i>x<sub>f</sub></i>.  Thus, integration is a process 
+of <i>generating</i> solution functions, point by point.  Figure 2-14 illustrates 
 the profile of an integration process.
 </p>
 
-<div style="margin-left: 50px">
-<img src="../images/ODERates5step70.png" height="398" width="627">
-<br><br>
+<div style={s.marginLeft}>
+<img src={ODERates5step70} height="398" width="627" />
+<br /><br />
 <b>Figure 2-14 Integration Process Profile</b>
 </div>
 
 
-<p><I>Integration Statements</I> - The operation statements for an integration 
+<p><i>Integration Statements</i> - The operation statements for an integration 
 process have the general form:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INITIATE</B> <I>solver</I>{ (<I>controller</I>)}
-{<B>WITH</B> <I>type parameters</I>} <B>FOR</B> <I>model</I><br> 
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INITIATE</b> <i>solver</i>{this.curlyStart} (<i>controller</i>){this.curlyEnd}
+{this.curlyStart}<b>WITH</b> <i>type parameters</i>{this.curlyEnd} <b>FOR</b> <i>model</i><br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>EQUATIONS</B> <I>ode</I>/<I>vars</I> <B>OF</B> 
-<I>ind-var</I> <B>STEP</B> <I>delta</I> <B>TO</B> <I>limit</I><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>EQUATIONS</b> <i>ode</i>/<i>vars</i> <b>OF</b> 
+<i>ind-var</i> <b>STEP</b> <i>delta</i> <b>TO</b> <i>limit</i><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INTEGRATE</B> <I>model</I> <B>BY</B> <I>solver</I><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INTEGRATE</b> <i>model</i> <b>BY</b> <i>solver</i><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>TERMINATE</B> <I>model</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>TERMINATE</b> <i>model</i><br />
 
 <p>The order in which these statements are executed is 
 as specified; however, they need not appear together but may be dispersed 
 in various models and in any structure of program logic.</p>
 
-<p><I>Solver</I> - The solver is simply a short identifying name applied 
+<p><i>Solver</i> - The solver is simply a short identifying name applied 
 to each solution algorithm by FORTRAN CALCULUS.  Examples are ISIS 
 for Runge-Kutta integration and JANUS for Adams-Moulton integration.
 </p>
 
-<p><I>Controller</I> - The label of a controller procedure may be provided 
+<p><i>Controller</i> - The label of a controller procedure may be provided 
 in the optional parenthesized phrase if the solver allows controls 
 and their default values are unacceptable. (The mechanisms of solver 
 control are described in Section 2.2.6).</p>
 
-<p><I>Parameters</I> - The optional WITH clause permits one or more program 
+<p><i>Parameters</i> - The optional WITH clause permits one or more program 
 variables to be associated with the solver as some type of parameters.  A 
 typical type is FLAG, which provides the solver with a means 
 of communicating information to the program which might be useful 
@@ -1308,17 +1380,17 @@ in determining the success or accuracy of a given step. Some solvers
 allow no parameters, while others have several types.  For the latter, 
 as many WITH clauses as are needed may be used.</p>
 
-<p><I>Model</I> - The operand of the process is specified by the label 
-<I>model</I>, referencing the model procedure associated with the 
+<p><i>Model</i> - The operand of the process is specified by the label 
+<i>model</i>, referencing the model procedure associated with the 
 differential equations to be solved in the process.</p>
 
-<p><I>Ode</I>/<I>vars</I> - The differential equations are identified 
-in the <B>EQUATIONS</B> clause by the <I>ode</I>/<I>vars</I> list, 
+<p><i>Ode</i>/<i>vars</i> - The differential equations are identified 
+in the <b>EQUATIONS</b> clause by the <i>ode</i>/<i>vars</i> list, 
 having the form</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<I>der</I>/<I>var</I>, <I>der</I>/<I>var</I>, ...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>der</i>/<i>var</i>, <i>der</i>/<i>var</i>, ...<br />
 
-<p>where each <I>der/var</I> pair is a pair of arrays of the same size, a pair 
+<p>where each <i>der/var</i> pair is a pair of arrays of the same size, a pair 
 of real scalars (any combination of simple scalars and array elements) 
 or each representing derivative(s) and associated dependent variable(s) 
 respectively. Arrays may be "full" or "reduced".  A full array is represented 
@@ -1327,33 +1399,33 @@ number of elements of the array beginning with the first. </p>
 
 <p><b>Example</b></p>
 
-<div style="margin-left: 25px">
+<div style={s.marginLeft}>
 
 <p>In a problem where there are three ODEs, for example</p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;<i>y<sub>1</sub>&acute; = f(x, y<sub>1</sub>, 
 y<sub>2</sub>, y<sub>3</sub>, y<sub>1</sub>&acute;, y<sub>2</sub>&acute;, 
-y<sub>3</sub>&acute;)</i><br>
+y<sub>3</sub>&acute;)</i><br />
 
 &nbsp;&nbsp;&nbsp;&nbsp;<i>y<sub>2</sub>&acute; = g(x, y<sub>1</sub>, 
 y<sub>2</sub>, y<sub>3</sub>, y<sub>1</sub>&acute;, y<sub>2</sub>&acute;, 
-y<sub>3</sub>&acute;)</i><br>
+y<sub>3</sub>&acute;)</i><br />
 
 &nbsp;&nbsp;&nbsp;&nbsp;<i>y<sub>3</sub>&acute; = h(x, y<sub>1</sub>, 
 y<sub>2</sub>, y<sub>3</sub>, y<sub>1</sub>&acute;, y<sub>2</sub>&acute;, 
-y<sub>3</sub>&acute;)</i><br>
+y<sub>3</sub>&acute;)</i><br />
 
 <p>the model could represent the ODE variables by the vectors 
-<B>DY</B> and <B>Y</B>, i.e.,</p>
+<b>DY</b> and <b>Y</b>, i.e.,</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>DY(1)</B> &equiv; y<sub>1</sub>&acute;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>DY(2)</B> &equiv; y<sub>2</sub>&acute;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>DY(3)</B> &equiv; y<sub>3</sub>&acute;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y(1)</B> &equiv; y<sub>1</sub><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y(2)</B> &equiv; y<sub>2</sub><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y(3)</B> &equiv; y<sub>3</sub><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>DY(1)</b> &equiv; y<sub>1</sub>&acute;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>DY(2)</b> &equiv; y<sub>2</sub>&acute;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>DY(3)</b> &equiv; y<sub>3</sub>&acute;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y(1)</b> &equiv; y<sub>1</sub><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y(2)</b> &equiv; y<sub>2</sub><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y(3)</b> &equiv; y<sub>3</sub><br />
  
-<p>In this case, the ode/vars list would simply be <B>DY/Y</B>.</p>
+<p>In this case, the ode/vars list would simply be <b>DY/Y</b>.</p>
 
 </div>
 
@@ -1361,40 +1433,40 @@ y<sub>3</sub>&acute;)</i><br>
 of the variables is a scalar and there is a separate specification 
 for each equation, separated by commas.  For example,</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y1DOT/Y1,Y2DOT/Y2,...,YNDOT/YN</B>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y1DOT/Y1,Y2DOT/Y2,...,YNDOT/YN</b>
 
-would be a representative scalar <I>ode/vars</I> list in which <B>Y1DOT</B> 
+would be a representative scalar <i>ode/vars</i> list in which <b>Y1DOT</b> 
 represents the first derivative of Y1, etc.
 
 <p><b>Example</b></p>
 
-<div style="margin-left: 25px">
+<div style={s.marginLeft}>
 
 <p>The preceding example could have employed a model in which 
 the variables were</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y1P</B> &equiv; y<sub>1</sub>&acute;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y2P</B> &equiv; y<sub>2</sub>&acute;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y3P</B> &equiv; y<sub>3</sub>&acute;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y1</B> &equiv; y<sub>1</sub><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y2</B> &equiv; y<sub>2</sub><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y3</B> &equiv; y<sub>3</sub><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y1P</b> &equiv; y<sub>1</sub>&acute;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y2P</b> &equiv; y<sub>2</sub>&acute;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y3P</b> &equiv; y<sub>3</sub>&acute;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y1</b> &equiv; y<sub>1</sub><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y2</b> &equiv; y<sub>2</sub><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y3</b> &equiv; y<sub>3</sub><br />
 
-<p>In this case, the <I>ode-vars </I> list would specify 
+<p>In this case, the <i>ode-vars </i> list would specify 
 the two equations by</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>Y1P/Y1,  Y2P,Y2,  Y3P/Y3</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>Y1P/Y1,  Y2P,Y2,  Y3P/Y3</b><br />
 
 </div>
 
-<p><I>Higher-order Equations</I> - Both the preceding examples illustrate 
+<p><i>Higher-order Equations</i> - Both the preceding examples illustrate 
 the specification of first order equations.  This does not reflect 
 a limitation, however.  The specification of higher order equations 
 is defined by the successive appearance of the same variable name 
 in a derivative position and in a dependent variable position in the 
-<I>ode/vars</I> list, as in</p>
+<i>ode/vars</i> list, as in</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>JERK/ACCEL, ACCEL/VEL, VEL/DIST</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>JERK/ACCEL, ACCEL/VEL, VEL/DIST</b><br />
 
 <p>defining the relationship of high order derivatives to lower order 
 derivatives in a single higher order differential equation, i.e.,where
@@ -1406,57 +1478,56 @@ would correspond to the number of higher order differential equations
 in the simultaneous system.
 </p>
 
-<p><I>Ind-var</I> - The independent variable of the process is identified 
-by the name ind-var appearing in the <B>OF</B> phrase, These variables 
+<p><i>Ind-var</i> - The independent variable of the process is identified 
+by the name ind-var appearing in the <b>OF</b> phrase, These variables 
 must be scalar (simple or array elements).</p>
 
-<p><I>Delta</I> - The step internal of the independent variable is 
-identified by the variable named delta appearing in the <B>STEP</B> 
+<p><i>Delta</i> - The step internal of the independent variable is 
+identified by the variable named delta appearing in the <b>STEP</b> 
 phrase.</p>
 
-<p><I>Limit</I> - Finally, the limit of integration is 
-identified by the variable named limit in the <B>TO</B> phrase.  In 
+<p><i>Limit</i> - Finally, the limit of integration is 
+identified by the variable named limit in the <b>TO</b> phrase.  In 
 the case of some integration solvers.
 </p>
 
 <p><b>Examples</b></p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INITIATE ISIS FOR AERO EQUATIONS DYDX/Y OF X STEP 
-DX TO XF</B><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INITIATE ISIS FOR AERO EQUATIONS DYDX/Y OF X STEP 
+DX TO XF</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INITIATE MERCURY(SETUP) FOR MANYO</B><br>  
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INITIATE MERCURY(SETUP) FOR MANYO</b><br />  
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>EQUATIONS UDOT/U, U/X, VDOT/V, V/Y OF T STEP DT 
-TO TF</B><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>EQUATIONS UDOT/U, U/X, VDOT/V, V/Y OF T STEP DT 
+TO TF</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INITIATE JANUS WITH FLAG V FOR DYNAMIC</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INITIATE JANUS WITH FLAG V FOR DYNAMIC</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>EQUATIONS DXDT/X, DYDT/Y, DZDT/Z OF T STEP DT 
-TO TEND</B><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>EQUATIONS DXDT/X, DYDT/Y, DZDT/Z OF T STEP DT 
+TO TEND</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INTEGRATE DYNAMIC BY JANUS</B><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INTEGRATE DYNAMIC BY JANUS</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>TERMINATE AERO</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>TERMINATE AERO</b><br />
 
 
-<p><I>Initiation</I> - The <B>INITIATE</B> statement associates the model 
+<p><i>Initiation</i> - The <b>INITIATE</b> statement associates the model 
 with the solver and initializes the calculus environment.  This involves 
 pre-emption of all variables appearing in the statement, and, for 
 some solvers, the activation of differential arithmetic for partial 
 derivative evaluation. Finally, the model is executed to initialize 
 the derivative variables.  This initialization requires that <u>all 
-variables not computed in the model must be set to their initial values 
-before the <B>INITIATE</B> statement is executed</u>.  This includes 
-all of the dependent variables (<I>vars</I> in the <I>ode/vars</I> 
-list). the independent variable, <I>ind-var</I>, the step variable 
-<I>delta</I>, and the integration limit variable<I> limit</I>.</p>
+variables not computed in the model must be set t</u>.  This includes 
+all of the dependent variables (<i>vars</i> in the <i>ode/vars</i> 
+list). the independent variable, <i>ind-var</i>, the step variable 
+<i>delta</i>, and the integration limit variable<i> limit</i>.</p>
 
-<p><I>Integration</I> - The <B>INTEGRATE</B> statement actually performs 
+<p><i>Integration</i> - The <b>INTEGRATE</b> statement actually performs 
 the function generation process.  The function is generated from the 
 current value of the independent variable (its value prior to execution 
-of the <B>INITIATE</B> statement) to the <I>limit</I> value, i.e., 
-the <B>INTEGRATE</B> statement advances the integration process until 
-the independent variable equals the <I>limit</I> variable.  The control 
+of the <b>INITIATE</b> statement) to the <i>limit</i> value, i.e., 
+the <b>INTEGRATE</b> statement advances the integration process until 
+the independent variable equals the <i>limit</i> variable.  The control 
 of integration is assumed by the solver, but the model may abort integration 
 at any value of the independent variable within the specified interval 
 by simply resetting the limit variable to the desired value.  This 
@@ -1464,42 +1535,42 @@ reset value must be at or beyond the current value of the independent
 variable in the direction of integration stepping.
 </p>
 
-<p><I>Output Generation</I> - An important distinction of integration 
+<p><i>Output Generation</i> - An important distinction of integration 
 processes is that they normally generate no output reports except 
 for diagnostics (if problems arise).  However, several approaches 
 may be used to generate output during integration, depending on the 
 solver being used.</p>
 
-<p>One approach is to integrate piecewise by updating the <I>limit</I> 
+<p>One approach is to integrate piecewise by updating the <i>limit</i> 
 variable.  A general structure for applying this approach is as follows:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>INITIATE</B> <I>solver</I> <B>FOR</B> <I>model</I><br> 
+&nbsp;&nbsp;&nbsp;&nbsp;<b>INITIATE</b> <i>solver</i> <b>FOR</b> <i>model</i><br /> 
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>EQUATIONS</B> <I>ode/vars</I>; <B>OF</B>
- <I>ind-var</I> <B>STEP</B> <I>delta</I>; <B>TO</B><I>limit</I> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>EQUATIONS</b> <i>ode/vars</i>; <b>OF</b>
+ <i>ind-var</i> <b>STEP</b> <i>delta</i>; <b>TO</b><i>limit</i> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;<I>limit</I> = 0
+&nbsp;&nbsp;&nbsp;&nbsp;<i>limit</i> = 0
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>DO WHILE</B> (<I>ind-var</I> <B>&le;</B> <I>final</I>)<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;<b>DO WHILE</b> (<i>ind-var</i> <b>&le;</b> <i>final</i>)<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<I>limit</I> = <I>limit</I> + <I>printinc</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>limit</i> = <i>limit</i> + <i>printinc</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>INTEGRATE</B> <I>model</I> <B>BY</B> <I>solver </I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>INTEGRATE</b> <i>model</i> <b>BY</b> <i>solver </i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<I>(output statement)</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>(output statement)</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>END DO</B><br> 
+&nbsp;&nbsp;&nbsp;&nbsp;<b>END DO</b><br /> 
 
 <p>In this approach, a sequence of output subintervals are specified 
-by the quantity <I>printinc</I>.  It is not necessary that these subintervals 
-be multiples of the step size <I>delta</I>, since the step size is 
-automatically adjusted in order to arrive at the <I>limit</I>  value 
-of <I>ind-var</I>.  However, the output subintervals should be considerably 
-larger than <I>delta</I> in general.
+by the quantity <i>printinc</i>.  It is not necessary that these subintervals 
+be multiples of the step size <i>delta</i>, since the step size is 
+automatically adjusted in order to arrive at the <i>limit</i>  value 
+of <i>ind-var</i>.  However, the output subintervals should be considerably 
+larger than <i>delta</i> in general.
 </p>
 
-<p><I><b>Derivative Propagation Through Integration</b></I> - The evaluation 
+<p><i><b>Derivative Propagation Through Integration</b></i> - The evaluation 
 of partial derivatives of the output of an integration process (dependent 
 variable values) with respect to the input of the integration process 
 (initial conditions or parameters of the equations) requires that 
@@ -1523,14 +1594,14 @@ of integration, namely derivatives of integration output with respect
 to integration input.  For example, the evaluation of the derivative.
 </p>
 
-<div style="margin-left: 50px">
-<img src="../images/DiffIntegral.png" height="42" width="122">
+<div style={s.marginLeft}>
+<img src={DiffIntegral} height="42" width="122" />
 </div>
 
 <p>requires integration of the differential equation</p>
 
-<div style="margin-left: 50px">
-<img src="../images/ydotode.png" height="22" width="86">
+<div style={s.marginLeft}>
+<img src={ydotode} height="22" width="86" />
 </div>
 
 <p>with respect to t, while evaluating the derivative &part;y/&part;x 
@@ -1544,8 +1615,8 @@ value problems is the derivative of the solution of a higher order
 differential equation with respect to one of its initial conditions, 
 i.e. given the equation</p>
 
-<div style="margin-left: 50px">
-<img src="../images/yPrimePrimeODE.png" height="22" width="102">
+<div style={s.marginLeft}>
+<img src={yPrimePrimeODE} height="22" width="102" />
 </div>
 
 <p>to solve over the interval <i>0 &ge; x &ge; &xi;</i> it may be 
@@ -1555,7 +1626,7 @@ required to satisfy a known boundary condition <i>y(&xi;)</i>.  This derivative
 may be propagated through the integration for trial values of the 
 unknown.</p>
 
-<A NAME="OPTPROC" ID="OPTPROC"><h3>2.2.2 Optimization Processes</h3></A>
+<a name="OPTPROC" id="OPTPROC"><h3>2.2.2 Optimization Processes</h3></a>
 
 <p>In an optimization process, the unknowns to be determined are the 
 independent variables of the model.  Optimization involves an iterative 
@@ -1566,18 +1637,18 @@ found or the limiting number of allowed iterations is reached.
 
 <p>The operation statement for optimization processes is</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>FIND</B> <I>unknowns</I> <B>IN</B> <I>model</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>FIND</b> <i>unknowns</i> <b>IN</b> <i>model</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>BY</B> <I>solver</I>{<B>(</B><I>controller</I><B>)</B>}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>BY</b> <i>solver</i>{this.curlyStart}<b>(</b><i>controller</i><b>)</b>{this.curlyEnd}<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<B>WITH</B> <I>type parameters</I>}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.curlyStart}<b>WITH</b> <i>type parameters</i>{this.curlyEnd}<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<B>REPORTING</B> <I>auxiliaries</I>}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.curlyStart}<b>REPORTING</b> <i>auxiliaries</i>{this.curlyEnd}<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<I>criteria</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>criteria</i><br />
 
 <p>The elements of this statement which are in common with those of the 
-<B>INITIATE</B> statement are identical in meaning, usage and purpose. 
+<b>INITIATE</b> statement are identical in meaning, usage and purpose. 
 These include the solver, model, controller, and type parameters. The 
 objective variable is a scalar (simple or array element. </p> 
 
@@ -1590,73 +1661,74 @@ on the values of the unknowns, and the objective, e.g. to minimize
 some function.</p>
 
 
-<p><I><b>Lists</b></i> - Whenever lists of variables appear in a FIND statement, 
-i.e., the <I>unknowns</I>, <I>parameters</I>, <I>auxiliaries</I>, 
-and lists in <I>criteria</I>, such as <I>equality-constraints</I>, 
-<I>inequality constraints</I> (below), the elements in the lists may 
+<p><i><b>Lists</b></i> - Whenever lists of variables appear in a FIND statement, 
+i.e., the <i>unknowns</i>, <i>parameters</i>, <i>auxiliaries</i>, 
+and lists in <i>criteria</i>, such as <i>equality-constraints</i>, 
+<i>inequality constraints</i> (below), the elements in the lists may 
 be real scalars, array elements, arrays, or array-parts.  When a list 
 element is an array the represented list entries encompass all elements 
 of the array.  When the list element is an array-part, designated 
 by the form </p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<I>array-name</I> <B>[<I>size</I>]</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<i>array-name</i> <b>[<i>size</i>]</b><br />
 
 <p>then the entries encompass all elements of the array up to the number 
-represented by the <I>size</I> number.</p>
+represented by the <i>size</i> number.</p>
 
-<p>The solution <I>criteria</I> may have any of the following forms</p>
+<p>The solution <i>criteria</i> may have any of the following forms</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;(1) <B>TO MATCH</B> <I>equality-constraints</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(1) <b>TO MATCH</b> <i>equality-constraints</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(2) <B>TO MAXIMIZE</B>|<B>MINIMIZE</B> <I>objective</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(2) <b>TO MAXIMIZE</b>|<b>MINIMIZE</b> <i>objective</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(3) <B>MATCHING</B> <I>equality-constraints</I> <B>TO MAXIMIZE</B>|<B>MINIMIZE</B> <I>objective</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(3) <b>MATCHING</b> <i>equality-constraints</i> <b>TO MAXIMIZE</b>|<b>MINIMIZE</b> <i>objective</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(4) <B>HOLDING</B> <I>inequality-constraints</I> <B>TO MAXIMIZE</B>|<B>MINIMIZE</B> <I>objective</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(4) <b>HOLDING</b> <i>inequality-constraints</i> <b>TO MAXIMIZE</b>|<b>MINIMIZE</b> <i>objective</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(5) <B>MATCHING</B> <I>equality-constraints</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(5) <b>MATCHING</b> <i>equality-constraints</i><br />
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>HOLDING</B> <I>inequality-constraints</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>HOLDING</b> <i>inequality-constraints</i><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>TO MAXIMIZE</B>|<B>MINIMIZE</B> <I>objective</I><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>TO MAXIMIZE</b>|<b>MINIMIZE</b> <i>objective</i><br />
 
 
 <p>The order of criteria presented is also the order of difficulty of 
 the optimization processes.  Respectively these criteria specify the 
 process of solving the following problems:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;(1) general systems of algebraic equations (constraint matching)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(1) general systems of algebraic equations (constraint matching)<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(2) unconstrained optimization<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(2) unconstrained optimization<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(3) optimization with equality constraints<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(3) optimization with equality constraints<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(4) optimization with inequality constraints<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(4) optimization with inequality constraints<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(5) optimization with both equality constraints and inequality constraints<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(5) optimization with both equality constraints and inequality constraints<br />
 
 <p><b>Examples</b></p>
+<p>
+&nbsp;&nbsp;&nbsp;&nbsp;(1) <b>FIND A,B,C BY AJAX IN ALGEBRA TO MATCH G1,G2,G3</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(1) <B>FIND A,B,C BY AJAX IN ALGEBRA TO MATCH G1,G2,G3</B><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(2) <b>FIND TIME, SPEED IN TRIALS</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(2) <B>FIND TIME, SPEED IN TRIALS</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>BY JOVE (SETTING) TO MAXIMIZE RANGE</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>BY JOVE (SETTING) TO MAXIMIZE RANGE</B></br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(3) <b>FIND RATES IN SPEED BY ZEUS TO MAXIMIZE PROFIT</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(3) <B>FIND RATES IN SPEED BY ZEUS TO MAXIMIZE PROFIT</B><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(4) <b>FIND MIXTURES IN BLEND BY THOR WITH FLAG NOTICE</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(4) <B>FIND MIXTURES IN BLEND BY THOR WITH FLAG NOTICE</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>REPORTING GROUPA,GROUPB,SPILLAGE</b><br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>REPORTING GROUPA,GROUPB,SPILLAGE</B><br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>HOLDING MAXVALS TO MINIMIZE VARIATION</b><br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>HOLDING MAXVALS TO MINIMIZE VARIATION</B><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;(5) <b>FIND LENGTH,HEIGHT,WIDTH IN BOAT BY HERA</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;(5) <B>FIND LENGTH,HEIGHT,WIDTH IN BOAT BY HERA</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>WITH BOUNDS LIM WITH SCALES F1,F2,F3</b><br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>WITH BOUNDS LIM WITH SCALES F1,F2,F3</B><br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>REPORTING WASTAGE TO MAXIMIZE SHIPVOL</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>REPORTING WASTAGE TO MAXIMIZE SHIPVOL</B><br>
-
+</p>
 <p>As in the case of integration processes, all variables in the FIND 
 statement are pre-empted by the solver until the process is terminated.  Also 
 similarly, successful initiation requires that any variable used by 
@@ -1668,29 +1740,29 @@ in Figures 2-16, 2-17, and 2-18, showing the processes of solving
 general algebraic equation systems (correlation), unconstrained optimization problems, 
 and constrained optimization problems, respectively.</p>
 
-<div style="margin-left: 50px">
-<img src="../images/ConstraintModel5step70.png" height="406" width="640">
-<br>
+<div style={s.marginLeft}>
+<img src={ConstraintModel5step70} height="406" width="640" />
+<br />
 <b>Figure 2-16 General Algebraic Equations (Contraint Systems) Process Profile</b>
-<br><br>
+<br /><br />
 </div>
 
-<div style="margin-left: 50px">
-<img src="../images/UnconstrainedOpt5step70.png" height="400" width="643">
-<br>
+<div style={s.marginLeft}>
+<img src={UnconstrainedOpt5step70} height="400" width="643" />
+<br />
 <b>Figure 2-17 Unconstrained Optimization Process Profile</b>
-<br><br>
+<br /><br />
 </div>
 
-<div style="margin-left: 50px">
-<img src="../images/ConsOpt5step70.png" height="393" width="608">
-<br>
+<div style={s.marginLeft}>
+<img src={ConsOpt5step70} height="393" width="608" />
+<br />
 <b>Figure 2-18 Constrained Optimization Process Profile</b>
-<br><br>
+<br /><br />
 </div>
 
 
-<p><I><b>Aborting Optimization</b></i> - The need occasionally arises to terminate 
+<p><i><b>Aborting Optimization</b></i> - The need occasionally arises to terminate 
 an optimization process prematurely.  The most common circumstance 
 is that a physically unreasonable condition is detected in the model. 
 The optimization processes perform a sequence of approximations to 
@@ -1703,7 +1775,7 @@ information to establish the proper constraints.</p>
 
 <p>When such a condition arises, execution of the statement</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <B> @ABORT</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <b> @ABORT</b><br />
 
 <p>will force the process to terminate.  This statement may be executed 
 anywhere within the model; however it does not halt model execution. 
@@ -1712,7 +1784,7 @@ the current iteration, exactly as if a final solution had been achieved.
 </p>
 
 
-<A NAME="COMPROC" ID="COMPROC"><h3>2.2.3 Combined Processes</h3>
+<a name="COMPROC" id="COMPROC"><h3>2.2.3 Combined Processes</h3></a>
 
 <p>There are no unique statements for the specification of compound metacalculus 
 processes.  Instead, the metacalculus template statements are used in suitable 
@@ -1731,86 +1803,86 @@ in the subsequent chapters</p>
 
 <p>Some applications of combined processes are:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; (a) Error Propagation Sensitivity Analysis<br>
+&nbsp;&nbsp;&nbsp;&nbsp; (a) Error Propagation Sensitivity Analysis<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Partial Derivative Evaluation<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Partial Derivative Evaluation<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>INVOKE  ...</B>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>INVOKE  ...</b>)<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Ordinary Differential Equations<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Ordinary Differential Equations<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>INITIATE...INTEGRATE</B>)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>INITIATE...INTEGRATE</b>)<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; (b) Implicit Differential Equations<br>
+&nbsp;&nbsp;&nbsp;&nbsp; (b) Implicit Differential Equations<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Ordinary Differential Equations<br> 
-
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>INITIATE...INTEGRATE</B>)<br>
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - General Algebraic Equations<br>
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>FIND ... TO MATCH ...</B>)<br><br>
-
-&nbsp;&nbsp;&nbsp;&nbsp; (c) Boundary Value Problems<br>
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Optimization (Implicit Algebraic Equations)<br>
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>FIND ... TO MATCH ...</B>)<br> 
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Ordinary Differential Equations<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Ordinary Differential Equations<br /> 
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>INITIATE ... INTEGRATE</B>)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>INITIATE...INTEGRATE</b>)<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; (d) Process Identification<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - General Algebraic Equations<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Optimization<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>FIND ... TO MATCH ...</b>)<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>FIND ... TO MINIMIZE...</B>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; (c) Boundary Value Problems<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Ordinary Differential Equations<br> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Optimization (Implicit Algebraic Equations)<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>FIND ... TO MATCH ...</b>)<br /> 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Ordinary Differential Equations<br /> 
 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>INITIATE ... INTEGRATE</B>)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>INITIATE ... INTEGRATE</b>)<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; (e) Optimal Design and Control Problems (calculus of variations)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; (d) Process Identification<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Optimization<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>FIND ... TO MAXIMIZE ...</B>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Optimization<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Implicit Algebraic Equations<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>FIND ... TO MINIMIZE...</b>)<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>FIND ...TO MATCH...</B>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Ordinary Differential Equations<br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub-nested Process - Ordinary Differential Equations<br> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>INITIATE ... INTEGRATE</B>)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>INITIATE ... INTEGRATE</b>)<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; (f) Multistage Optimization<br>
+&nbsp;&nbsp;&nbsp;&nbsp; (e) Optimal Design and Control Problems (calculus of variations)<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Predecessor Process - Optimization<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>FIND...TO MAXIMIZE </B>)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Successor Process - Optimization<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<B>FIND ... TO MINIMIZE </B>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Primary Process - Optimization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>FIND ... TO MAXIMIZE ...</b>)<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nested Process - Implicit Algebraic Equations<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>FIND ...TO MATCH...</b>)<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sub-nested Process - Ordinary Differential Equations<br /> 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>INITIATE ... INTEGRATE</b>)<br /><br />
+
+&nbsp;&nbsp;&nbsp;&nbsp; (f) Multistage Optimization<br />
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Predecessor Process - Optimization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>FIND...TO MAXIMIZE </b>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Successor Process - Optimization<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<b>FIND ... TO MINIMIZE </b>)<br />
 
 <p>Examples of several of these processes are given as application problems 
 in later sections.</p>
 
-<p><I><b>Aborting Nested Processes</b></I> - While an individual optimization 
+<p><i><b>Aborting Nested Processes</b></i> - While an individual optimization 
 process can be terminated prematurely with an @ABORT statement, this 
 may prove inadequate when several are used in a nested combination. 
 Simply terminating an inner process might permit an outer one to continue 
 on the basis of a spurious solution.  To deal with this circumstance, 
 an extended form of the @ABORT statement may be used:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>@ABORTALL</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>@ABORTALL</b><br />
 
 <p>Execution of this statement will abort not only the current process 
 but also all those in which it is nested, thereby terminating the 
 entire combined process.</p>
 
-<A name="MODEL" id="MODEL"><h3>2.2.4 The Process Model </h3></A>
+<a name="MODEL" id="MODEL"><h3>2.2.4 The Process Model </h3></a>
 
 <p>Each metacalculus process operates upon a model of a mathematical or physical 
 system, consisting of equations and associated logic.  The model may 
@@ -1821,17 +1893,17 @@ some of which may themselves contain metacalculus processes.</p>
 an INITIATE or FIND statement, has the following heading
 </p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>MODEL | FUNMODEL</B> <I>model</I> {<B>(</B><I>parameters</I><B>)</B>}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>MODEL | FUNMODEL</b> <i>model</i> {this.curlyStart}<b>(</b><i>parameters</i><b>)</b>{this.curlyEnd}<br />
 
-<p>where <I>model</I> is procedure or function name.</p>
+<p>where <i>model</i> is procedure or function name.</p>
 
 <p><b>Examples</b></p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; (1) <B>MODEL EQUILIB</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp; (1) <b>MODEL EQUILIB</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; (2) <B>MODEL STOCKS</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp; (2) <b>MODEL STOCKS</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; (3) <B>MODEL BRIDGE</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp; (3) <b>MODEL BRIDGE</b><br />
 
 <p>This "main" MODEL procedure provides the name that is associated with 
 the process model, but the process model includes:</p>
@@ -1847,9 +1919,9 @@ MODELS may be shared by different process models; indeed this is often
 the case where utility procedures are involved.</p>
 
 When a model includes a metacalculus process, it also includes the model 
-for that process, in which case they are said to be <MI>nested<D>.
+for that process, in which case they are said to be MITAG <b>nested</b> DTAG.
 
-<A name="CONTROL" id="CONTROL"><h3>2.2.5 Control Of Metacalculus Processes</h3></A>
+<a name="CONTROL" id="CONTROL"><h3>2.2.5 Control Of Metacalculus Processes</h3></a>
 
 <p>Metacalculus processes may be viewed as computational mechanisms, with their 
 controls set for "standard" or "normal" operation.  For a broad range 
@@ -1859,20 +1931,20 @@ may be adjusted for a particular case.</p>
 <p>The controls for any solver are scalar, real values. The values may 
 represent on/off switches, or quantities such as convergence tolerances.</p>
 
-<p><I><b>The Controller Procedure</b></i> - In order to modify controls, 
+<p><i><b>The Controller Procedure</b></i> - In order to modify controls, 
 a special type of procedure called a controller must be executed, 
 the heading for which is</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>CONTROLLER</B> <I>name</I> <b>(</b><I>solver</I><b>)</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>CONTROLLER</b> <i>name</i> <b>(</b><i>solver</i><b>)</b><br />
 
-<p>where <I>name</I> is the name of the controller and <I>solver</I> 
+<p>where <i>name</i> is the name of the controller and <i>solver</i> 
 identifies the solver it controls.</p>  
 
-<p><B>Examples</B></p> 
+<p><b>Examples</b></p> 
 
-&nbsp;&nbsp;&nbsp;&nbsp; (1) <B>CONTROLLER SETTINGS(THOR)</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp; (1) <b>CONTROLLER SETTINGS(THOR)</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; (2) <B>CONTROLLER SWITCH(HERA)</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp; (2) <b>CONTROLLER SWITCH(HERA)</b><br />
 
 <p>The controller procedure is intended to serve only the purpose of 
 controlling metacalculus processes, and thus it is subject to several 
@@ -1896,11 +1968,11 @@ to prevent faulty control of metacalculus process. Internally, control variables
 are members of a common block generated by the FC translator, having 
 the name</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <B>C</B><I>solver</I><br> 
+&nbsp;&nbsp;&nbsp;&nbsp; <b>C</b><i>solver</i><br /> 
 
 <p>where solver is the name of the solver.</p> 
 
-<p><B>Example</B></p>
+<p><b>Example</b></p>
 
 <p>The solver JANUS employs two error measures in deciding 
 whether the integration step gives an acceptable accuracy.  If the 
@@ -1908,13 +1980,13 @@ largest relative error is less than ERRLO, then a larger step would
 suffice; while if any relative error is greater than ERRHI, the step 
 must be reduced.  These control variables may be set by the controller</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>CONTROLLER ERRSET(JANUS)</B><br> 
+&nbsp;&nbsp;&nbsp;&nbsp;<b>CONTROLLER ERRSET(JANUS)</b><br /> 
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>ERRHI = 0.001</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>ERRHI = 0.001</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>ERRLO = ERRHI/1000</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>ERRLO = ERRHI/1000</b><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>END</B><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<b>END</b><br />
 
 <p>Note that JANUS has other controls which will remain at their preset 
 values after ERRSET is executed.</p>
@@ -1926,13 +1998,13 @@ for different solvers, such as iterative print switches, are given
 identical names.  This creates no ambiguity because the controller 
 heading designates which solver is pertinent.</p>
 
-<p><I><B>Control of Optimization Output</B></I> - In general, each optimization 
+<p><i><b>Control of Optimization Output</b></i> - In general, each optimization 
 process may generate two kinds of output reports.</p>
 
-<ul><li>A <I>summary</I> report produced at the end of the process,summarizing 
+<ul><li>A <i>summary</i> report produced at the end of the process,summarizing 
 all of the iterations of the process</li>
 
-<li>A <I>detailed</I> report produced at the end of an iteration, 
+<li>A <i>detailed</i> report produced at the end of an iteration, 
 describing the mathematical properties of the problem as interpreted 
 by the solver, and describing the current action taken by the solver.</li>
 </ul>
@@ -1940,47 +2012,54 @@ by the solver, and describing the current action taken by the solver.</li>
 <p>The summary report is controlled by the control variables, SUMMARY 
 and SUMOUT described as follows:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>SUMMARY = 1</B>: produce a summary report (default)<br>                                   
+&nbsp;&nbsp;&nbsp;&nbsp;<b>SUMMARY = 1</b>: produce a summary report (default)<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>= 0</B> suppress the summary report<br><br>                                                
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>= 0</b> suppress the summary report<br /><br />                                                
 
-&nbsp;&nbsp;&nbsp;&nbsp;<B>SUMOUT = 0</B>: summary output to DETAILS stream,<br>                                     
+&nbsp;&nbsp;&nbsp;&nbsp;<b>SUMOUT = 0</b>: summary output to DETAILS stream,<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>&gt; 0</B> summary output to 
-SUMMARY stream (default),<br>                                        
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>&gt; 0</b> summary output to 
+SUMMARY stream (default),<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt; 0</B> summary output to 
-standard output.<br>                                    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>&lt; 0</b> summary output to 
+standard output.<br />
 
 <p>The detailed report is controlled by the control variables DETAIL 
 and DETOUT, described as follows:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <B>DETAIL = <I>n</I></B>: produce a detailed report at every <B><I>n</I></b>th iteration 
-plus first and last<br>
+&nbsp;&nbsp;&nbsp;&nbsp; <b>DETAIL = <i>n</i></b>: produce a detailed report at every <b><i>n</i></b>th iteration 
+plus first and last<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B> = 0</B>: suppress the detailed 
-report (default)<br><br>                                      
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> = 0</b>: suppress the detailed 
+report (default)<br /><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp; <B>DETOUT  = 0</B>: detailed output to DETAILS stream (default),<br>                                              
+&nbsp;&nbsp;&nbsp;&nbsp; <b>DETOUT  = 0</b>: detailed output to DETAILS stream (default),<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B> &gt; 0</B>: detailed output to 
-SUMMARY stream,<br>                                                
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> &gt; 0</b>: detailed output to 
+SUMMARY stream,<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B> &lt; 0</B>: detailed output to 
-standard output.<br>                                             
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> &lt; 0</b>: detailed output to 
+standard output.<br />
 
-<p><I><b>Flag Variable</b></I> - All optimization solvers have provision for 
+<p><i><b>Flag Variable</b></i> - All optimization solvers have provision for 
 definition of a flag variable  identified in the WITH FLAG phrase.  Upon 
 completion of the FIND statement operation, the value of the flag 
 variable specifies the condition of solution as follows:</p>
 
-&nbsp;&nbsp;&nbsp;&nbsp; <U>value</U>   <U>meaning</U><br>
+&nbsp;&nbsp;&nbsp;&nbsp; <u>value</u>   <u>meaning</u><br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 &nbsp;&nbsp; : The optimization process converged;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0 &nbsp;&nbsp; : The optimization process converged;<br />
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp; : The optimization process was aborted;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - &nbsp;&nbsp; : The optimization process was aborted;<br />
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + &nbsp; : The maximum number of iterations occurred  without 
-convergence.<br><br>
+convergence.<br /><br />
 
-</body></html>
+</div>);
+
+}
+}
+
+
+// cut below
+

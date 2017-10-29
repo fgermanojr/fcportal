@@ -60,7 +60,7 @@ export default class Content extends React.Component {
         view_object = <Result user="frank" model="acmotor" status="Initial" />; //need user from portal passed into content
         break;
       case 'Documentation':
-        view_object = <Doc section="introduction" />;
+        view_object = <Doc section="chapter2" />;
         break;
       case 'Support':
         view_object = <NotYetImplemented />;

@@ -3,27 +3,42 @@ import React from 'react';
 import * as myStyles from './Styles.js';
 // import map from './images/OlympicNationalParkMap.jpg'; //import image, rel path
 import Introduction from './manual/introduction.jsx'
+//import Chap1 from './manual/Man/chap1/FCMANC1.jsx'
+import Chap2 from './manual/Man/chap2/FCMANC2.jsx'
 
 export default class Doc extends React.Component {
   static propTypes = {
-    section: PropTypes.string.isRequired,
+    section: PropTypes.string.isRequired, // The section to display
   };
 
   constructor(props) {
     super(props);
+
+    this.state = {current_section: 'chapter2'}
   }
 
   render() {
     var s = myStyles.Styles;
-    // do a json request to get the html back from server
-    // q. will the image links work? can I server that content from public?
+
+    let view_object = null;
+    console.log(this.state.current_section);
+    switch(this.state.current_section) {
+      case 'introduction':
+        view_object = <Introduction />;
+        break;
+      case 'chapter1':
+        view_object = <Chap1 />
+        break;
+      case 'chapter2':
+        view_object = <Chap2 />
+        break;
+    }
+
     return (
-      <div id="{this.props.section}">
-         <Introduction section={this.props.section}/>
+      <div id="{this.state.current_section}">
+         {view_object}
       </div>
     );
-
-
   }
 }
 

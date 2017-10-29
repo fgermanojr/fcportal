@@ -3,10 +3,6 @@ import React from 'react';
 import * as myStyles from '../Styles.js';
 
 export default class Introduction extends React.Component {
-  static propTypes = {
-    section: PropTypes.string.isRequired,
-  };
-
   constructor(props) {
     super(props);
   }
@@ -14,8 +10,7 @@ export default class Introduction extends React.Component {
   render() {
     var s = myStyles.Styles;
       return (
-        <div id="intro">
-
+        <div id="introduction">
 <p>This Manual is meant to serve as a reference handbook for calculus-based
 programming. The following is a synopsis of the manual:</p>
 <p>Chapter 1: THE CALCULUS ENVIRONMENT describes the software engineering

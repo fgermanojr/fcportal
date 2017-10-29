@@ -23,6 +23,7 @@ export default class Header extends React.Component {
 
   render() {
     var s = myStyles.Styles;
+
     return (
       <tr id="header" style={s.headerStyle}>
         <td style={s.fontSizeStyle}>&emsp;Fortran Calculus Portal</td>

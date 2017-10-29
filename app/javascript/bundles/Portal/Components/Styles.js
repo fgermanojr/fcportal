@@ -11,7 +11,6 @@ export const Styles = {
 
   tableStyle: {
     border: '1px solid black',
-    width: '100%'
   },
 
   headerStyle:{
@@ -25,7 +24,7 @@ export const Styles = {
 
   sidebarStyle: {
     border: '1px solid black',
-    width: '20%',
+    width: '15em',
     verticalAlign: 'text-top'
   },
 
@@ -61,6 +60,7 @@ export const Styles = {
 
   menuStyle: {
     textAlign: 'left',
+    width: '15m'
   },
 
   helpbtnStyle: {
@@ -90,6 +90,27 @@ export const Styles = {
 
   domainspanStyle: {
     float: 'right'
+  },
+
+  marginLeft: {
+    marginLeft: '50px'
+  },
+
+  width109: {
+    width: '109px'
+  },
+
+  width109Centered: {
+    width: '109px',
+    align: 'center'
+  },
+
+  width20Pc: {
+    width: '20%'
+  },
+
+  width60Pc: {
+    width: '60%'
   }
 
 };
