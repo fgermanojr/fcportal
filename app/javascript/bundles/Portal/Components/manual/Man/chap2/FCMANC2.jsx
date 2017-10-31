@@ -3,7 +3,6 @@ import React from 'react';
 
 import * as myStyles from '../../../Styles.js';
 
-
 import GeneralIter70 from '../images/GeneralIter70.png'
 import MixedModel50 from '../images/MixedModel50.png'
 import ExplicitODESolution70 from '../images/ExplicitODESolution70.png'

@@ -6,7 +6,8 @@ import Introduction from './manual/introduction.jsx'
 //import Chap1 from './manual/Man/chap1/FCMANC1.jsx'
 import Chap2 from './manual/Man/chap2/FCMANC2.jsx'
 import Chap3 from './manual/Man/chap3/FCMANC3.jsx'
-import Scroll from 'react-scroll'; // Imports all Mixins    //NOT WORKING YET
+import Chap4 from './manual/Man/chap4/FCMANC4.jsx'
+import Scroll from 'react-scroll'; // Imports all Mixins    //NOT WORKING YET  does it work on a div ???
 
 export default class Doc extends React.Component {
   static propTypes = {
@@ -16,7 +17,7 @@ export default class Doc extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {current_section: 'chapter3'}
+    this.state = {current_section: 'chapter4'}
   }
 
   render() {
@@ -29,13 +30,19 @@ export default class Doc extends React.Component {
         view_object = <Introduction />;
         break;
       case 'chapter1':
-        view_object = <Chap1 />
+        view_object = <Chap1 />;
         break;
       case 'chapter2':
-        view_object = <Chap2 />
+        view_object = <Chap2 />;
         break;
       case 'chapter3':
-        view_object = <Chap3 />
+        view_object = <Chap3 />;
+        break;
+      case 'chapter4':
+        view_object = <Chap4 />;
+        break;
+      default:
+        view_object = <NotYetImplemented />;
         break;
     }
 
