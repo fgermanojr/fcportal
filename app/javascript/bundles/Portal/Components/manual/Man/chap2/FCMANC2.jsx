@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as myStyles from '../../../Styles.js';
 
-import TypeModels70 from '../images/TypeModels70.png'
+
 import GeneralIter70 from '../images/GeneralIter70.png'
 import MixedModel50 from '../images/MixedModel50.png'
 import ExplicitODESolution70 from '../images/ExplicitODESolution70.png'
@@ -62,12 +62,11 @@ curlyEnd = () => {
 render() {
   var s = myStyles.Styles;
 
-  return(<div>
+  return(<div style={s.docDiv}>
 <h1> 2.0 Modeling Templates and Processes</h1>
-
-<p>***Simplify***Metacalculus extends ordinary programming languages for modeling and solving mathematical 
-applications in their natural <i>holistic</i> form as <i>inverse problems</i>, involving multiple 
-unknowns shared by nonlinear simultaneous equations which cannot be reduced. Such problems require 
+<p>***Simplify***Metacalculus extends ordinary programming languages for modeling and solving mathematical
+applications in their natural <i>holistic</i> form as <i>inverse problems</i>, involving multiple
+unknowns shared by nonlinear simultaneous equations which cannot be reduced. Such problems require
 hidden solution engines from a library supported by differential calculus arithmetic. This 
 arithmetic extends basic hardware arithmetic to produce arrays of numbers called <i>fluxions</i> 
 by Isaac Newton, who invented them as tools to understand particle motion. We know them as rates 
@@ -534,24 +533,24 @@ to zero.</p>
 
 <h5>Program</h5>
 <pre>
-       PROBLEM IMPLICIT
-         COMMON/VARIABLS/GAMMA2,EM2,EM2,P2,P1,HR1,CP2,T1
-         NAMELIST/DATA/GAMMA2,EM2,EM2,P2,P1,HR1,CP2,T1
-         READ DATA
-         P2=20 : T2=5000 ! Initial Guess
-         FIND P2,T2; IN ALGEBRA; BY AJAX; TO MATCH G1,G2
-       END
-       
-       MODEL ALGEBRA
-         COMMON/VARIABLS/GAMMA2,EM2,EM2,P2,P1,HR1,CP2,T1 
-         G1 = GAMMA2*EM2*T1/(EM1*T1)*(P2/P1)**2-(GAMMA2+1)*P2/P1+1
-         G2 = (GAMMA2-1)*EM2/(2*GAMMA2*EM1)*(P2/P1-1)
-      ~       *(1+EM1*T2*P1/(EM2*T1*P2))-HR1/(CP2*T1)-T2/T1+1
-       END
+{`
+   PROBLEM IMPLICIT
+     COMMON/VARIABLS/GAMMA2,EM2,EM2,P2,P1,HR1,CP2,T1
+     NAMELIST/DATA/GAMMA2,EM2,EM2,P2,P1,HR1,CP2,T1
+     READ DATA
+     P2=20 : T2=5000 ! Initial Guess
+     FIND P2,T2; IN ALGEBRA; BY AJAX; TO MATCH G1,G2
+   END
+   
+   MODEL ALGEBRA
+     COMMON/VARIABLS/GAMMA2,EM2,EM2,P2,P1,HR1,CP2,T1 
+     G1 = GAMMA2*EM2*T1/(EM1*T1)*(P2/P1)**2-(GAMMA2+1)*P2/P1+1
+     G2 = (GAMMA2-1)*EM2/(2*GAMMA2*EM1)*(P2/P1-1)
+  ~       *(1+EM1*T2*P1/(EM2*T1*P2))-HR1/(CP2*T1)-T2/T1+1
+   END
+`}
 </pre>
 
-
- 
 <a name="IP2:EIMALEQ" id="IP2:EIMALEQ"><h4>Illustration Problem No. 2 - 
 Explicit &amp; Implicit Algebra Simulation</h4></a>
 
@@ -644,6 +643,7 @@ can be represented by the constraints G<sub>C</sub>, G<sub>D</sub>, and G<sub>E<
 &nbsp;&nbsp;&nbsp;&nbsp;G<sub>E</sub> = Z<sub>5</sub>-Z<sub>4</sub> -2.31P<sub>4</sub> + 8.69x10<sub>-4</sub>Q<sub>D</sub><sup>2</sup>L<sub>E</sub>/D<sub>E</sub><sup>5</sup><br /><br />
 
 <h5>Program</h5><pre>
+{`
       PROBLEM TWOPUMP(10000,1000,1000)
         COMMON/RESULTS/QC,QD,QE,P2,P3,P4,GC,GD,GE
         QC=53 : QD=50 : P4=75  ! Initial guesses
@@ -662,7 +662,7 @@ can be represented by the constraints G<sub>C</sub>, G<sub>D</sub>, and G<sub>E<
         GD=2.31*(P4-P3)+8.69E-4*QD**2*DL/DD**5
         GE=Z5-Z4-2.31*P4+8.69E-4*QE**2*EL/ED**5
       END
-
+`}
 </pre>
 
 <a name="IP3:IMALCO" id="IP2:IMALCO"><h4>Illustration Problem No. 3 - Implicit Algebra Correlation</h4></a>
@@ -714,7 +714,7 @@ vector:</p>
 
 <p>This program is given below</p>
 <pre>
-
+{`
       PROBLEM CIRCUIT (5000,1000,1000)
         DIMENSION F(21),Y(21),R(21),W(21),YC(21)
         DATA Y/1.273,1.278,1.392,1.604,1.708,1.950,2.148,2.297,
@@ -734,7 +734,7 @@ vector:</p>
           R(I)=1/YC(I)-1/Y(I)
    10   CONTINUE
       END
-
+`}
 </pre>
 
 
@@ -834,7 +834,7 @@ second procedure will be the MODEL  containing the equations of the
 problem.  The integration solver will operate on this Model, calling 
 it repeatedly, to solve the equations.</p> 
 <pre> 
-
+{`
       PROBLEM  SURGEHT
         COMMON QV,DHDT,DUDT,CAY,T,TC,H,HSTAR,PIO4,U,DCAP,EL,HCAP,FM
         NAMELIST/DATA/G,HCAP,H0,FM,EL,D,DCAP,TC,CAY,HSTAR 
@@ -859,7 +859,7 @@ it repeatedly, to solve the equations.</p>
         DHDT=(PIO4*DPIPE**2*U-QV)/(PIO4*DCAP**2)
         DUDT=32.174/L*(HCAP-H)-FM*U**2/(2*DPIPE)
       END
-
+`}
 </pre>
 <a name="IP5:IMPODES" id="IP5:IMPODES"><h4>Illustration Problem No. 5  -  Implicit ODE's</h4></a>
 
@@ -903,6 +903,7 @@ XXX below div width: 1259px also  width="40%" height="100%" on img tag below</p>
 
 <h5>Program:</h5>
 <pre>
+{`
       PROBLEM IDIFEQ  
         COMMON XDOT,X,YDOT,Y,T
         X=14000 : Y=7000       ! Initial Conditions
@@ -938,7 +939,7 @@ XXX below div width: 1259px also  width="40%" height="100%" on img tag below</p>
       CONTROLLER ACON(AJAX)
         SUMMARY=0
       END
-
+`}
 </pre>
 
 <a name="IP6:BVODES" id="IP6:BVODES"><h4>Illustration Problem 6 - Boundary Value Problem</h4></a>
@@ -992,6 +993,7 @@ partials of the boundary conditions with respect to the initial conditions.</p>
 
 <p><b>Program</b></p>
 <pre>
+{`
       GLOBAL ALL
       PROBLEM BVODES
         NAMELIST/DATA/DT,TFINAL,DIXO,DIYO
@@ -1016,7 +1018,7 @@ partials of the boundary conditions with respect to the initial conditions.</p>
         D2X=-O.1*SQRT(V)*COS(ALPHA)    ! y-acceleration rate ODE
         D2Y=-32-0.1*SQRT(V)*SIN(ALPHA) ! y-acceleration rate ODE
       END
-
+`}
 </pre>
 
 <a name="IP7:UNCONSOP" id="IP7:UNCONSOP"><h4>Illustration Problem No. 7  -  Unconstrained Optimization</h4></a>
@@ -1050,7 +1052,7 @@ optimization problem.  It may be checked in table 2 that the proper
 solver to use for this problem is HERA.  Since this is a very simple 
 problem, we give the FC code below without further comment.</p>
 <pre>
-
+{`
       PROBLEM PIPEDES
         R=2 : EL=100 : D=2
         FIND R,EL,D IN COST(C,R,EL,D); BY HERA; TO MINIMIZE C
@@ -1060,10 +1062,8 @@ problem, we give the FC code below without further comment.</p>
         C=8.62E+5*SQRT(EL)*R/(SQRT(R*R-l)*D**O.666667)+450000
      ~    +36900*D+6.57E+6/EL+7.72E+08*(R**O.219)/EL
       END
-	  
+`}
 </pre>	  
-
-
 
 <a name="IP8:CONSOPT" id="IP8:CONSOPT"><h4>Illustration Problem No. 8  -  Constrained Optimization</h4></a>
 
@@ -1107,6 +1107,7 @@ solvers, we will first try THOR.</p>
 
 <p><b>Program:</b></p>
 <pre>
+{`
       PROBLEM STRUCT
         DIMENSION G(5)
         Xl=2 : X2=3 : X3=3
@@ -1123,8 +1124,8 @@ solvers, we will first try THOR.</p>
         G(4)=21600*X3/(X3**4+X1*X2**3)+60/X3**2-1.35
         G(S)=Xl/X2-0.5
       END
-	  
-</pre>	  
+`}
+</pre>
 
 <a name="MCPROC" id="MCPROC"><h2>2.2 Metacalculus Processes</h2></a>
 

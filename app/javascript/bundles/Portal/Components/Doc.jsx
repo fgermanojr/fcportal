@@ -5,6 +5,8 @@ import * as myStyles from './Styles.js';
 import Introduction from './manual/introduction.jsx'
 //import Chap1 from './manual/Man/chap1/FCMANC1.jsx'
 import Chap2 from './manual/Man/chap2/FCMANC2.jsx'
+import Chap3 from './manual/Man/chap3/FCMANC3.jsx'
+import Scroll from 'react-scroll'; // Imports all Mixins    //NOT WORKING YET
 
 export default class Doc extends React.Component {
   static propTypes = {
@@ -14,7 +16,7 @@ export default class Doc extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {current_section: 'chapter2'}
+    this.state = {current_section: 'chapter3'}
   }
 
   render() {
@@ -31,6 +33,9 @@ export default class Doc extends React.Component {
         break;
       case 'chapter2':
         view_object = <Chap2 />
+        break;
+      case 'chapter3':
+        view_object = <Chap3 />
         break;
     }
 

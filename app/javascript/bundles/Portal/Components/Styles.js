@@ -100,6 +100,14 @@ export const Styles = {
     width: '109px'
   },
 
+  width151: {
+    width: '151px' //chap3
+  },
+
+  width341: {
+    width: '341px'  //chap3
+  },
+
   width109Centered: {
     width: '109px',
     align: 'center'
@@ -111,6 +119,18 @@ export const Styles = {
 
   width60Pc: {
     width: '60%'
+  },
+
+  docDiv: { // fixes line wrap on doc components
+    width: '800px'
+  },
+
+  style1: { // chap3 fix this
+    textDecoration: 'underline'
+  },
+
+  style2: { // chap3 fix this
+    fontWeight: 'normal'
   }
 
 };
