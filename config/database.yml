@@ -23,6 +23,7 @@ default: &default
 
 development:
   <<: *default
+  username: postgres
   database: fortran_calculus_portal_react_development
 
   # The specified database role being used to connect to postgres.
@@ -57,8 +58,10 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  username: postgres
   database: fortran_calculus_portal_react_test
 
+# TBD THIS IS IMPORTANT TOO
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -68,6 +71,7 @@ test:
 # for a full rundown on how to provide these environment variables in a
 # production deployment.
 #
+# TBD LOOK AT THIS
 # On Heroku and other platform providers, you may have a full connection URL
 # available as an environment variable. For example:
 #
@@ -81,5 +85,6 @@ test:
 production:
   <<: *default
   database: fortran_calculus_portal_react_production
+  # TBD NEED TO FIX BELOW PER HEROKU SPECS
   username: fortran_calculus_portal_react
   password: <%= ENV['FORTRAN_CALCULUS_PORTAL_REACT_DATABASE_PASSWORD'] %>
