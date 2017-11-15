@@ -7,7 +7,7 @@ import Introduction from './manual/introduction.jsx'
 import Chap2 from './manual/Man/chap2/FCMANC2.jsx'
 import Chap3 from './manual/Man/chap3/FCMANC3.jsx'
 import Chap4 from './manual/Man/chap4/FCMANC4.jsx'
-import Scroll from 'react-scroll'; // Imports all Mixins    //NOT WORKING YET  does it work on a div ???
+// import Scroll from 'react-scroll'; // Imports all Mixins    //NOT WORKING YET  does it work on a div ???
 
 export default class Doc extends React.Component {
   static propTypes = {

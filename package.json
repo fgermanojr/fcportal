@@ -2,7 +2,7 @@
   "name": "fortran_calculus_portal_react",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "^3.0.1",
+    "@rails/webpacker": "^3.0.2",
     "actioncable": "^5.1.4",
     "axios": "^0.16.2",
     "babel-preset-react": "^6.24.1",
@@ -13,8 +13,13 @@
     "redux": "^3.7.2"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.7.1"
+    "webpack-dev-server": "^2.9.4"
   },
-  "scripts": { "postinstall": "cd client && npm install" },
-  "cacheDirectories": ["node_modules","client/node_modules"]
+  "scripts": {
+    "postinstall": "cd client && npm install"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ]
 }
