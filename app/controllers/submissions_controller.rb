@@ -19,23 +19,72 @@ class SubmissionsController < ApplicationController
       checkBoxBuild: submission_params[:checkBoxBuild],
       checkBoxRun: submission_params[:checkBoxRun],
       checkBoxRtnFile: submission_params[:checkBoxRtnFile],
+      fcFile: submission_params[:fcFile].original_filename,
+      dateFile: submission_params[:datFile].original_filename,
       fcFileContents: read_file(submission_params[:fcFile]),
       datFileContents: read_file(submission_params[:datFile])
     }
 
-    # CREATE JOB IN DATABASE HERE/ add job_id to parameters.
-    job_id='12345' # we will store an instance of FCJOB, and use its it.
+    verify_user(portal_worker_parameters)
+    verify_model(portal_worker_parameters) # be sure, user/model exists.
+    build = establish_build(portal_worker_parameters)
+    # store the build for each model; each iteration is saved.
+    # plan to only use the last, on runs. Should I just keep the last build ???
+    job_id = create_job(portal_worker_parameters)
+puts job_id
+    portal_worker_parameters[:job_id] = job_id
 
-    PortalWorker.perform_later(portal_worker_parameters)
+    Build.update!(build.id, job_id: job_id)
+byebug
+    # Should add build id, if i am keeping all of them ???
+    PortalWorker.perform_later(portal_worker_parameters) # Now in the portal queue
 
-    ActionCable.server.broadcast "submissions_channel", {message: 'enqueued', job_id: job_id}
+    ActionCable.server.broadcast "submissions_channel", {message: 'enqueued', job_id: job.id}
 
-       # create job_id to mimic bear's run id or do both.
+       # create second job_id to mimic bear's run id and add to build.
     render json: {result: 'submitted', job_id: job_id}.to_json
-    # XXX not checking this response.
+    # XXX not checking this response; should, and display job_id
   end
 
   private
+
+  # these should go in models.  FIX
+  def verify_user(pwp)
+    @user = User.find_by(username: pwp[:userName])
+  end
+
+  def verify_model(pwp)
+    @model = Model.find_by(modelname: pwp[:modelName])
+    unless @model
+      @model = @user.models.create(modelname: pwp[:modelName], description: '')
+      @model.save!
+    end
+    @model
+  end
+
+  def establish_build(pwp)
+    @build = @model.builds.create(
+      fc_file_name: pwp[:fcFile],
+      fc_file_contents: pwp[:fcFileContents],
+      dat_file_name: pwp[:datFile],
+      dat_file_contents: pwp[:datFileContents],
+      job_id: nil, # will be updated once available, upon creation of job
+      ck_create_map: pwp[:checkBoxMap],
+      ck_build_model: pwp[:checkBox],
+      ck_run_model: pwp[:checkBoxRun],
+      ck_return_results: pwp[:checkBoxRtnFile],
+      build_status: nil # will be updated once available, upon build completion
+    )
+  end
+
+  def create_job(pwp)
+    # The job is used to track a unit of work; it belongs to a build or a run
+byebug
+# @build.jobs (none there, hangs the server ???)
+    @job = @build.jobs.create(server_name: '', queue_name: '',
+                                 job_state: 1, dt_enqueued: Time.now.utc)  # watch out for time zone issues.
+    @job.id
+  end
 
   def submission_params
     params.permit(:userName, :modelName, :fcFile, :datFile, :checkBoxMap,

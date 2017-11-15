@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115175804) do
+ActiveRecord::Schema.define(version: 20171115220053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20171115175804) do
     t.string "fc_file_name"
     t.text "fc_file_contents"
     t.string "dat_file_name"
-    t.text "date_file_contents"
+    t.text "dat_file_contents"
     t.string "job_id"
     t.integer "ck_create_map"
     t.integer "ck_build_model"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 20171115175804) do
     t.integer "build_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "model_id"
+    t.index ["model_id"], name: "index_builds_on_model_id"
   end
 
   create_table "jobs", force: :cascade do |t|
@@ -40,6 +42,10 @@ ActiveRecord::Schema.define(version: 20171115175804) do
     t.integer "completion_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "build_id"
+    t.bigint "run_id"
+    t.index ["build_id"], name: "index_jobs_on_build_id"
+    t.index ["run_id"], name: "index_jobs_on_run_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -51,16 +57,20 @@ ActiveRecord::Schema.define(version: 20171115175804) do
   end
 
   create_table "models", force: :cascade do |t|
-    t.string "model_name"
+    t.string "modelname"
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_models_on_user_id"
   end
 
   create_table "runs", force: :cascade do |t|
     t.integer "run_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "build_id"
+    t.index ["build_id"], name: "index_runs_on_build_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -73,5 +83,10 @@ ActiveRecord::Schema.define(version: 20171115175804) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "builds", "models"
+  add_foreign_key "jobs", "builds"
+  add_foreign_key "jobs", "runs"
   add_foreign_key "messages", "users"
+  add_foreign_key "models", "users"
+  add_foreign_key "runs", "builds"
 end

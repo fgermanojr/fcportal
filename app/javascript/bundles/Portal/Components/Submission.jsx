@@ -102,7 +102,7 @@ export default class Submission extends React.Component {
                   User
                 </label>
                 <input id="userName" type="text" value={this.state.user}
-                        onChange={(e) => this.updateModel(e.target.value)} />
+                        onChange={(e) => this.updateUser(e.target.value)} />
               </span>
             </td>
             <td style={s.submissionCenterStyle}>
@@ -111,7 +111,7 @@ export default class Submission extends React.Component {
                   Model
                 </label>
                 <input id="modelName" type="text" value={this.state.model}
-                       onChange={(e) => this.updateProblem(e.target.value)} />
+                       onChange={(e) => this.updateModel(e.target.value)} />
               </span>
             </td>
             <td style={s.submissionRightStyle}><span>{<SubmissionStatus message="Initial"/>}</span></td>
