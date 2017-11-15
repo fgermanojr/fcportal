@@ -10,10 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171016185244) do
+ActiveRecord::Schema.define(version: 20171115175804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "builds", force: :cascade do |t|
+    t.string "fc_file_name"
+    t.text "fc_file_contents"
+    t.string "dat_file_name"
+    t.text "date_file_contents"
+    t.string "job_id"
+    t.integer "ck_create_map"
+    t.integer "ck_build_model"
+    t.integer "ck_run_model"
+    t.integer "ck_return_results"
+    t.integer "build_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.string "server_name"
+    t.string "queue_name"
+    t.integer "job_state"
+    t.datetime "dt_enqueued"
+    t.datetime "dt_started"
+    t.datetime "dt_ended"
+    t.integer "completion_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "messages", force: :cascade do |t|
     t.text "content"
@@ -21,6 +48,19 @@ ActiveRecord::Schema.define(version: 20171016185244) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "models", force: :cascade do |t|
+    t.string "model_name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "runs", force: :cascade do |t|
+    t.integer "run_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
