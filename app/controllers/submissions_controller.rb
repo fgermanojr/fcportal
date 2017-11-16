@@ -25,12 +25,20 @@ class SubmissionsController < ApplicationController
       datFileContents: read_file(submission_params[:datFile])
     }
 
-    verify_user(portal_worker_parameters)# be sure, user exists.
-    verify_model(portal_worker_parameters) # be sure, model exists.
-    establish_build(portal_worker_parameters) # store a build.
+    # be sure, user exists.
+    @user = User.verify(portal_worker_parameters[:userName])
+
+    # be sure, model exists.
+    @model = Model.verify(portal_worker_parameters)
+
+    # store a build.
+    @build = Build.establish(@model, portal_worker_parameters)
     # store the build for each model; each iteration is saved.
     # plan to only use the last, on runs. Should I just keep the last build ???
-    create_job(portal_worker_parameters)
+
+    # create the job record for tracking
+    job_state = 1 # enqueued. # FIX use enum.
+    @job = Job.establish(@build, job_state, portal_worker_parameters)
     job_id = @job.id
 
     portal_worker_parameters[:job_id] = job_id # Add job id to parameter block.
@@ -50,48 +58,7 @@ class SubmissionsController < ApplicationController
 
   private
 
-  # these should go in models.  FIX  **********
-  def verify_user(pwp)
-    @user = User.find_by(username: pwp[:userName]) # turn into scope.
-  end
 
-  def verify_model(pwp)
-    @model = Model.find_by(modelname: pwp[:modelName])
-    unless @model
-      @model = @user.models.create(modelname: pwp[:modelName], description: '')
-      @model.save!
-    end
-    @model
-  end
-
-  def establish_build(pwp)
-    @build = @model.builds.create(
-      fc_file_name: pwp[:fcFile],
-      fc_file_contents: pwp[:fcFileContents],
-      dat_file_name: pwp[:datFile],
-      dat_file_contents: pwp[:datFileContents],
-      job_id: nil, # will be updated once available, upon creation of job
-      ck_create_map: pwp[:checkBoxMap],
-      ck_build_model: pwp[:checkBox],
-      ck_run_model: pwp[:checkBoxRun],
-      ck_return_results: pwp[:checkBoxRtnFile],
-      build_status: nil # will be updated once available, upon build completion
-    )
-  end
-
-  def create_job(pwp)
-    # The job is used to track a unit of work; it belongs to a build or a run
-
-    # @build.run.runable = @build FAILING . trying optional route.
-    # XXX @build.run.runable = @build # NOTE. A work-around for a bug in rails 5.x.
-    # See jarlorey.com article on Polymorthic associations. Rails recently
-    # changed to always require the owner to exist, but somehow internally does
-    # not set the owner. You can also, on the children, make
-    # belongs_to, ....,  optional: true, however, this violates the spirit of
-    # what is going on; the owner is required.
-    @job = Job.create(build_id: @build.id, server_name: '', queue_name: '',
-                      job_state: 1, dt_enqueued: Time.now.utc)  # watch out for time zone issues.
-  end
 
   def submission_params
     params.permit(:userName, :modelName, :fcFile, :datFile, :checkBoxMap,

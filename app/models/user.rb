@@ -6,5 +6,7 @@ class User < ApplicationRecord
                        length: { maximum: 20 }
   validates :password, presence: true, length: { minimum: 6 }
   has_secure_password
-  has_many :messages, dependent: :destroy 
+  has_many :messages, dependent: :destroy
+
+  scope :verify, ->(user_name) { where(username: user_name) }
 end

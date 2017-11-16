@@ -10,10 +10,11 @@ class PortalWorker < ActiveJob::Base
     # add parameter: COMMAND: build, run
     # SPAWN JOB
     # LOG job start, return id info
-    job_id = '12345'
-    ActionCable.server.broadcast "submissions_channel", {message: 'started', job_id: job_id}
+    job_id = portal_worker_parameters.job_id
+
+    ActionCable.server.broadcast "submissions_channel", {message: 'started', job_id: job_id, status: 0}
       sleep 10
-    ActionCable.server.broadcast "submissions_channel", {message: 'completed', job_id: job_id}
+    ActionCable.server.broadcast "submissions_channel", {message: 'completed', job_id: job_id, status: 0}
     # LOG success, send notification to client
     # LOG failure, send notification to client
 
