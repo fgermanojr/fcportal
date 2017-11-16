@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115220053) do
+ActiveRecord::Schema.define(version: 20171116214444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20171115220053) do
     t.integer "job_state"
     t.datetime "dt_enqueued"
     t.datetime "dt_started"
-    t.datetime "dt_ended"
+    t.datetime "dt_completed"
     t.integer "completion_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
