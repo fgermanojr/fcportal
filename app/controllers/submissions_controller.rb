@@ -29,12 +29,13 @@ class SubmissionsController < ApplicationController
     @user = User.verify(portal_worker_parameters[:userName])
 
     # be sure, model exists.
-    @model = Model.verify(portal_worker_parameters)
+    @model = Model.verify(@user, portal_worker_parameters)
 
     # store a build.
-    @build = Build.establish(@model, portal_worker_parameters)
+    @build = Build.establish(@user, @model, portal_worker_parameters)
     # store the build for each model; each iteration is saved.
     # plan to only use the last, on runs. Should I just keep the last build ???
+  # is @build defined. ???
 
     # create the job record for tracking
     job_state = 1 # enqueued. # FIX use enum.
@@ -52,8 +53,6 @@ class SubmissionsController < ApplicationController
     ActionCable.server.broadcast "submissions_channel", {message: 'enqueued', job_id: job_id}
 
     render json: {result: 'submitted', job_id: job_id}.to_json
-    # TBD.  not checking this response in front end;
-    # should, and display job_id
   end
 
   private

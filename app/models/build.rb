@@ -1,9 +1,10 @@
 class Build < ApplicationRecord
-  belongs_to :model
+  belongs_to :model, foreign_key: "model_id"
   has_one :job, as: :runable
 
-  def self.establish(model, pwp)
-    @build = model.builds.create(
+  def self.establish(u, m, pwp)
+    @build = Build.create!(model_id: m.id,
+      username: u.username, modelname: m.modelname,
       fc_file_name: pwp[:fcFile],
       fc_file_contents: pwp[:fcFileContents],
       dat_file_name: pwp[:datFile],

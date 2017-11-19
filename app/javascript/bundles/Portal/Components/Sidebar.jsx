@@ -7,6 +7,8 @@ import * as myStyles from './Styles.js';
 export default class Sidebar extends React.Component {
   static propTypes = {
     menuitem: PropTypes.string.isRequired,
+
+    //TBD add the addl arguments
   };
 
   constructor(props) {

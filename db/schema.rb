@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116214444) do
+ActiveRecord::Schema.define(version: 20171117194604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(version: 20171116214444) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "model_id"
+    t.string "username"
+    t.string "modelname"
     t.index ["model_id"], name: "index_builds_on_model_id"
   end
 
@@ -62,6 +64,7 @@ ActiveRecord::Schema.define(version: 20171116214444) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.string "username"
     t.index ["user_id"], name: "index_models_on_user_id"
   end
 
@@ -70,6 +73,8 @@ ActiveRecord::Schema.define(version: 20171116214444) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "build_id"
+    t.string "username"
+    t.string "modelname"
     t.index ["build_id"], name: "index_runs_on_build_id"
   end
 

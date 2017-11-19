@@ -1,14 +1,18 @@
 class Model < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, foreign_key: "user_id"
   has_many :builds, dependent: :destroy
 
-  def self.verify(pwp)
+  def self.verify(user, pwp)
     # verify model exists, else create it.
-    @model = Model.find_by(modelname: pwp[:modelName])
+    @model = Model.where(username: pwp[:userName], modelname: pwp[:modelName]).first # TBD need to add index
     unless @model
-      @model = @user.models.create(modelname: pwp[:modelName], description: '')
+      @model = Model.create!(user_id: user.id,
+                             username: user.username,
+                             modelname: pwp[:modelName],
+                             description: '')
       @model.save!
     end
+
     @model
   end
 end

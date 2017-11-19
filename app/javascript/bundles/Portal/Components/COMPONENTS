@@ -1,0 +1,28 @@
+COMPONENTS
+Portal
+  SystemStatus ???
+  Header
+    SystemStatus
+  Sidebar
+    MenuItem
+  Footer
+  Content
+    MenuIntroduction
+    Login|Logout
+    Submission
+      SubmissionStatus
+      Axios
+    Result
+    Doc
+      MenuIntroduction
+      Chap1
+      Chap2
+      Chap3
+      Chap4
+      Chap5
+      Chap6
+      Chap7
+      Chap8
+      Appendix
+    Chat
+    NotYetImplemented

@@ -8,5 +8,5 @@ class User < ApplicationRecord
   has_secure_password
   has_many :messages, dependent: :destroy
 
-  scope :verify, ->(user_name) { where(username: user_name) }
+  scope :verify, ->(user_name) { where(username: user_name).first }
 end

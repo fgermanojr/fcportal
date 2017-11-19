@@ -16,6 +16,7 @@ export default class Content extends React.Component {
     current_menu_item: PropTypes.string.isRequired,
     portal_updateIsLoggedIn: PropTypes.string.isRequired,
     is_logged_in: PropTypes.string.isRequired,
+    handler_update_user_state: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -39,7 +40,9 @@ export default class Content extends React.Component {
         break;
       case 'Login|Logout':
         view_object = <LoginLogout isLoggedIn={this.props.is_logged_in}
-                                   portal_updateIsLoggedIn={this.props.portal_updateIsLoggedIn} />;
+                                   portal_updateIsLoggedIn={this.props.portal_updateIsLoggedIn}
+                                   handler_update_user_state={this.props.handler_update_user_state}
+                       />;
         break;
       case 'Your Status':
         view_object = <NotYetImplemented />;

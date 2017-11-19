@@ -7,7 +7,8 @@ import * as myStyles from './Styles.js';
 export default class LoginLogout extends React.Component {
   static propTypes = {
     isLoggedIn: PropTypes.string.isRequired,
-    portal_updateIsLoggedIn: PropTypes.string.isRequired
+    portal_updateIsLoggedIn: PropTypes.string.isRequired,
+    handler_update_user_state: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -20,6 +21,7 @@ export default class LoginLogout extends React.Component {
     if(results.result == 'authenticated') {
       this.setState({ is_logged_in: true });
       this.props.portal_updateIsLoggedIn(); //this will set the login state in portal to true
+      this.props.handler_update_user_state({user_state: {username: this.state.username, email: this.state.email}})
       alert('ll state isLoggedIn set to true');
     }
   };
@@ -109,7 +111,7 @@ alert('signup_ajax');
       // { session: { username: 'frankgermano', password: 'Portal#1' } }
       data: { user: { username: this.state.username,
                       password: this.state.password,
-                      password: this.state.password_confirmation,
+                      password_confirmation: this.state.password_confirmation,
                       email: this.state.email } }
     })
     .then(function(response) {
@@ -138,7 +140,7 @@ alert('signup_ajax');
         <input type="text" name="user[username]" id="user_username" value={this.state.username} onChange={ evt => this.updateUsername(evt) } />
 
         <label for="user_password">Password </label>
-        <input type="password" name="user[password]" id="userpassword"  value={this.state.password} onChange={ evt => this.updatePassword(evt) }/>
+        <input type="password" name="user[password]" id="user_password"  value={this.state.password} onChange={ evt => this.updatePassword(evt) }/>
 
         <label for="user_password_confirmation">Password Confirmation </label>
         <input type="password" name="user[password_confirmation]" id="user_password_confirmation"

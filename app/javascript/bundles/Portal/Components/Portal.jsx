@@ -13,7 +13,11 @@ export default class Portal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { current_menu_item: 'Introduction', status: 'Initial', is_logged_in: false};
+    this.state = { current_menu_item: 'Introduction',
+                   status: 'Initial',
+                   is_logged_in: false,
+                   user_state: { username: '<not logged in>', email: ''}
+                 };
   }
 
   updateCurrentMenuItem = (menu_item) => {
@@ -41,18 +45,23 @@ export default class Portal extends React.Component {
       <table style={s.tableStyle}>
         <tbody>
           <Header version="0.1"
-                  username="frankgermano"
+                  username='tessgermano'
                   is_logged_in={this.state.is_logged_in}
                   status={this.state.status}/>
           <tr id="center">
             <td id="side-bar" style={s.sidebarStyle}>
               <Sidebar is_logged_in={this.state.is_logged_in}
                        current_menu_item={this.state.current_menu_item}
-                       handler={this.updateCurrentMenuItem} //The handler lets sidebar update the current menu item in Sidebar component
+                       handler={this.updateCurrentMenuItem}
+                       // The handler lets sidebar update the current
+                       // menu item in Sidebar component
               />
             </td>
             <td id="view-port" style={s.viewportStyle}>
-              <Content current_menu_item={this.state.current_menu_item} portal_updateIsLoggedIn={this.updateIsLoggedIn}/>
+              <Content current_menu_item={this.state.current_menu_item}
+                       portal_updateIsLoggedIn={this.updateIsLoggedIn}
+                       handler_update_user_state={this.updateUserState}
+              />
             </td>
           </tr>
           <Footer name="Frank Germano, Jr." />
