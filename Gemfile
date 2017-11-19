@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 #   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
 #   "https://github.com/#{repo_name}.git"
 # end
-ruby "2.3.4"
+ruby "2.3.4" # According to heroku site, latest supported is 2.3.3. Is this right?
 
 gem 'rails', '~> 5.1.3'
 gem 'react_on_rails', '~> 9.0.0' # added, fgj
@@ -40,6 +40,11 @@ gem 'resque'
 group :development, :test do
   gem 'byebug' # , platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
+  gem 'rspec-rails'
+  gem 'database_cleaner'
+end
+
+group :test do # these were with dev and test
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
 end
