@@ -42,7 +42,9 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'rspec-rails'
   gem 'database_cleaner'
+  # gem 'shoulda-matchers'
   gem 'simplecov'
+  # gem 'factory_girl_rails'
 end
 
 group :test do # these were with dev and test
