@@ -42,6 +42,7 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'rspec-rails'
   gem 'database_cleaner'
+  gem 'simplecov'
 end
 
 group :test do # these were with dev and test
