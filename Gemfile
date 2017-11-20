@@ -7,7 +7,8 @@ source 'https://rubygems.org'
 ruby "2.3.5" # According to heroku site, if left off you will get this version.
 
 gem 'rails', '~> 5.1.3'
-gem 'react_on_rails', '~> 9.0.0' # added, fgj
+gem 'react_on_rails', '~> 10.0.0' # upped from 9, the test here, fgj
+
 # Use Redis adapter to run Action Cable in production, and locally
 gem 'redis', '~> 3.0'
 # gem 'mini_racer' shaka
