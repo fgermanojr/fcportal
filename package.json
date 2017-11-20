@@ -14,7 +14,7 @@
   },
   "peerDependencies":{
     "babel-runtime": ">= 6",
-    "coffeescript":">=2.0"
+    "coffee-script":">=2.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^2.9.4",
