@@ -11,9 +11,9 @@ gem 'react_on_rails', '~> 10.0.0' # upped from 9, the test here, fgj
 
 # Use Redis adapter to run Action Cable in production, and locally
 gem 'redis', '~> 3.0'
-# gem 'mini_racer' shaka
-# gem 'jqery-rails' shaka
-# gem 'bootstrap-sass' shaka
+gem 'mini_racer' #shaka
+gem 'jquery-rails' #shaka
+gem 'bootstrap-sass' #shaka
 
 gem 'pg', '~> 0.18' # postgresql as the database for Active Record
 

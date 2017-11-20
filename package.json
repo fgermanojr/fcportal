@@ -10,11 +10,12 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-on-rails": "^10.0.0",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "coffee-script":">=2.0"
   },
   "peerDependencies":{
     "babel-runtime": ">= 6",
-    "coffee-script":">=2.0"
+    "js-yaml": ">= 3.0.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^2.9.4",
