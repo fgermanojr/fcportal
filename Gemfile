@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 #   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
 #   "https://github.com/#{repo_name}.git"
 # end
-ruby "2.3.4" # According to heroku site, latest supported is 2.3.3. Is this right?
+ruby "2.3.5" # According to heroku site, if left off you will get this version.
 
 gem 'rails', '~> 5.1.3'
 gem 'react_on_rails', '~> 9.0.0' # added, fgj
@@ -44,6 +44,7 @@ group :development, :test do
   gem 'database_cleaner'
   # gem 'shoulda-matchers'
   gem 'simplecov'
+  gem 'launchy' # so capybara save_and_open_page will open file
   # gem 'factory_girl_rails'
 end
 
@@ -56,6 +57,7 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'rubocop'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'

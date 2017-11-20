@@ -7,9 +7,8 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true, length: { minimum: 6 }
 
-  has_secure_password
+  has_secure_password 
   has_many :messages, dependent: :destroy # these are chat posts
-  has_many :models # TBD: This missing is why my model stuff was failing; retest that stuff.
 
   scope :verify, ->(user_name) { where(username: user_name).first }
 end
