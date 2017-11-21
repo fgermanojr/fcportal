@@ -23,6 +23,7 @@ SimpleCov.start
 
 # Comment. fgj. To generate a test, if model already exists,
 # rails generate rspec:model <themodelname>
+# Other generators available.
 
 require 'capybara/rspec'
 
