@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ActionCable from 'actioncable'; // This is important and not obvious
+//import ActionCable from 'actioncable'; // This is important and not obvious
 
 import * as myStyles from './Styles.js';
 
