@@ -23,6 +23,6 @@
   },
   "scripts":{
     "heroku-postbuild": "NODE_ENV=production npm run webpack -- -p",
-    "script": "webpack --config=webpack/webpack.config.js -p"
+    "webpack": "webpack --config=webpack/webpack.config.js -p"
   }
 }
