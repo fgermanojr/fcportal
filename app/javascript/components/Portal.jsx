@@ -3,7 +3,7 @@ import React from 'react';
 
 import Sidebar from './Sidebar';
 import Footer from './Footer';
-import Header from './Feader';
+import Header from './Header';
 import Content from './Content';
 import SystemStatus from './SystemStatus';
 import * as myStyles from './Styles.js'; //Later switch to sass
