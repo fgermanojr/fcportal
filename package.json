@@ -6,6 +6,7 @@
     "actioncable": "^5.1.4",
     "axios": "^0.16.2",
     "babel-preset-react": "^6.24.1",
+    "babel-loader":"7.1.2",
     "coffeescript": "1.12.7",
     "prop-types": "^15.6.0",
     "react": "^16.1.1",
