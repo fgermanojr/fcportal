@@ -1,5 +1,5 @@
 GIT
-  remote: git://github.com/rails/webpacker.git
+  remote: https://github.com/rails/webpacker.git
   revision: ae8c948c2b68b7e916cccfff513508f4477810f7
   specs:
     webpacker (3.0.2)
