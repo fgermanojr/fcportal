@@ -14,7 +14,7 @@ default: &default
   cache_manifest: false
 
   extensions:
-    - .coffee
+    # - .coffee fgj; should remove .coffee, artifact, from app
     - .erb
     - .js
     - .jsx
