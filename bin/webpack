@@ -27,13 +27,3 @@ cmdline = ["yarn", "run", "webpack", "--", "--config", WEBPACK_CONFIG] + ARGV
 Dir.chdir(APP_PATH) do
   exec newenv, *cmdline
 end
-shareimprove this answer
-answered Jun 1 at 21:54
-
-Justin Collier
-164
-add a comment
-Your Answer
-
-Links Images Styling/Headers Lists Blockquotes Code HTML advanced help »
-
