@@ -6,7 +6,7 @@ import Footer from './footer';
 import Header from './header';
 import Content from './content';
 import SystemStatus from './SystemStatus';
-import * as myStyles from './Styles.js';
+import * as myStyles from './Styles.js'; //Later switch to sass
 
 export default class Portal extends React.Component {
 
