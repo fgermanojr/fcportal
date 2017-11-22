@@ -1,16 +1,3 @@
-const path = require('path')
-// pulled from web
-module.exports = {
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, './bin'),
-        filename: 'app.js',
-    },
-    module: {
-        loaders: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader'
-        }]
-    }
-}
+const environment = require('./environment')
+
+module.exports = environment.toWebpackConfig()
