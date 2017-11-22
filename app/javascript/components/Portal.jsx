@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Sidebar from './sidebar';
-import Footer from './footer';
-import Header from './header';
-import Content from './content';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
+import Header from './Feader';
+import Content from './Content';
 import SystemStatus from './SystemStatus';
 import * as myStyles from './Styles.js'; //Later switch to sass
 
