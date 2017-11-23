@@ -22,7 +22,9 @@ export default class SystemStatus extends React.Component {
 
   subscribeChannel = () => {
     // Thanks Artur Chmaro for this example and key step of yarn add actioncable
-    const cable = ActionCable.createConsumer('ws://localhost:3000/cable'); //CANT be right in production
+    const cable = ActionCable.createConsumer('ws://localhost:3000/cable');
+    // With local host; only clients on this machine (multiple browsers can be notificed)
+    // Later with chat channel, its crateConsomer, will use cloud server.
     cable.subscriptions.create('WebNotificationsChannel', {
       received: (data) => {
         this.updateSystemStatus(data.message);
