@@ -2,8 +2,12 @@ redis: &redis
   adapter: redis
   url: redis://localhost:6379/1
 
-production: *redis
+production: 
+  adapter: redis
+  url: redis://redistogo:e05dcfd70d0db4bf4d79fc5c16a6c982@grouper.redistogo.com:11732/
+
 development: *redis
+
 test: *redis
 
   # from Stefan Wintermeyer
