@@ -2,7 +2,7 @@ require 'resque/tasks'
 
 task 'resque:setup': :environment do
   Resque.after_fork = Proc.new { ActiveRecord::Base.establish_connection }
-  Resque.before_fork = Proc.new { ActiveRecord::Base.connection.disconnect }
+  Resque.before_fork = Proc.new { ActiveRecord::Base.connection.disconnect! }
 end
  #this is necessary for production environments, otherwise your background jobs
  #will start to fail when hit from many different connections.
