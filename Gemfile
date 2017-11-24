@@ -14,6 +14,7 @@ gem 'redis', '~> 3.0'
 gem 'mini_racer' #shaka
 gem 'jquery-rails' #shaka
 gem 'bootstrap-sass' #shaka
+gem 'resque-scheduler' # needed for resque in production
 
 gem 'pg', '~> 0.18' # postgresql as the database for Active Record
 
