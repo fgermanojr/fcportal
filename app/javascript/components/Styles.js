@@ -6,7 +6,7 @@
 // one place for this application seemed to be the simplest. fgj
 
 // Figure out how to do with scss as an alternative using yarn/webpacker to
-// create application.css I think.
+// create application.css I think. The mechanism should be in place to test this
 export const Styles = {
 
   tableStyle: {

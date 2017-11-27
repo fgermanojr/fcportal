@@ -17,7 +17,8 @@ export default class Portal extends React.Component {
     this.state = { current_menu_item: 'Introduction',
                    status: 'Initial',
                    is_logged_in: false,
-                   user_state: { username: '<not logged in>', email: ''}
+                   user_state: { username: '<not logged in>', email: ''},
+                   current_model: ''
                  };
   }
 
@@ -46,16 +47,14 @@ export default class Portal extends React.Component {
       <table style={s.tableStyle}>
         <tbody>
           <Header version="0.1"
-                  username='tessgermano'
+                  username={this.state.user_state.username}
                   is_logged_in={this.state.is_logged_in}
                   status={this.state.status}/>
           <tr id="center">
             <td id="side-bar" style={s.sidebarStyle}>
               <Sidebar is_logged_in={this.state.is_logged_in}
                        current_menu_item={this.state.current_menu_item}
-                       handler={this.updateCurrentMenuItem}
-                       // The handler lets sidebar update the current
-                       // menu item in Sidebar component
+                       portal_updateCurrentMenu={this.updateCurrentMenuItem}
               />
             </td>
             <td id="view-port" style={s.viewportStyle}>
@@ -63,6 +62,8 @@ export default class Portal extends React.Component {
                        portal_updateIsLoggedIn={this.updateIsLoggedIn}
                        handler_update_user_state={this.updateUserState}
               />
+            </td>
+            <td>
               <PortalIframe src="http://frank-germano-jr.org" />
             </td>
           </tr>

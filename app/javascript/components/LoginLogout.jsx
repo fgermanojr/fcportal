@@ -136,39 +136,78 @@ alert('signup_ajax');
 
     if(this.state.create_user) {
       dialog = <div class="dialog signup">
-        <label for="user_username">Username </label>
-        <input type="text" name="user[username]" id="user_username" value={this.state.username} onChange={ evt => this.updateUsername(evt) } />
+        <table><tbody>
+        <tr>
+          <td>
+            <label for="user_username">Username </label>
+            <input type="text" name="user[username]" id="user_username" value={this.state.username} onChange={ evt => this.updateUsername(evt) } />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="user_password">Password </label>
+            <input type="password" name="user[password]" id="user_password"  value={this.state.password} onChange={ evt => this.updatePassword(evt) }/>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="user_password_confirmation">Password Confirmation </label>
+            <input type="password" name="user[password_confirmation]" id="user_password_confirmation"
+                   value={this.state.password_confirmation} onChange={ evt => this.updatePasswordConfirmation(evt) } />
+          </td>
 
-        <label for="user_password">Password </label>
-        <input type="password" name="user[password]" id="user_password"  value={this.state.password} onChange={ evt => this.updatePassword(evt) }/>
-
-        <label for="user_password_confirmation">Password Confirmation </label>
-        <input type="password" name="user[password_confirmation]" id="user_password_confirmation"
-               value={this.state.password_confirmation} onChange={ evt => this.updatePasswordConfirmation(evt) } />
-        <label for="user_email">Email </label>
-        <input type="email" name="user[email]" id="user_email"  value={this.state.email} onChange={ evt => this.updateEmail(evt) }/>
-
-        <button name="commit" onClick={ () => { this.signup_ajax() } }>Sign up</button>
-        <ul class="session-links">
-          <li>Already have an account?</li>
-          <li><button name="login" onClick={ (e) => { this.remove_create_user() } }> Login</button></li>
-        </ul>
+        </tr>
+        <tr>
+          <td>
+            <label for="user_email">Email </label>
+            <input type="email" name="user[email]" id="user_email"  value={this.state.email} onChange={ evt => this.updateEmail(evt) }/>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <button name="commit" onClick={ () => { this.signup_ajax() } }>Sign up</button>
+          </td>
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr>
+          <td>Already have an account?
+          <button name="login" onClick={ (e) => { this.remove_create_user() } }> Login</button></td>
+        </tr>
+        </tbody></table>
       </div>;
      }
     else
      {
       dialog = <div class="dialog login">
-        <label for="session_username">Username </label>
-        <input type="text" name="session[username]" id="session_username" value={this.state.username} onChange={ evt => this.updateUsername(evt) } />
-
-        <label for="session_password">Password </label>
-        <input type="password" name="session[password]" id="session_password" value={this.state.password} onChange={ evt => this.updatePassword(evt) } />
-
-        <button name="commit" onClick={ (e) => {this.login_ajax_a(e)} }>Login</button>
-        <ul class="session-links">
-          <li>New user?</li>
-          <li><button name="sign_up" onClick={ () => { this.set_create_user() } }> Sign up</button></li>
-        </ul>
+        <table><tbody>
+          <tr>
+            <td>
+              <label for="session_username">Username </label>
+              <input type="text" name="session[username]" id="session_username" value={this.state.username} onChange={ evt => this.updateUsername(evt) } />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="session_password">Password </label>
+              <input type="password" name="session[password]" id="session_password" value={this.state.password} onChange={ evt => this.updatePassword(evt) } />
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <button name="commit" onClick={ (e) => {this.login_ajax_a(e)} }>Login</button>
+            </td>
+          </tr>
+          <tr></tr>
+          <tr></tr>
+          <tr>
+            <td>New user?
+              <button name="sign_up" onClick={ () => { this.set_create_user() } }>Sign up</button>
+            </td>
+          </tr>
+        </tbody></table>
       </div>;
      }
 

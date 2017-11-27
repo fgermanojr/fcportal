@@ -7,6 +7,7 @@ import LoginLogout from './LoginLogout'; // cant use session as component name.
 import Result from './Result';
 import Chat from './Chat';
 import Doc from './Doc';
+import PortalIframe from './PortalIframe';
 import NotYetImplemented from './NotYetImplemented';
 
 import * as myStyles from './Styles.js'; //not used
@@ -63,10 +64,12 @@ export default class Content extends React.Component {
         view_object = <Result user="frank" model="acmotor" status="Initial" />; //need user from portal passed into content
         break;
       case 'Documentation':
-        view_object = <Doc section="chapter2" />;
+        view_object = <Doc section="chapter2" />; // may also be hardwired in doc itself.
         break;
       case 'Support':
-        view_object = <NotYetImplemented />;
+        view_object = <PortalIframe src="http://www.metacalculus.com/FCManChapters.html" />;
+        // For now. This shows PDF scanned versions of manual.
+        // Soon, set up pages controller, which serves up pages from web server.
         break;
       case 'Chat':
         view_object = <Chat />;

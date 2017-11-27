@@ -14,14 +14,16 @@ export default class PortalIframe extends React.Component {
     this.state = { src: this.props.src };
   }
 
-  updateIframeSrc = (src) => {
+  updateIframeSrc = (src) => {// Not used, at present.
+    // If I change stage, and pull iframe source from  state
+    // will iframe refresh?
     this.setState({ src: src });
   }
 
   render() {
     //var s = myStyles.Styles;
-    return (
-      <iframe id="portal_iframe" src={this.props.src}>
+    return (// need to work on sizing, right now for me. try in content;s area
+      <iframe id="portal_iframe" height="600" width="600" src={this.props.src}>
       </iframe>
     );
   }
