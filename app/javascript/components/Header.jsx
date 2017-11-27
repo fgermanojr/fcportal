@@ -27,8 +27,8 @@ export default class Header extends React.Component {
     return (
       <tr id="header" style={s.headerStyle}>
         <td style={s.fontSizeStyle}>&emsp;Fortran Calculus Portal</td>
-        <td><span id="date-span">{new Date().toLocaleTimeString()} </span>
-            <span id="header-username">{this.props.username + ' ' +this.props.is_logged_in}</span>
+        <td>
+            <span id="header-username">{this.props.username + ' ' + this.props.is_logged_in}</span>
             <SystemStatus message={this.props.status} />
             <span id="help-btn" style={s.helpbtnStyle}><b>HELP</b></span>
         </td>

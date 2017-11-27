@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import Header from './Header';
 import Content from './Content';
+import PortalIframe from './PortalIframe';
 import SystemStatus from './SystemStatus';
 import * as myStyles from './Styles.js'; //Later switch to sass
 
@@ -62,6 +63,7 @@ export default class Portal extends React.Component {
                        portal_updateIsLoggedIn={this.updateIsLoggedIn}
                        handler_update_user_state={this.updateUserState}
               />
+              <PortalIframe src="http://frank-germano-jr.org" />
             </td>
           </tr>
           <Footer name="Frank Germano, Jr." />
