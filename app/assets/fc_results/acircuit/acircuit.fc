@@ -1,0 +1,85 @@
+      PROBLEM CIRCUIT (5000,1000,1000)                                          !^synop
+        COMMON/PARAMS/EL,ELS,CS
+        DIMENSION F(21),Y(21),R(21),W(21),YC(21)
+        !~ Measured admittance output data of unknown circuit
+        DATA Y/1.273,1.278,1.392,1.604,1.708,1.950,2.148,2.297,
+     ~         2.503,2.893,3.305,4.005,5.077,8.069,14.84,39.47,
+     ~         -15.06,-9.705,-7.368,-5.286,-3.907/
+        !~ Initial parameter guesses             
+        EL=1.1E-10 : ELS=-1.1E-10 : CS=1.1E-12
+        DO 10 I=1,21
+          F(I)=2850+50*I
+          W(I)=6.28318E6*F(I)
+  10    CONTINUE
+
+        @AXES('AJAXFIT',F,Y,YC,W)
+        !~ Meta Calculus Correlation Statement using AJAX (Newton-Gauss) 
+        FIND EL,ELS,CS; IN FIT(F,Y,R,W,YC); BY AJAX(SET1); TO MATCH R
+        @FINISH('AJAXFIT',F,YC,W)
+        @SHOW('AJAXFIT','Admittance Circuit Curve Fit with Solver Ajax')
+
+        @AXES('MARSFIT',F,Y,YC,W)
+        !~ Meta Calculus Correlation Statement using MARS (Newton-Householder)
+        FIND EL,ELS,CS; IN FIT(F,Y,R,W,YC); BY MARS(SET2); TO MATCH R
+        @FINISH('MARSFIT',F,YC,W)
+        @SHOW('MARSFIT','Admittance Circuit Curve Fit with Solver Mars')
+      END
+
+      CONTROLLER SET1(AJAX)
+        SUMOUT=1
+        DETAIL=1
+        DETOUT=0
+      END  
+
+      CONTROLLER SET2(MARS)
+        SUMOUT=1
+        DETAIL=1
+        DETOUT=0
+        REMAX=40
+        ZERO=.0001
+      END  
+
+      MODEL FIT(F,Y,R,W,YC)                                                     !^fit
+        COMMON/PARAMS/EL,ELS,CS
+        DIMENSION F(*),Y(*),R(*),W(*),YC(*)
+        DO 10 I=1,21 !~ loop over the 21 frequency (W) values
+          YC(I)=-1/(W(I)*EL-1/(W(I)*CS-1/(W(I)*ELS)))
+          R(I)=1/YC(I)-1/Y(I) !~ Residual reciprocal constraint vector
+   10   CONTINUE
+      END
+
+      PROCEDURE AXES(GNAME,F,Y,YC,W)                                            !^axes
+        COMMON/PARAMS/EL,ELS,CS
+        DIMENSION F(*),Y(*),YC(*),W(*)
+        CHARACTER*(*) GNAME
+        XMIN=2900: XMAX=3900: XORG=2900: XSTEP=200
+        YMIN=-30:  YMAX=50:   YORG=-30:  YSTEP=10  
+        @GRAFIL(GNAME,'SUM','IMAGE',0,0)
+        @AXSET(GNAME,'NONE','NONE','NONE','NONE')
+        @XYPLOT(GNAME,'RECT',XMIN,XMAX,XORG,XSTEP,YMIN,YMAX,YORG,YSTEP,
+     *          1.0,0,0,0,0)
+        @XAXIS(GNAME,XMIN,XMAX,XORG,XSTEP,0,'FREQUENCY (CPS)',0,0,0)
+        @YAXIS(GNAME,YMIN,YMAX,YORG,YSTEP,0,'ADMITTANCE',1,0,0)
+        @SETUP(GNAME,'Y ',LN_NONE,CL_RED,SY_DELTA,0) ! Measured 
+        @SETUP(GNAME,'Y0',LN_SOL,CL_RED,SY_NONE,0)   ! Red curve
+        @SETUP(GNAME,'YC',ln_SOL,CL_GREEN,SY_NONE,0) ! Green curve
+        DO 10 I=1,21
+           YC(I)=-1/(W(I)*EL-1/(W(I)*CS-1/(W(I)*ELS)))
+           @POINT(GNAME,'Y ',F(I),Y(I))
+           @CURVE(GNAME,'Y0',F(I),YC(I))
+   10   CONTINUE
+        @MESSAGE(GNAME,'INITIAL GUESS',3050,-12,2)
+        @MESSAGE(GNAME,'FINAL FIT',3050,6,3)
+      END 
+
+      PROCEDURE FINISH(GNAME,F,YC,W)                                            !^finish
+        COMMON/PARAMS/EL,ELS,CS
+        DIMENSION F(*),YC(*),W(*)
+        CHARACTER*(*) GNAME
+        DO 10 I=1,21
+          YC(I)=-1/(W(I)*EL-1/(W(I)*CS-1/(W(I)*ELS)))
+          @CURVE(GNAME,'YC',F(I),YC(I))
+   10   CONTINUE
+      END
+
+
