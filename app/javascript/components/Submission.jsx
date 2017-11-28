@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import SubmissionStatus from './SubmissionStatus';
 import * as myStyles from './Styles.js';
 import axios from 'axios';
 
@@ -89,66 +88,60 @@ export default class Submission extends React.Component {
       <table id="submission-table" style={s.submissionStyle}>
         <tbody>
           <tr>
-            <th style={s.submissionLeftStyle}>Manage Model Submission</th>
-            <th style={s.submissionCenterStyle}>FORTRAN CALCULUS</th>
-            <th style={s.submissionRightStyle}>
-              <button id="button-submit" onClick={this.submitForm.bind(this)}>Submit</button>
-            </th>
+            <th style={s.submissionLeftStyle}>Model Submission</th>
+            <th style={s.submissionCenterStyle}></th>
           </tr>
           <tr>
             <td style={s.submissionLeftStyle}>
-              <span>
-                <label htmlFor="userName">
-                  User
-                </label>
-                <input id="userName" type="text" value={this.state.user}
-                        onChange={(e) => this.updateUser(e.target.value)} />
-              </span>
+              <label htmlFor="userName">User:&nbsp;</label>
             </td>
-            <td style={s.submissionCenterStyle}>
-              <span>
-                <label htmlFor="modelName">
-                  Model
-                </label>
+            <td style={s.submissionLeftStyle}>
+              <input id="userName" type="text" value={this.state.user}
+                     onChange={(e) => this.updateUser(e.target.value)} />
+            </td>
+          </tr>
+          <tr>
+            <td style={s.submissionLeftStyle}>
+              <label htmlFor="modelName">Model:&nbsp;</label>
+            </td>
+            <td style={s.submissionLeftStyle}>
                 <input id="modelName" type="text" value={this.state.model}
                        onChange={(e) => this.updateModel(e.target.value)} />
-              </span>
             </td>
-            <td style={s.submissionRightStyle}><span>{<SubmissionStatus message="Initial"/>}</span></td>
           </tr>
           <tr>
-            <td style={s.submissionLeftStyle}>Upload FC File</td>
-            <td style={s.submissionCenterStyle}>
+            <td style={s.submissionLeftStyle}>Upload FC File:</td>
+            <td style={s.submissionLeftStyle}>
                <input id="fc_file" type="file" onChange={this.updateFCFile.bind(this)}/>
             </td>
-            <td style={s.submissionRightStyle}></td>
           </tr>
           <tr>
-            <td style={s.submissionLeftStyle}>Upload DAT File</td>
-            <td style={s.submissionCenterStyle}>
+            <td style={s.submissionLeftStyle}>Upload DAT File:</td>
+            <td style={s.submissionLeftStyle}>
               <input id="dat_file" type="file"/>
             </td>
-            <td style={s.submissionRightStyle}></td>
           </tr>
           <tr>
-            <td style={s.submissionLeftStyle}>Create MAP File</td>
-            <td style={s.submissionCenterStyle}><input id="checkBoxMap" type="checkbox"/></td>
-            <td style={s.submissionRightStyle}></td>
+            <td style={s.submissionLeftStyle}>Create MAP File:</td>
+            <td style={s.submissionLeftStyle}><input id="checkBoxMap" type="checkbox"/></td>
           </tr>
           <tr>
-            <td style={s.submissionLeftStyle}>Build Model</td>
-            <td style={s.submissionCenterStyle}><input id="checkBoxBuild" type="checkbox"/></td>
-            <td style={s.submissionRightStyle}></td>
+            <td style={s.submissionLeftStyle}>Build Model:</td>
+            <td style={s.submissionLeftStyle}><input id="checkBoxBuild" type="checkbox"/></td>
           </tr>
           <tr>
-            <td style={s.submissionLeftStyle}>Run Model</td>
-            <td style={s.submissionCenterStyle}><input id="checkBoxRun" type="checkbox"/></td>
-            <td style={s.submissionRightStyle}></td>
+            <td style={s.submissionLeftStyle}>Run Model:</td>
+            <td style={s.submissionLeftStyle}><input id="checkBoxRun" type="checkbox"/></td>
           </tr>
           <tr>
-            <td style={s.submissionLeftStyle}>Return File Results</td>
-            <td style={s.submissionCenterStyle}><input id="checkBoxRtnFile" type="checkbox"/></td>
-            <td style={s.submissionRightStyle}></td>
+            <td style={s.submissionLeftStyle}>Return File Results:</td>
+            <td style={s.submissionLeftStyle}><input id="checkBoxRtnFile" type="checkbox"/></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={s.submissionRightStyle}>
+              <button id="button-submit" onClick={this.submitForm.bind(this)}>Submit</button>
+            </td>
           </tr>
         </tbody>
       </table>

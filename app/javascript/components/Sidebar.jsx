@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import MenuItem from './MenuItem';
+import SubmissionStatus from './SubmissionStatus';
 import * as myStyles from './Styles.js';
 
 export default class Sidebar extends React.Component {
@@ -38,6 +39,7 @@ export default class Sidebar extends React.Component {
           <tr><td><MenuItem active={this.state.current_menu_item} name="Model Submission" onClick={() => this.updateCurrentMenu('Model Submission')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Submission Results" onClick={() => this.updateCurrentMenu('Submission Results')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Support" onClick={() => this.updateCurrentMenu('Support')} /></td></tr>
+          <tr><td><SubmissionStatus message="Initial"/></td></tr>
          </tbody>
       </table>
     );

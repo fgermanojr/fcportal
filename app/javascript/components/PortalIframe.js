@@ -23,8 +23,7 @@ export default class PortalIframe extends React.Component {
   render() {
     //var s = myStyles.Styles;
     return (// need to work on sizing, right now for me. try in content;s area
-      <iframe id="portal_iframe" height="600" width="600" src={this.props.src}>
-      </iframe>
+      <iframe id="portal_iframe" height="600" width="600" src={this.props.src}></iframe>
     );
   }
 }

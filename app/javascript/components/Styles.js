@@ -31,6 +31,7 @@ export const Styles = {
   viewportStyle: {
     border: '1px solid black',
     textAlign: 'left',
+    verticalAlign: 'text-top'
   },
 
   fontSizeStyle: {
@@ -69,23 +70,22 @@ export const Styles = {
 
   submissionStyle: {
     border: '1px solid red',
-    width: '50em'
+    width: '25em'
   },
 
   submissionLeftStyle: {
-    border: '1px solid red',
     textAlign: 'left',
-    width: '50em'
+    width: '15em'
   },
 
   submissionCenterStyle: {
-    border: '1px solid red',
-    width: '35em'
+    width: '15em',
+    textAlign: 'center',
   },
 
   submissionRightStyle: {
-    border: '1px solid red',
-    width: '80em'
+    textAlign: 'right',
+    width: '15em'
   },
 
   domainspanStyle: {

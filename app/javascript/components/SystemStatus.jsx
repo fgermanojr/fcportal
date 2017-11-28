@@ -38,7 +38,7 @@ export default class SystemStatus extends React.Component {
 
     return (
       <span className="system_status">
-        {this.state.message}
+        Systen:&nbsp;{this.state.message}
       </span>
     );
   }

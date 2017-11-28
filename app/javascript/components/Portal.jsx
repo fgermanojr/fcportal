@@ -64,6 +64,7 @@ export default class Portal extends React.Component {
               />
             </td>
             <td>
+              <SystemStatus message={this.props.status} />
               <PortalIframe src="http://frank-germano-jr.org" />
             </td>
           </tr>

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import SystemStatus from './SystemStatus'
 import * as myStyles from './Styles.js';
 
 export default class Header extends React.Component {
@@ -29,7 +28,6 @@ export default class Header extends React.Component {
         <td style={s.fontSizeStyle}>&emsp;Fortran Calculus Portal</td>
         <td>
             <span id="header-username">{this.props.username + ' is logged in ' + this.props.is_logged_in}</span>
-            <SystemStatus message={this.props.status} />
             <span id="help-btn" style={s.helpbtnStyle}><b>HELP</b></span>
         </td>
       </tr>
