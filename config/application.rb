@@ -1,6 +1,8 @@
 require_relative 'boot'
 
 require 'rails/all'
+require 'sprokets/railtie' # asset pipeline uses; my app was working
+#  but application css not found when trying to set up results server.
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
