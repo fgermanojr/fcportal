@@ -1,0 +1,5 @@
+#! /bin/bash
+# eject job file
+export LD_LIBRARY_PATH=.:/usr/local/dislin
+export MCEXEPATH=/home/bear/MC7Btst/REG1/MC7Bt/bear/default/eject/110520I
+./eject > 110520I.out 2>&1 

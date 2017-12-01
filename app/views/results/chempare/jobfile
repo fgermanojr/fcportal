@@ -1,0 +1,5 @@
+#! /bin/bash
+# chempare.ajax job file
+export LD_LIBRARY_PATH=.:/usr/local/dislin
+export MCEXEPATH=/home/bear/MC7Btst/REG1/MC7Bt/bear/default/chempare/110520E
+./chempare > 110520E.out 2>&1 

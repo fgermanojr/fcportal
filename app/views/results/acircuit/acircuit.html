@@ -1,0 +1,97 @@
+<HTML><HEAD><TITLE>acircuit                         Translation Listing</title></head><BODY><H2>acircuit                         Translation Listing</H2><PRE>
+
+
+ FORTRAN CALCULUS (MC7B) ----------------------------- Thu Jan 12 17:09:43 2012
+ ####  LABEL ---+---------+---------+---------+---------+---------+---------+--
+~
+    1        PROBLEM CIRCUIT (5000,1000,1000)
+    2          COMMON/PARAMS/EL,ELS,CS
+    3          DIMENSION F(21),Y(21),R(21),W(21),YC(21)
+              !~ Measured admittance output data of unknown circuit
+    4          DATA Y/1.273,1.278,1.392,1.604,1.708,1.950,2.148,2.297,
+           ~         2.503,2.893,3.305,4.005,5.077,8.069,14.84,39.47,
+           ~         -15.06,-9.705,-7.368,-5.286,-3.907/
+              !~ Initial parameter guesses
+    7>         EL=1.1E-10 : ELS=-1.1E-10 : CS=1.1E-12
+    8          DO 10 I=1,21
+    9            F(I)=2850+50*I
+   10            W(I)=6.28318E6*F(I)
+   11    10    CONTINUE
+      
+   12*         @AXES(&rsquo;AJAXFIT&rsquo;,F,Y,YC,W)
+              !~ Meta Calculus Correlation Statement using AJAX (Newton-Gauss)
+   13          FIND EL,ELS,CS; IN FIT(F,Y,R,W,YC); BY AJAX(SET1); TO MATCH R
+   14          @FINISH(&rsquo;AJAXFIT&rsquo;,F,YC,W)
+   15          @SHOW(&rsquo;AJAXFIT&rsquo;,&rsquo;Admittance Circuit Curve Fit with Solver Ajax&rsquo;)
+      
+   16          @AXES(&rsquo;MARSFIT&rsquo;,F,Y,YC,W)
+              !~ Meta Calculus Correlation Statement using MARS (Newton-Househ
+   17          FIND EL,ELS,CS; IN FIT(F,Y,R,W,YC); BY MARS(SET2); TO MATCH R
+   18          @FINISH(&rsquo;MARSFIT&rsquo;,F,YC,W)
+   19          @SHOW(&rsquo;MARSFIT&rsquo;,&rsquo;Admittance Circuit Curve Fit with Solver Mars&rsquo;)
+   20        END
+~
+      
+   21        CONTROLLER SET1(AJAX)
+   22          SUMOUT=1
+   23          DETAIL=1
+   24          DETOUT=0
+   25        END
+~
+      
+   26        CONTROLLER SET2(MARS)
+   27          SUMOUT=1
+   28          DETAIL=1
+   29          DETOUT=0
+   30          REMAX=40
+   31          ZERO=.0001
+   32        END
+~
+      
+   33        MODEL FIT(F,Y,R,W,YC)
+   34          COMMON/PARAMS/EL,ELS,CS
+   35          DIMENSION F(*),Y(*),R(*),W(*),YC(*)
+   36          DO 10 I=1,21 !~ loop over the 21 frequency (W) values
+   37            YC(I)=-1/(W(I)*EL-1/(W(I)*CS-1/(W(I)*ELS)))
+   38            R(I)=1/YC(I)-1/Y(I) !~ Residual reciprocal constraint vector
+   39     10   CONTINUE
+   40*       END
+~
+      
+   41        PROCEDURE AXES(GNAME,F,Y,YC,W)
+   42          COMMON/PARAMS/EL,ELS,CS
+   43          DIMENSION F(*),Y(*),YC(*),W(*)
+   44          CHARACTER*(*) GNAME
+   48>         XMIN=2900: XMAX=3900: XORG=2900: XSTEP=200
+   52>         YMIN=-30:  YMAX=50:   YORG=-30:  YSTEP=10
+   53          @GRAFIL(GNAME,&rsquo;SUM&rsquo;,&rsquo;IMAGE&rsquo;,0,0)
+   54          @AXSET(GNAME,&rsquo;NONE&rsquo;,&rsquo;NONE&rsquo;,&rsquo;NONE&rsquo;,&rsquo;NONE&rsquo;)
+   55          @XYPLOT(GNAME,&rsquo;RECT&rsquo;,XMIN,XMAX,XORG,XSTEP,YMIN,YMAX,YORG,YSTEP,
+           *          1.0,0,0,0,0)
+   56          @XAXIS(GNAME,XMIN,XMAX,XORG,XSTEP,0,&rsquo;FREQUENCY (CPS)&rsquo;,0,0,0)
+   57          @YAXIS(GNAME,YMIN,YMAX,YORG,YSTEP,0,&rsquo;ADMITTANCE&rsquo;,1,0,0)
+   58          @SETUP(GNAME,&rsquo;Y &rsquo;,LN_NONE,CL_RED,SY_DELTA,0) ! Measured
+   59          @SETUP(GNAME,&rsquo;Y0&rsquo;,LN_SOL,CL_RED,SY_NONE,0)   ! Red curve
+   60          @SETUP(GNAME,&rsquo;YC&rsquo;,ln_SOL,CL_GREEN,SY_NONE,0) ! Green curve
+   61          DO 10 I=1,21
+   62             YC(I)=-1/(W(I)*EL-1/(W(I)*CS-1/(W(I)*ELS)))
+   63             @POINT(GNAME,&rsquo;Y &rsquo;,F(I),Y(I))
+   64             @CURVE(GNAME,&rsquo;Y0&rsquo;,F(I),YC(I))
+   65     10   CONTINUE
+   66*         @MESSAGE(GNAME,&rsquo;INITIAL GUESS&rsquo;,3050,-12,2)
+   67          @MESSAGE(GNAME,&rsquo;FINAL FIT&rsquo;,3050,6,3)
+   68        END
+~
+      
+   69        PROCEDURE FINISH(GNAME,F,YC,W)
+   70          COMMON/PARAMS/EL,ELS,CS
+   71          DIMENSION F(*),YC(*),W(*)
+   72          CHARACTER*(*) GNAME
+   73          DO 10 I=1,21
+   74            YC(I)=-1/(W(I)*EL-1/(W(I)*CS-1/(W(I)*ELS)))
+   75            @CURVE(GNAME,&rsquo;YC&rsquo;,F(I),YC(I))
+   76     10   CONTINUE
+   77*       END
+~
+      
+      
