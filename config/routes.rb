@@ -1,6 +1,7 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+  root 'portal#index'
   get 'docs/show'
   post 'submissions/submit'
 
