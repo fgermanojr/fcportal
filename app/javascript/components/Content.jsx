@@ -67,7 +67,8 @@ export default class Content extends React.Component {
         view_object = <Doc section="chapter2" />; // may also be hardwired in doc itself.
         break;
       case 'Support':
-        view_object = <PortalIframe src="http://www.metacalculus.com/FCManChapters.html" />;
+        view_object = <NotYetImplemented />
+        // <PortalIframe src="http://www.metacalculus.com/FCManChapters.html" />;
         // For now. This shows PDF scanned versions of manual.
         // Soon, set up pages controller, which serves up pages from web server.
         break;

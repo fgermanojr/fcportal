@@ -63,11 +63,8 @@ export default class Portal extends React.Component {
                        handler_update_user_state={this.updateUserState}
               />
             </td>
-            <td>
-              <SystemStatus message={this.props.status} />
-              <PortalIframe src="http://frank-germano-jr.org" />
-            </td>
           </tr>
+          <SystemStatus message={this.props.status} />
           <Footer name="Frank Germano, Jr." />
         </tbody>
       </table>

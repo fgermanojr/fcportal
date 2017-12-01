@@ -37,9 +37,13 @@ export default class SystemStatus extends React.Component {
     var s = myStyles.Styles;
 
     return (
-      <span className="system_status">
-        Systen:&nbsp;{this.state.message}
-      </span>
+      <tr>
+        <td>
+          <span className="system_status">
+            System broadcast:&nbsp;{this.state.message}
+          </span>
+        </td>
+      </tr>
     );
   }
 }

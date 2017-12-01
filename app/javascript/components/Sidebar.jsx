@@ -28,7 +28,7 @@ export default class Sidebar extends React.Component {
     return (
       <table id="menulist" style={s.menuStyle}>
         <tbody>
-          <tr><td><span>{this.props.is_logged_in ? 'Logout' : 'Login'}</span></td></tr>
+          <tr><td><span>{this.props.is_logged_in ? 'Logged In.' : 'Please Login'}</span></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Introduction" onClick={() => this.updateCurrentMenu('Introduction')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Documentation" onClick={() => this.updateCurrentMenu('Documentation')} /></td></tr>
           <tr><td><MenuItem active={this.state.current_menu_item} name="Login|Logout" onClick={() => this.updateCurrentMenu('Login|Logout')}/></td></tr>
