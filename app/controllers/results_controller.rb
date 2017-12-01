@@ -1,6 +1,6 @@
 class ResultsController < ApplicationController
   def show
-    # maybe user model build id runid
+    # :model, :runid coming in
     render template: "results/#{params[:model]}/110520E/console/index"
   end
 end

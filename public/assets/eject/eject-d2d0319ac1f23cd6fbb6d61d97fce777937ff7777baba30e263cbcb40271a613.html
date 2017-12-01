@@ -1,0 +1,165 @@
+<HTML><HEAD><TITLE>eject                            Translation Listing</title></head><BODY><H2>eject                            Translation Listing</H2><PRE>
+
+
+ FORTRAN CALCULUS (MC7B) ----------------------------- Fri Jan 13 14:51:30 2012
+ ####  LABEL ---+---------+---------+---------+---------+---------+---------+--
+~
+    1        GLOBAL ALL
+    2        PROBLEM EJECT
+    3          DIMENSION ALT(6),VEL(6)
+    4          CHARFUN FCSINT*2,TOCLABEL*50
+    5          CHARACTER PLANE*7,TOCENTRY*50
+    6          DATA ALT/0,10000,20000,30000,40000,50000/     !~  Altitude table
+   12>         SMASS=7: G=32.2: CD=1: VE=40: THETAD=15: TIME=1.0
+   15>         S=10: Y1=4: VA=100
+   16          DO 10 I=1,6
+   19>           H=ALT(I) : IT=0 : PLANE=&rsquo;PLANE&rsquo;//FCSINT(I)
+   20*           @AXES(PLANE,&rsquo;PILOT EJECTION&rsquo;)
+   21            IF(H.LE.35332) THEN   ! Atmospheric density model
+   22               RHO=0.002378*(1-.689E-5*H)**4.256
+   23            ELSE
+   24*              RHO=0.00315/EXP(1.452+(H-35332)/20950)
+   25            ENDIF
+      
+   26            FIND VA,TIME; IN SEAT(PLANE); BY AJAX(ACON); TO MATCH GX,GY
+      
+   27            TOCENTRY=TOCLABEL(&rsquo;TRAJECTORY ITERATIONS AT ALTITUDE=&rsquo;)
+   28*           @DISPLAY(PLANE,TOCENTRY)
+   29            VEL(I)=VA
+   30     10   CONTINUE
+   31*         @SAFE(&rsquo;PROFILE&rsquo;)
+   32        END
+~
+      
+   33        CONTROLLER ACON(AJAX) !~ FIND control parameters for Ajax solver
+   34          DAMP=0    !~ Suppress damping in damped Newton method
+   35          SUMOUT=1  !~ Send iteration summary report to SUMMARY stream
+   36          DETAIL=1  !~ Create iteration detail report for each iteration
+   37          DETOUT=0  !~ Send iteration report to DETAIL stream
+   38        END
+~
+      
+   39        MODEL SEAT(JET)
+   40          CHARACTER*2 NI,JET*7
+   41          CHARFUN FCSINT*2
+   43>         VX=SQRT(VA**2)-VE*SIND(THETAD) : VY=VE*COSD(THETAD)
+   45>         V=SQRT(VX*VX+VY*VY) : THETA=ATAN(VY/VX)
+   51>         X=0 : Y=Y1 : T=0 : DT=ABS(TIME)/20 : DP=4*DT : TP=T+DP
+   53>         IT=IT+1 : NI=FCSINT(IT)
+   54*         IF(IT.GT.9) THEN
+   55              @POINT(JET,&rsquo;I&rsquo;//NI,X,Y)
+   56          ELSE
+   57*             @CURVE(JET,&rsquo;I&rsquo;//NI,X,Y)
+   58          ENDIF
+      
+   59          INITIATE ISIS; FOR MOTION; EQUATIONS
+           &amp;     THEDOT/THETA, VDOT/V, XDOT/X, YDOT/Y; OF T; STEP DT; TO TP
+      
+   60          DO WHILE (T.LT.TIME)
+   61            INTEGRATE MOTION; BY ISIS
+   62            @CURVE(JET,&rsquo;I&rsquo;//NI,X,Y)
+   63            TP=TP+DP
+   64          END DO
+   65          GX=-X-30 !~ Trajectory target boundary condition on X at T=TIME
+   66          GY=Y-20  !~ Trajectory target boundary condition on Y at T=TIME
+   67          TERMINATE MOTION
+   68        END
+~
+      
+   69        MODEL MOTION   !~ Differential Equations
+   70          D=0.5*RHO*CD*S*V*V
+   71          THEDOT=-G*COS(THETA)/V      !~ Equation for THETA(T)
+   72          VDOT=-D/SMASS-G*SIN(THETA)  !~ Equation for V(T)
+   73          XDOT=V*COS(THETA)-ABS(VA)   !~ Equation for X(T)
+   74          YDOT=V*SIN(THETA)           !~ Equation for Y(T)
+   75        END
+~
+      
+   76        PROCEDURE AXES(NAME,TITLE)
+   77          CHARACTER*(*) NAME,TITLE
+   78          DIMENSION P1(2,6),P2(2,11),TG(2,9)
+              !~ Image data for graph profile of plane
+   79          DATA P1/8.7,0,8.9,.5,7.75,1.5,5,2.2,2.2,3.8,1.8,2.8/
+   80          DATA P2/5,2.2,1.8,2.8,.25,3.1,-0.1,4.0,-21,3.75,-25,3.9,
+           &amp;          -26.3,4.75,-29.2,11,-30,12,-32.2,12,-30.3,0/
+   81          DATA TG/-30.6,19.4,-30,19.15,-29.4,19.4,-30.6,20.6,-30,20.85,
+           &amp;          -29.4,20.6,-30.6,19.4,-30.85,20,-30.6,20.6/
+      
+   82          @GRAFIL(NAME,&rsquo;SUM&rsquo;,&rsquo;IMAGE&rsquo;,0,0) !~Create SUMMARY-stream graph
+   83          @FONT(NAME,&rsquo;COMPLEX&rsquo;,&rsquo;STANDARD&rsquo;,30,1) !~ Default size &amp; color
+   84          @AXNAME(NAME,&rsquo;X&rsquo;,&rsquo;X&rsquo;,&rsquo;CENT&rsquo;,16,20,CL_FORE)
+   85          @AXLABS(NAME,&rsquo;X&rsquo;,&rsquo;FLOAT&rsquo;,&rsquo;HORI&rsquo;,&rsquo;TICKS&rsquo;,&rsquo;OUTW&rsquo;,1,16,CL_FORE)
+   86          @AXNAME(NAME,&rsquo;Y&rsquo;,&rsquo;Y&rsquo;,&rsquo;CENT&rsquo;,16,20,CL_FORE)
+   87          @AXLABS(NAME,&rsquo;Y&rsquo;,&rsquo;FLOAT&rsquo;,&rsquo;HORI&rsquo;,&rsquo;TICKS&rsquo;,&rsquo;OUTW&rsquo;,-1,16,CL_FORE)
+   88          @XYPLOT(NAME,&rsquo;CROSS&rsquo;,-35,10,-30,10,0,30,0,10,1,0,0,0,0)
+   89          @SETUP(NAME,&rsquo;I1&rsquo;,LN_DASH,CL_BLUE,SY_NONE,1)    !~ 1st Iteration
+   90          @SETUP(NAME,&rsquo;I2&rsquo;,LN_DASH,CL_GREEN,SY_NONE,1)   !~ 2nd Iteration
+   91          @SETUP(NAME,&rsquo;I3&rsquo;,LN_DASH,CL_CYAN,SY_NONE,1)    !~ 3rd Iteration
+   92          @SETUP(NAME,&rsquo;I4&rsquo;,LN_DASH,CL_RED,SY_NONE,1)     !~ 4th Iteration
+   93          @SETUP(NAME,&rsquo;I5&rsquo;,LN_DASH,CL_MAGENTA,SY_NONE,1) !~ 5th Iteration
+   94          @SETUP(NAME,&rsquo;I6&rsquo;,LN_DASH,CL_ORANGE,SY_NONE,1)  !~ 6th Iteration
+   95          @SETUP(NAME,&rsquo;I7&rsquo;,LN_DASH,CL_YELLOW,SY_NONE,1)  !~ 7th Iteration
+   96          @SETUP(NAME,&rsquo;I8&rsquo;,LN_CHNDSH,CL_GREEN,SY_NONE,1) !~ 8th Iteration
+   97          @SETUP(NAME,&rsquo;I9&rsquo;,LN_CHNDSH,CL_CYAN,SY_NONE,1)  !~ 9th Iteration
+   98          @SETUP(NAME,&rsquo;P1&rsquo;,LN_SOL,4,SY_NONE,1) !~ Plane Outline 1 (Blue so
+   99          @SETUP(NAME,&rsquo;P2&rsquo;,LN_SOL,4,SY_NONE,1) !~ Plane Outline 2 (Blue so
+  100          @SETUP(NAME,&rsquo;TG&rsquo;,LN_DASH,CL_RED,SY_NONE,1) !~ Target (Red dashed
+  101          @HEAD(NAME,TITLE,50,50,CL_FORE) !~Chart title (Black)
+  102          DO 10 J=1,6
+  103            P11J = P1(1,J)
+  104            P12J = P1(2,J)
+  105            @CURVE(NAME,&rsquo;P1&rsquo;,P11J,P12J)
+                !~ original form: @CURVE(NAME,&rsquo;P1&rsquo;,P1(1,J),P1(2,J)) scan error
+  106>    10   CONTINUE
+  107*         DO 20 J=1,11
+  108            P21J = P2(1,J)
+  109            P22J = P2(2,J)
+  110            @CURVE(NAME,&rsquo;P2&rsquo;,P21J,P22J)
+                !~ original form: @CURVE(NAME,&rsquo;P2&rsquo;,P2(1,J),P2(2,J)) scan error
+  111>    20   CONTINUE
+  112*         DO 30 J=1,9
+  113            TG1J = TG(1,J)
+  114            TG2J = TG(2,J)
+  115            @CURVE(NAME,&rsquo;TG&rsquo;,TG1J,TG2J)
+                !~ original form: @CURVE(NAME,&rsquo;TG&rsquo;,TG(1,J),TG(2,J)) scan error
+  116>    30   CONTINUE
+  117*         RETURN
+       C
+  118*         ENTRY DISPLAY(NAME,TITLE)
+  119*         PRINT *,&rsquo;DISPLAY&rsquo;,TITLE
+  120          @MESSAGE(NAME,&rsquo;ALTITUDE&rsquo;,-20.0,30.0,CL_BLUE)
+  121          @NUMBER(NAME,H,1,999.,999.,10,0,CL_BLUE)
+~
+  122          @MESSAGE(NAME,&rsquo;SPEED&rsquo;,-20.0,28.0,CL_RED)
+  123          @NUMBER(NAME,VA,1,999.,999.,10,0,CL_RED)
+  124          @DRAW(NAME,TITLE)
+  125        END
+~
+      
+  126        PROCEDURE SAFE(GNAME)
+  127          CHARACTER*(*) GNAME
+  128          @GRAFIL(GNAME,&rsquo;SUM&rsquo;,&rsquo;IMAGE&rsquo;,0,0) !~ Create SUMMARY-stream graph
+  129          @FONT(GNAME,&rsquo;COMPLEX&rsquo;,&rsquo;STANDARD&rsquo;,30,CL_BLACK) !~ Default size &amp;
+  130          @AXNAME(GNAME,&rsquo;X&rsquo;,&rsquo;SPEED&rsquo;,&rsquo;CENT&rsquo;,16,20,CL_FORE)
+  131          @AXLABS(GNAME,&rsquo;X&rsquo;,&rsquo;FLOAT&rsquo;,&rsquo;HORI&rsquo;,&rsquo;TICKS&rsquo;,&rsquo;OUTW&rsquo;,1,16,CL_FORE)
+  132          @AXNAME(GNAME,&rsquo;Y&rsquo;,&rsquo;ALTITUDE&rsquo;,&rsquo;CENT&rsquo;,16,20,CL_FORE)
+  133          @AXLABS(GNAME,&rsquo;Y&rsquo;,&rsquo;FLOAT&rsquo;,&rsquo;HORI&rsquo;,&rsquo;TICKS&rsquo;,&rsquo;OUTW&rsquo;,-1,16,CL_FORE)
+  134          @XYPLOT(GNAME,&rsquo;RECT&rsquo;,200,800,200,200,0,50000,0,10000,1,0,0,0,0)
+  135          @SETUP(GNAME,&rsquo;PP&rsquo;,LN_NONE,CL_RED,SY_DELTA,1)   !~ Profile Points
+  136          @SETUP(GNAME,&rsquo;CR&rsquo;,LN_DASH,CL_CYAN,SY_NONE,1) !~ Profile Curve
+  137          @HEAD(GNAME,&rsquo;SAFE EJECTION PROFILE&rsquo;,50,50,CL_FORE) !~ Title (bla
+  138          DO 10 J=1,6
+  139            @POINT(GNAME,&rsquo;PP&rsquo;,VEL(J),ALT(J))
+  140            @CURVE(GNAME,&rsquo;CR&rsquo;,VEL(J),ALT(J))
+  141     10   CONTINUE
+  142*         @DRAW(GNAME,&rsquo;ALTITUDE-VELOCITY PROFILE GRAPH&rsquo;)  !~ no border
+  143        END
+~
+      
+  144        CHARACTER*(*) FUNCTION TOCLABEL(STRING)
+  145        CHARACTER*(*) STRING
+  146        WRITE(TOCLABEL,10) STRING,H
+  147     10 FORMAT(A,F6.0)
+  148*       END
+~
+      

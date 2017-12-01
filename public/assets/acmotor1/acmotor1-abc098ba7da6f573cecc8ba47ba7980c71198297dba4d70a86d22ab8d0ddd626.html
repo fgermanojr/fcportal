@@ -1,0 +1,148 @@
+<HTML><HEAD><TITLE>acmotor1                         Translation Listing</title></head><BODY><H2>acmotor1                         Translation Listing</H2><PRE>
+
+
+ FORTRAN CALCULUS (MC7B) ----------------------------- Fri Jan 13 14:54:11 2012
+ ####  LABEL ---+---------+---------+---------+---------+---------+---------+--
+~
+    1        GLOBAL ALL
+    2        PROBLEM ACMOTOR
+    3          DIMENSION CNS(7)
+    4          DYNAMIC BOTM,BND
+    5          CALL INPUT
+    6          ITER=0
+    7*         CALL DESIGN
+    8          PRINT *,&rsquo;--------------- INITIAL DESIGN ---------------&rsquo;
+    9          CALL OUTPUT
+   10          FIND COILTRNS,SEPDIAM,STASLOTW,ROTSLOTW,AIRGAP,STAT00TW,
+           &amp;       STABAKIR,ROTTOOTW,ROTBAKIR,STASLOTO,ROTSLOTO,SLIP;
+           &amp;    IN DESIGN; BY THOR(TCON);
+           &amp;    WITH BOUNDS BND; AND LOWERS BOTM; HOLDING CNS;
+           &amp;    REPORTING FONE,QONE,QTWO,QTHREE,CONE,CTWO,CRNOL,QFOUR,QFIVE,
+           &amp;    ATHREE,ZONE,QSIX,ZTHREE,ZFOUR,QSEVEN,QEIGHT,ZFIVE,RDC,VONE,
+           &amp;    VTWO,AFOUR,RTWO,RROT,RFOUR,GTHREE,GFOUR,GFIVE,GSIX,XLEAK,
+           &amp;    CRSTAL,CRFL,STORQ,RTORQ,PEIGHT,PSIX,PSEVEN,FLUX,BSEVEN,BTWO,
+           &amp;    BTHREE,FELOSS,CULSTA,RAC,XMAG,CULROT;
+           &amp;    TO MAXIMIZE EFF
+   11          PRINT *,&rsquo;---------------- OPTIMIZED DESIGN -----------------&rsquo;
+   12          CALL OUTPUT
+   13        END
+~
+      
+   14        MODEL DESIGN
+   15          FONE=231258.0438/COILTRNS
+   16          QONE=SEPDIAM*PI/56
+   17          QTWO=SEPDIAM*PI/69
+   18          QTHREE=SEPDIAM*PI/28
+   19          CONE=QONE/((QONE-STASLOTW)+
+           &amp;       (STASLOTW*(.7-(.036*(STASLOTW/AIRGAP)))))
+   20          CTWO=QTWO/((QTWO-ROTSLOTW)+
+           &amp;       (ROTSLOTW*(.7-(.036*(ROTSLOTW/AIRGAP)))))
+   21          CRNOL=FONE*AIRGAP*CONE*CTWO/(6.96*COILTRNS*QTHREE)
+   22          QFOUR=(STATOROD-STABAKIR-STABAKIR-SEPDIAM-.1)/2-.01
+   23          QFIVE=(SEPDIAM+QFOUR+.1)*PI/56-STAT00TW-.016
+   24          ATHREE=QFOUR*QFIVE
+   25          ZONE=7000*ATHREE
+   26          QSIX=COILTRNS*2/ZONE
+   27          ZTHREE=-2
+   28          ZFOUR=32+ZTHREE
+   29          QSEVEN=1.26**ZTHREE*162
+   30          QEIGHT=64/1.26**ZTHREE
+   31          ZFIVE=STACKLEN+STACKLEN+PI*STATOROD/14
+   32          RDC=ZFIVE*COILTRNS*28*QSEVEN/12000
+   33          VONE=(SEPDIAM-.06-ROTORID-ROTBAKIR-ROTBAKIR)/2
+   34          VTWO=(SEPDIAM-.06-VONE)*PI/69-ROTTOOTW
+   35          AFOUR=VONE*VTWO
+   36          RTWO=(.0133/AFOUR)*(STACKLEN/12000)*UONE
+   37          RROT=(56*COILTRNS)**2*RTWO/138
+   38          RFOUR=RROT
+   39          GTHREE=3.2*(QFOUR/(3*QFIVE)+.03/(STASLOTW+QFIVE)+
+           &amp;         STASLOTO/STASLOTW)
+   40          GFOUR=3.2*(VONE/(3*VTWO)+.03/(ROTSLOTW+VTWO)+ROTSLOTO/ROTSLOTW)
+   41          GFIVE=(1/CONE+1/CTWO-1)**2*.26/AIRGAP
+   42          GSIX=(GTHREE+GFIVE*QONE)/56+(GFOUR+GFIVE*QTWO)/69
+   43          XLEAK=XC*PI*COILTRNS**2*(.05+GSIX*STACKLEN)     ! ~Leakage react
+   44          CRSTAL=115/(SQRT(((RDC+RFOUR)**2)+XLEAK**2))    ! ~Stall current
+   45          CRFL=115/(SQRT(((RDC+RFOUR/SLIP)**2)+XLEAK**2)) ! ~Full load cur
+   46          STORQ=1.5792*(CRSTAL**2)*RFOUR                  ! ~Stall torque
+   47          RTORQ=1.5792*(CRFL**2)*RFOUR/SLIP               ! ~Running torqu
+   48          PEIGHT=RTORQ*(1-SLIP)*1.264944649
+   49          PSIX=(CRSTAL**2)*(RDC+RFOUR)
+   50          PSEVEN=(CRFL**2)*RFOUR/SLIP
+   51          FLUX=(1.4*FONE/(STAT00TW*STACKLEN))/6450        ! ~Flux density
+   52          BSEVEN=(SQRT(CRFL**2+CRNOL**2)*FLUX/CRNOL)/1.4
+   53          BTWO=.13*BSEVEN**1.9
+   54          BTHREE=(((STATOROD**2-SEPDIAM**2)*PI/4)-56*ATHREE)*0.28*STACKLEN
+   55          FELOSS=BTHREE*BTWO                     ! ~Iron losses
+   56          CULSTA=(BSEVEN*CRNOL)/FLUX)**2*RDC     ! ~Stator copper losses
+   57          EFF=.5*PEIGHT/(PSEVEN+FELOSS/2+CULSTA) ! ~Efficiency -&gt; maximize
+   58          RAC=13225/FELOSS                       ! ~A.C. resistance
+   59          XMAG=115/CRNOL                         ! ~Magnetizing reactance
+   60          CULROT=CRFL*CRFL*RROT/STASLOTW         ! ~Rotor copper losses
+       C   Constraints
+   61          CNS(1)=STATOROD-.1-SEPDIAM             ! ~Stator O.D &gt;= Separati
+   62          CNS(2)=SEPDIAM-ROTORID+.1              ! ~Separation Diam &gt;= Rot
+   63          CNS(3)=((SEPDIAM*PI/69)-.035)-ROTTOOTW ! ~Rotor tooth geometry
+~
+   64          CNS(4)=.5*(SEPDIAM-ROTORID)-.025-ROTBAKIR ! ~Rotor back iron geo
+   65          CNS(5)=STORQ-60                        ! ~Stall torque &gt;= 60
+   66          CNS(6)=19-FLUX                         ! ~Flux density &lt;= 19
+   67          CNS(7)=.05-SLIP                        ! ~Slip &lt;= 5 percent
+   68          CALL IMEDOUT
+   69          ITER=ITER+1
+   70*       END
+~
+      
+   71        PROCEDURE INPUT
+              ! ~~~~ Initial Guesses for optimizer
+   74>         COILTRNS=29:  SEPDIAM=4:
+   78>         STASLOTW=.06: ROTSLOTW=.035: AIRGAP=.008: STAT00TW=.135:
+   81>         STABAKIR=.15: ROTTOOTW=.11: ROTBAKIR=.47:
+   83>         STASLOTO=.035: ROTSLOTO=.015: SLIP=.03
+              ! ~~~~ Parameters
+   87>         ROTORID=2.875: STATOROD=5.11: YONE=2: XC=0.050176
+   90>         STACKLEN=2: UONE=2.6: PI=3.1415926536
+              ! ~~~~ Lower constant constraints on the optimization unknowns
+   91          &lt;BOTM&gt;=DATA(5,0,.035,.035,.008,.04,.06,0,0,.025,0,0)
+              ! ~~~~ Step bounds for optimizer
+   92          &lt;BND&gt;=DATA(.01*COILTRNS,.05*SEPDIAM,.01*STASLOTW,.01*ROTSLOTW,
+           &amp;  .05*AIRGAP,.01*STAT00TW,.05*STABAKIR,.01*ROTTOOTW,.05*ROTBAKIR,
+           &amp;  .05*STASLOTO,.05*ROTSLOTO,.05*SLIP)
+   93         END
+~
+      
+   94        PROCEDURE OUTPUT
+   95          PRINT *,&rsquo; EFFICIENCY =&rsquo;,EFF
+   96          PRINT *,&rsquo; STALL TORQUE =&rsquo;,STORQ
+   97          PRINT *,&rsquo; RUNNING TORQUE =&rsquo;,RTORQ
+   98          PRINT *,&rsquo; FLUX DENSITY =&rsquo;,FLUX
+   99          PRINT *,&rsquo; IRON LOSSES =&rsquo;,FELOSS
+  100          PRINT *,&rsquo; D.C. RESISTANCE =&rsquo;,RDC
+  101          PRINT *,&rsquo; A.C. RESISTANCE =&rsquo;,RAC
+  102          PRINT *,&rsquo; ROTOR RESISTANCE =&rsquo;,RROT
+  103          PRINT *,&rsquo; LEAKAGE REACTANCE =&rsquo;,XLEAK
+  104          PRINT *,&rsquo; MAGNETIZING REACTANCE =&rsquo;,XMAG
+  105          PRINT *,&rsquo; STATOR COPPER LOSSES =&rsquo;,CULSTA
+  106          PRINT *,&rsquo; ROTOR COPPER LOSSES =&rsquo;,CULROT
+  107          PRINT *,&rsquo; NO LOAD CURRENT =&rsquo;,CRNOL
+  108          PRINT *,&rsquo; FULL LOAD CURRENT =&rsquo;,CRFL
+  109          PRINT *,&rsquo; STALL CURRENT =&rsquo;,CRSTAL
+  110        END
+~
+      
+  111        PROCEDURE IMEDOUT
+  112          PRINT *,&rsquo;============== ITERATION&rsquo;,ITER,&rsquo;==============&rsquo;
+  113          GRADPRINT FONE,QONE,QTWO,QTHREE,CONE,CTWO,CRNOL,QFOUR
+  114          GRADPRINT QFIVE,ATHREE,ZONE,QSIX,ZTHREE,ZFOUR,QSEVEN,QEIGHT
+  115          GRADPRINT ZFIVE,RDC,VONE,VTWO,AFOUR,RTWO,RROT,RFOUR
+  116          GRADPRINT GTHREE,GFOUR,GFIVE,GSIX,XLEAK,CRSTAL,CRFL,STORQ
+  117          GRADPRINT RTORQ,PEIGHT,PSIX,PSEVEN,FLUX,BSEVEN,BTWO,BTHREE
+  118          GRADPRINT FELOSS,CULSTA,EFF,RAC,XMAG,CULROT
+  119        END
+~
+      
+      
+  120        CONTROLLER TCON(THOR)
+  121          SUMOUT=1
+  122          DETAIL=1
+  123          DETOUT=0
+  124        END
