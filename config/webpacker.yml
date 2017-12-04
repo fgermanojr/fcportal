@@ -14,7 +14,6 @@ default: &default
   cache_manifest: false
 
   extensions:
-    # - .coffee fgj; should remove .coffee, artifact, from app
     - .erb
     - .js
     - .jsx
@@ -50,7 +49,7 @@ production:
   <<: *default
 
   # Production depends on precompilation of packs prior to booting for performance.
-  compile: false
+  compile: true
 
   # Cache manifest.json for performance
   cache_manifest: true
