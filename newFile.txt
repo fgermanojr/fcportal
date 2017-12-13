@@ -1,5 +1,5 @@
 this is a new file added by finch!
-MERGE CONFLICE COMING
+MERGE CONFLICT COMING
 -yay!
 edit-
 this was added later
